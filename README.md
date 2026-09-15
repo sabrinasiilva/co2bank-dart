@@ -1,19 +1,12 @@
 # CO2Bank App
 
-Carteira inteligente com limite ecológico — app cliente (Flutter) do CO2Bank.
+App mobile do CO2Bank, feito em Flutter.
 
 ## O que é
 
-Interface visual do CO2Bank: mostra o CO2 estimado das compras, o limite
-ecológico mensal, alertas preventivos e recompensas em tokens de marcas
-parceiras. Este app **não contém regra de negócio** (cálculo de CO2, política
-de limite) — toda essa lógica vive no backend, no repositório
-[`Co2Bank-flask`](../Co2Bank-flask). Aqui só chamamos a API e exibimos os
-dados.
+O CO2Bank App é a interface visual do projeto. Ele mostra o CO2 estimado das compras, o limite ecológico mensal, alertas preventivos e recompensas em tokens. Toda a regra de negócio (cálculo de CO2, política de limite) fica no backend, no repositório `Co2Bank-flask`. Aqui só chamamos a API e exibimos os dados.
 
-O pitch completo do projeto (ODS 12/13/17, metodologia, referência ao
-Doconomy, mapeamento de CO2 por categoria) está documentado no README do
-backend.
+O pitch completo do projeto (ODS 12/13/17, metodologia, referência ao Doconomy e mapeamento de CO2 por categoria) está no README do backend.
 
 ## Arquitetura
 
