@@ -6,7 +6,7 @@ class Co2BankApi {
   Co2BankApi({ApiClient? client}) : _client = client ?? ApiClient();
 
   Future<bool> checkHealth() async {
-    final result = await _client.get('/health');
-    return result['status'] == 'ok';
+    final response = await _client.get('/health');
+    return response.ok && response.body['status'] == 'ok';
   }
 }
