@@ -30,22 +30,81 @@ lib/
 
 ## Como rodar
 
+### Pré-requisitos
+
+Antes de começar, você precisa ter instalado:
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) na versão estável (3.x)
+- JDK 17, recomendamos o [Eclipse Temurin](https://adoptium.net/)
+- Android SDK com as command-line tools (pode instalar via `sdkmanager` ou pelo Android Studio)
+- A variável de ambiente `ANDROID_HOME` configurada apontando para a pasta do SDK
+
+Para verificar se tudo está certo:
+
+```bash
+flutter doctor
+```
+
+Os itens relevantes devem aparecer com ✓. O item de iOS pode ser ignorado se você só for testar no Android.
+
+### Instalação de dependências
+
 ```bash
 flutter pub get
+```
+
+### Rodar no emulador
+
+```bash
 flutter run
 ```
 
-Por padrão, o app aponta para `http://10.0.2.2:5000` (endereço do `localhost`
-da máquina host quando rodando no emulador Android) — é onde o backend
-(`Co2Bank-flask`) deve estar rodando em desenvolvimento. Para apontar para
-outro endereço:
+Por padrão, o app aponta para `http://10.0.2.2:5000`, que é o endereço do `localhost` da sua máquina visto de dentro do emulador Android. O backend precisa estar rodando para o app funcionar.
 
-```bash
-flutter run --dart-define=API_BASE_URL=http://SEU_IP:5000
-```
-
-Rodar os testes:
+### Rodar os testes
 
 ```bash
 flutter test
+```
+
+## Testar no celular físico (Android)
+
+O backend precisa estar rodando na máquina antes de começar.
+
+### 1. Ativar Depuração USB no celular
+
+Vá em Configurações > Sobre o telefone e toque 7 vezes em "Número da versão" para ativar as Opções do desenvolvedor. Depois vá em Configurações > Opções do desenvolvedor e ative a Depuração USB.
+
+### 2. Conectar e autorizar
+
+Conecte o celular por USB. Quando aparecer a pergunta "Permitir depuração USB?", toque em Permitir. Para confirmar que o dispositivo foi reconhecido:
+
+```bash
+adb devices
+```
+
+### 3. Mapear a porta do backend
+
+```bash
+adb reverse tcp:5000 tcp:5000
+```
+
+Isso faz o `localhost:5000` do celular apontar para o backend no PC, sem precisar de IP fixo ou mesma rede Wi-Fi.
+
+### 4. Rodar o app no celular
+
+```bash
+flutter run
+```
+
+O Flutter detecta o celular automaticamente. Se tiver mais de um dispositivo conectado ao mesmo tempo, ele vai perguntar qual usar.
+
+Se o celular desconectar durante o build, reconecte o cabo, rode `adb reverse tcp:5000 tcp:5000` de novo e execute `flutter run` novamente.
+
+### Apontar para outro endereço de API
+
+Se não quiser usar o `adb reverse` e preferir conectar direto por IP na rede:
+
+```bash
+flutter run --dart-define=API_BASE_URL=http://SEU_IP_LOCAL:5000
 ```
