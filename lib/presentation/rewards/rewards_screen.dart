@@ -12,7 +12,7 @@ class RewardsScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.dark,
-        foregroundColor: Colors.white,
+        foregroundColor: const Color.fromARGB(255, 206, 200, 200),
         elevation: 0,
         title: Text(
           'Recompensas',
@@ -33,7 +33,11 @@ class RewardsScreen extends StatelessWidget {
                 color: AppColors.accent.withAlpha(40),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.star_rounded, size: 40, color: AppColors.accent),
+              child: const Icon(
+                Icons.star_rounded,
+                size: 40,
+                color: AppColors.accent,
+              ),
             ),
             const SizedBox(height: 20),
             Text(
