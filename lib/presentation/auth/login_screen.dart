@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/app_colors.dart';
 import '../../data/auth_service.dart';
-import '../home_screen.dart';
+import '../shell.dart';
 import '../widgets/auth_field.dart';
 import '../widgets/primary_button.dart';
 import 'register_screen.dart';
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (result.success && mounted) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()));
+          MaterialPageRoute(builder: (_) => const Shell()));
     } else {
       setState(() => _error = result.error);
     }
