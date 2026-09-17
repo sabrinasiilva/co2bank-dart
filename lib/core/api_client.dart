@@ -37,9 +37,9 @@ class ApiClient {
     return ApiResponse(response.statusCode, _decode(response.body));
   }
 
-  Map<String, dynamic> _decode(String body) {
+  dynamic _decode(String body) {
     try {
-      return jsonDecode(body) as Map<String, dynamic>;
+      return jsonDecode(body);
     } catch (_) {
       return {'error': 'Resposta inválida do servidor'};
     }
@@ -48,10 +48,23 @@ class ApiClient {
 
 class ApiResponse {
   final int statusCode;
-  final Map<String, dynamic> body;
+  final dynamic _raw;
 
-  ApiResponse(this.statusCode, this.body);
+  ApiResponse(this.statusCode, this._raw);
 
   bool get ok => statusCode >= 200 && statusCode < 300;
+
+  Map<String, dynamic> get body {
+    final raw = _raw;
+    if (raw is Map<String, dynamic>) return raw;
+    return {};
+  }
+
+  List<dynamic> get bodyList {
+    final raw = _raw;
+    if (raw is List) return raw;
+    return [];
+  }
+
   String? get error => body['error'] as String?;
 }

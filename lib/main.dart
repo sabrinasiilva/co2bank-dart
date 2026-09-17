@@ -23,8 +23,9 @@ class CO2BankApp extends StatelessWidget {
       ],
       supportedLocales: const [Locale('pt', 'BR')],
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.darkGreen),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         scaffoldBackgroundColor: AppColors.background,
+        fontFamily: 'Outfit',
       ),
       home: const SplashScreen(),
     );

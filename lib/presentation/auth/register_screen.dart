@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/app_colors.dart';
 import '../../core/validators.dart';
 import '../../data/auth_service.dart';
-import '../home_screen.dart';
+import '../shell.dart';
 import '../widgets/step_indicator.dart';
 import 'steps/step1_personal_data.dart';
 import 'steps/step2_access.dart';
@@ -313,7 +313,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         Step5Done(
                           onStart: () => Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (_) => const HomeScreen()),
+                            MaterialPageRoute(builder: (_) => const Shell()),
                             (_) => false,
                           ),
                         ),
