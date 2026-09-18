@@ -5,6 +5,7 @@ import '../../data/auth_service.dart';
 import '../shell.dart';
 import '../widgets/auth_field.dart';
 import '../widgets/primary_button.dart';
+import 'forgot_password_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -150,7 +151,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (_) => const ForgotPasswordScreen()),
+                        ),
                         child: Text('Esqueci minha senha',
                             style: GoogleFonts.outfit(
                                 fontSize: 13,

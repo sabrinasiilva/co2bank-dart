@@ -6,6 +6,7 @@ import '../shell.dart';
 import '../widgets/step_indicator.dart';
 import 'steps/step1_personal_data.dart';
 import 'steps/step2_access.dart';
+import 'steps/step3_facial.dart';
 import 'steps/step3_open_finance.dart';
 import 'steps/step4_eco_limit.dart';
 import 'steps/step5_done.dart';
@@ -20,7 +21,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _pageController = PageController();
   int _currentStep = 0;
-  static const int _totalSteps = 5;
+  static const int _totalSteps = 6;
 
   final Map<String, String?> _errors = {};
 
@@ -34,6 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
+
+  String? _facePhotoBase64;
 
   final Set<String> _connectedBanks = {};
   double _co2Limit = 200;
@@ -124,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_currentStep == 1) valid = _validateStep2();
     if (!valid) return;
 
-    if (_currentStep == 3) {
+    if (_currentStep == 4) {
       _doRegister();
       return;
     }
@@ -150,6 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           '${birthDate.year}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}',
       password: _passwordController.text,
       co2LimitKg: _co2Limit,
+      facePhoto: _facePhotoBase64,
     );
 
     setState(() => _loading = false);
@@ -294,6 +298,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               });
                             }
                           },
+                        ),
+                        Step3Facial(
+                          capturedPhotoBase64: _facePhotoBase64,
+                          onPhotoCaptured: (b64) =>
+                              setState(() => _facePhotoBase64 = b64),
+                          onContinue: _tryAdvance,
                         ),
                         Step3OpenFinance(
                           connectedBanks: _connectedBanks,

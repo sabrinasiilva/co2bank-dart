@@ -118,7 +118,7 @@ class Step2Access extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary)),
         const SizedBox(height: 4),
-        Text('Etapa 2 de 4',
+        Text('Etapa 2 de 5',
             style: GoogleFonts.outfit(
                 fontSize: 13, color: AppColors.textSecondary)),
       ],

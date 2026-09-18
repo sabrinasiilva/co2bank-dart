@@ -17,13 +17,18 @@ class Shell extends StatefulWidget {
 
 class _ShellState extends State<Shell> {
   int _currentIndex = 0;
+  late final List<Widget> _tabs;
 
-  static const _tabs = [
-    HomeTab(),
-    TransactionsTab(),
-    Co2Tab(),
-    ProfileTab(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _tabs = [
+      HomeTab(onNavigateToTransactions: () => setState(() => _currentIndex = 1)),
+      const TransactionsTab(),
+      const Co2Tab(),
+      const ProfileTab(),
+    ];
+  }
 
   static const _navItems = [
     BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Início'),

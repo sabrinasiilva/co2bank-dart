@@ -8,8 +8,41 @@ import '../../core/app_colors.dart';
 import '../../data/transaction_service.dart';
 import '../../data/user_service.dart';
 
+IconData _categoryIcon(String label) {
+  switch (label) {
+    case 'Combustível':
+      return Icons.local_gas_station_rounded;
+    case 'Hospedagem':
+      return Icons.hotel_rounded;
+    case 'Restaurante':
+      return Icons.restaurant_rounded;
+    case 'Supermercado':
+      return Icons.shopping_cart_rounded;
+    case 'Transporte':
+      return Icons.directions_car_rounded;
+    case 'Moda':
+      return Icons.shopping_bag_rounded;
+    case 'Eletrônicos':
+      return Icons.devices_rounded;
+    case 'Farmácia':
+      return Icons.local_pharmacy_rounded;
+    case 'Streaming':
+      return Icons.play_circle_rounded;
+    case 'Educação':
+      return Icons.school_rounded;
+    case 'Financeiro':
+      return Icons.account_balance_rounded;
+    case 'Passagem aérea':
+      return Icons.flight_rounded;
+    default:
+      return Icons.receipt_rounded;
+  }
+}
+
 class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+  final VoidCallback? onNavigateToTransactions;
+
+  const HomeTab({super.key, this.onNavigateToTransactions});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -51,6 +84,36 @@ class _HomeTabState extends State<HomeTab> {
           return const Center(child: CircularProgressIndicator(color: AppColors.primary));
         }
 
+        if (snapshot.hasError) {
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.wifi_off_rounded, size: 40, color: AppColors.gray),
+                const SizedBox(height: 12),
+                Text(
+                  'Erro ao carregar dados',
+                  style: GoogleFonts.outfit(
+                    fontSize: 14,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: _refresh,
+                  child: Text(
+                    'Tentar novamente',
+                    style: GoogleFonts.outfit(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
         final data = snapshot.data!;
         final summary = data.summary;
         final pct = (summary?.percentageUsed ?? 0) / 100;
@@ -71,57 +134,83 @@ class _HomeTabState extends State<HomeTab> {
           onRefresh: () async => _refresh(),
           color: AppColors.primary,
           child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: _HeroCard(
-                    userName: data.user?.name.split(' ').first ?? '',
-                    monthLabel: monthLabel,
-                    pct: pct,
-                    arcColor: arcColor,
-                    totalCo2: summary?.totalCo2Kg ?? 0,
-                    limitKg: summary?.limitKg ?? 200,
-                    percentageUsed: summary?.percentageUsed ?? 0,
+            slivers: [
+              SliverToBoxAdapter(
+                child: _HeroCard(
+                  userName: data.user?.name.split(' ').first ?? '',
+                  monthLabel: monthLabel,
+                  pct: pct,
+                  arcColor: arcColor,
+                  totalCo2: summary?.totalCo2Kg ?? 0,
+                  limitKg: summary?.limitKg ?? 200,
+                  percentageUsed: summary?.percentageUsed ?? 0,
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                sliver: SliverToBoxAdapter(
+                  child: _StatsRow(summary: summary),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    'Últimas movimentações',
+                    style: GoogleFonts.outfit(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ),
+              if (data.recent.isEmpty)
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+                  sliver: SliverToBoxAdapter(
+                    child: _EmptyTransactions(),
+                  ),
+                )
+              else ...[
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (_, i) => _TransactionTile(tx: data.recent[i]),
+                      childCount: data.recent.length,
+                    ),
                   ),
                 ),
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
                   sliver: SliverToBoxAdapter(
-                    child: _StatsRow(summary: summary),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: Text(
-                      'Últimas movimentações',
-                      style: GoogleFonts.outfit(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                    child: TextButton(
+                      onPressed: widget.onNavigateToTransactions,
+                      style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Ver todas as movimentações',
+                            style: GoogleFonts.outfit(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          const Icon(Icons.arrow_forward_rounded,
+                              size: 16, color: AppColors.primary),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                if (data.recent.isEmpty)
-                  SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                    sliver: SliverToBoxAdapter(
-                      child: _EmptyTransactions(),
-                    ),
-                  )
-                else
-                  SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (_, i) => _TransactionTile(tx: data.recent[i]),
-                        childCount: data.recent.length,
-                      ),
-                    ),
-                  ),
               ],
-            ),
-          );
+            ],
+          ),
+        );
       },
     );
   }
@@ -260,6 +349,32 @@ class _HeroCard extends StatelessWidget {
             'de ${limitKg.toStringAsFixed(0)} kg de limite mensal',
             style: GoogleFonts.outfit(fontSize: 12, color: Colors.white54),
           ),
+          if (percentageUsed > 100) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppColors.accentWarm.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.accentWarm.withOpacity(0.5)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.warning_rounded, size: 14, color: AppColors.accentWarm),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Limite ultrapassado!',
+                    style: GoogleFonts.outfit(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.accentWarm,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -342,7 +457,7 @@ class _StatsRow extends StatelessWidget {
             value: '${summary?.transactionsCount ?? 0}',
             icon: Icons.swap_horiz_rounded,
             iconColor: AppColors.primary,
-            bgColor: const Color(0xFFF0FAE8),
+            bgColor: AppColors.primaryMuted.withOpacity(0.3),
           ),
         ),
       ],
@@ -446,7 +561,7 @@ class _TransactionTile extends StatelessWidget {
               color: AppColors.background,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.receipt_rounded, size: 20, color: AppColors.gray),
+            child: Icon(_categoryIcon(tx.categoryLabel), size: 20, color: AppColors.gray),
           ),
           const SizedBox(width: 12),
           Expanded(

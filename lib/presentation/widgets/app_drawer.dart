@@ -132,7 +132,7 @@ class _DrawerHeaderState extends State<_DrawerHeader> {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: AppColors.primary.withAlpha(30),
+              color: AppColors.primaryMuted.withOpacity(0.35),
               shape: BoxShape.circle,
               border: Border.all(color: AppColors.primary, width: 2),
             ),
@@ -207,7 +207,7 @@ class _DrawerTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
-        color: active ? AppColors.primary.withAlpha(20) : Colors.transparent,
+        color: active ? AppColors.primaryMuted.withOpacity(0.3) : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(

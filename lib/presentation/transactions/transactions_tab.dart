@@ -5,6 +5,37 @@ import 'package:intl/intl.dart';
 import '../../core/app_colors.dart';
 import '../../data/transaction_service.dart';
 
+IconData _categoryIcon(String label) {
+  switch (label) {
+    case 'Combustível':
+      return Icons.local_gas_station_rounded;
+    case 'Hospedagem':
+      return Icons.hotel_rounded;
+    case 'Restaurante':
+      return Icons.restaurant_rounded;
+    case 'Supermercado':
+      return Icons.shopping_cart_rounded;
+    case 'Transporte':
+      return Icons.directions_car_rounded;
+    case 'Moda':
+      return Icons.shopping_bag_rounded;
+    case 'Eletrônicos':
+      return Icons.devices_rounded;
+    case 'Farmácia':
+      return Icons.local_pharmacy_rounded;
+    case 'Streaming':
+      return Icons.play_circle_rounded;
+    case 'Educação':
+      return Icons.school_rounded;
+    case 'Financeiro':
+      return Icons.account_balance_rounded;
+    case 'Passagem aérea':
+      return Icons.flight_rounded;
+    default:
+      return Icons.receipt_rounded;
+  }
+}
+
 class TransactionsTab extends StatefulWidget {
   const TransactionsTab({super.key});
 
@@ -29,13 +60,17 @@ class _TransactionsTabState extends State<TransactionsTab> {
   }
 
   void _changeMonth(int delta) {
+    final candidate = DateTime(_year, _month + delta);
+    final now = DateTime.now();
+    if (candidate.isAfter(DateTime(now.year, now.month))) return;
     setState(() {
-      final d = DateTime(_year, _month + delta);
-      _month = d.month;
-      _year = d.year;
+      _month = candidate.month;
+      _year = candidate.year;
       _data = _load();
     });
   }
+
+  void _refresh() => setState(() => _data = _load());
 
   @override
   Widget build(BuildContext context) {
@@ -44,82 +79,96 @@ class _TransactionsTabState extends State<TransactionsTab> {
       'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
     ];
 
+    final now = DateTime.now();
+    final isCurrentMonth = _month == now.month && _year == now.year;
+
     return SafeArea(
       child: Column(
         children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-              child: Row(
-                children: [
-                  Text(
-                    'Extrato',
-                    style: GoogleFonts.outfit(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Extrato',
+                  style: GoogleFonts.outfit(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
                   ),
-                  const Spacer(),
-                  _MonthSelector(
-                    label: '${months[_month]} $_year',
-                    onPrev: () => _changeMonth(-1),
-                    onNext: () => _changeMonth(1),
-                  ),
-                ],
-              ),
+                ),
+                const Spacer(),
+                _MonthSelector(
+                  label: '${months[_month]} $_year',
+                  onPrev: () => _changeMonth(-1),
+                  onNext: isCurrentMonth ? null : () => _changeMonth(1),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: FutureBuilder<List<TransactionItem>>(
-                future: _data,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return const Center(
-                      child: CircularProgressIndicator(color: AppColors.primary),
-                    );
-                  }
-
-                  final txs = snapshot.data ?? [];
-
-                  if (txs.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.receipt_long_rounded,
-                              size: 48, color: AppColors.border),
-                          const SizedBox(height: 12),
-                          Text(
-                            'Nenhuma movimentação neste período',
-                            style: GoogleFonts.outfit(
-                              fontSize: 14,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  return ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-                    itemCount: txs.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 8),
-                    itemBuilder: (_, i) => _TxCard(tx: txs[i]),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: FutureBuilder<List<TransactionItem>>(
+              future: _data,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
                   );
-                },
-              ),
+                }
+
+                final txs = snapshot.data ?? [];
+
+                return RefreshIndicator(
+                  onRefresh: () async => _refresh(),
+                  color: AppColors.primary,
+                  child: txs.isEmpty
+                      ? ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.55,
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.receipt_long_rounded,
+                                        size: 48, color: AppColors.border),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      'Nenhuma movimentação neste período',
+                                      style: GoogleFonts.outfit(
+                                        fontSize: 14,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                          itemCount: txs.length,
+                          separatorBuilder: (_, __) => const SizedBox(height: 8),
+                          itemBuilder: (_, i) => _TxCard(tx: txs[i]),
+                        ),
+                );
+              },
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class _MonthSelector extends StatelessWidget {
   final String label;
   final VoidCallback onPrev;
-  final VoidCallback onNext;
+  final VoidCallback? onNext;
 
   const _MonthSelector({
     required this.label,
@@ -154,9 +203,12 @@ class _MonthSelector extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.chevron_right_rounded, size: 20),
+            icon: Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: onNext != null ? AppColors.textSecondary : AppColors.border,
+            ),
             onPressed: onNext,
-            color: AppColors.textSecondary,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             padding: EdgeInsets.zero,
           ),
@@ -198,7 +250,7 @@ class _TxCard extends StatelessWidget {
               color: AppColors.background,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.receipt_rounded, size: 22, color: AppColors.gray),
+            child: Icon(_categoryIcon(tx.categoryLabel), size: 22, color: AppColors.gray),
           ),
           const SizedBox(width: 14),
           Expanded(
