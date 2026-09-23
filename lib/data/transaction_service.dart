@@ -77,6 +77,18 @@ class MonthlySummary {
       );
 }
 
+class LimitAlert {
+  final bool alert;
+  final String? message;
+
+  const LimitAlert({required this.alert, this.message});
+
+  factory LimitAlert.fromJson(Map<String, dynamic> json) => LimitAlert(
+        alert: json['alert'] as bool,
+        message: json['message'] as String?,
+      );
+}
+
 class TransactionService {
   final ApiClient _client;
 
@@ -112,6 +124,16 @@ class TransactionService {
       final response =
           await _client.get('/summary/monthly?month=$month&year=$year');
       if (response.ok) return MonthlySummary.fromJson(response.body);
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<LimitAlert?> checkLimit() async {
+    try {
+      final response = await _client.post('/check-limit', {});
+      if (response.ok) return LimitAlert.fromJson(response.body);
       return null;
     } catch (_) {
       return null;

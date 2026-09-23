@@ -81,7 +81,7 @@ class _Step3FacialState extends State<Step3Facial> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Sua selfie é usada para confirmar sua identidade ao redefinir a senha.',
+            'Sua selfie é usada para reforçar a segurança da sua conta.',
             style: GoogleFonts.outfit(
               fontSize: 13,
               color: AppColors.textSecondary,
