@@ -65,11 +65,13 @@ class _HomeTabState extends State<HomeTab> {
     final user = await userSvc.getMe();
     final summary = await txSvc.monthlySummary(month: now.month, year: now.year);
     final recent = await txSvc.listTransactions(month: now.month, year: now.year);
+    final limitAlert = await txSvc.checkLimit();
 
     return _HomeData(
       user: user,
       summary: summary,
       recent: recent.take(4).toList(),
+      limitAlert: limitAlert,
     );
   }
 
@@ -146,6 +148,13 @@ class _HomeTabState extends State<HomeTab> {
                   percentageUsed: summary?.percentageUsed ?? 0,
                 ),
               ),
+              if (data.limitAlert?.alert == true && data.limitAlert?.message != null)
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  sliver: SliverToBoxAdapter(
+                    child: _AiAlertBanner(message: data.limitAlert!.message!),
+                  ),
+                ),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                 sliver: SliverToBoxAdapter(
@@ -220,8 +229,9 @@ class _HomeData {
   final UserProfile? user;
   final MonthlySummary? summary;
   final List<TransactionItem> recent;
+  final LimitAlert? limitAlert;
 
-  _HomeData({required this.user, required this.summary, required this.recent});
+  _HomeData({required this.user, required this.summary, required this.recent, this.limitAlert});
 }
 
 class _HeroCard extends StatelessWidget {
@@ -607,6 +617,55 @@ class _TransactionTile extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AiAlertBanner extends StatelessWidget {
+  final String message;
+
+  const _AiAlertBanner({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.accentWarm.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.accentWarm.withOpacity(0.5)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.eco_rounded, size: 22, color: AppColors.accentWarm),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Alerta de CO2 — IA',
+                  style: GoogleFonts.outfit(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.accentWarm,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  message,
+                  style: GoogleFonts.outfit(
+                    fontSize: 13,
+                    color: AppColors.textPrimary,
+                    height: 1.45,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
