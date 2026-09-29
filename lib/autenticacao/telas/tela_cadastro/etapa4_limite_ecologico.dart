@@ -66,7 +66,7 @@ class Etapa4LimiteEcologico extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
-                      color: _corRotulo.withOpacity(0.1),
+                      color: _corRotulo.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(_rotulo,
                       style: GoogleFonts.outfit(
@@ -83,7 +83,7 @@ class Etapa4LimiteEcologico extends StatelessWidget {
               activeTrackColor: CoresApp.darkGreen,
               inactiveTrackColor: CoresApp.border,
               thumbColor: CoresApp.darkGreen,
-              overlayColor: CoresApp.darkGreen.withOpacity(0.1),
+              overlayColor: CoresApp.darkGreen.withValues(alpha: 0.1),
               trackHeight: 4,
             ),
             child: Slider(
@@ -108,7 +108,7 @@ class Etapa4LimiteEcologico extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-                color: CoresApp.border.withOpacity(0.4),
+                color: CoresApp.border.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(12)),
             child: Text(
               'A média brasileira de emissão por consumo é de aproximadamente 200 kg CO2 por mês.',

@@ -141,7 +141,7 @@ class _CabecalhoDrawerState extends State<_CabecalhoDrawer> {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: CoresApp.primaryMuted.withOpacity(0.35),
+              color: CoresApp.primaryMuted.withValues(alpha: 0.35),
               shape: BoxShape.circle,
               border: Border.all(color: CoresApp.primary, width: 2),
             ),
@@ -217,7 +217,7 @@ class _ItemDrawer extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
         color: ativo
-            ? CoresApp.primaryMuted.withOpacity(0.3)
+            ? CoresApp.primaryMuted.withValues(alpha: 0.3)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
       ),

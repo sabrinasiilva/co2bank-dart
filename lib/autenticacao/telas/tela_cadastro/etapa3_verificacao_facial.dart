@@ -192,7 +192,7 @@ class _GuiaFacial extends StatelessWidget {
               Icon(
                 Icons.face_outlined,
                 size: 80,
-                color: CoresApp.primaryMuted.withOpacity(0.5),
+                color: CoresApp.primaryMuted.withValues(alpha: 0.5),
               ),
               const SizedBox(height: 8),
               Text(

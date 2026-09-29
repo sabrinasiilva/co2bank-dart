@@ -165,10 +165,10 @@ class _TelaEsqueciSenhaState extends State<TelaEsqueciSenha> {
                   width: 68,
                   height: 68,
                   decoration: BoxDecoration(
-                    color: CoresApp.primaryMuted.withOpacity(0.15),
+                    color: CoresApp.primaryMuted.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: CoresApp.primaryMuted.withOpacity(0.4),
+                        color: CoresApp.primaryMuted.withValues(alpha: 0.4),
                         width: 1.5),
                   ),
                   child: const Icon(Icons.lock_reset_rounded,

@@ -152,7 +152,7 @@ class _AbaTransacoesState extends State<AbaTransacoes> {
                           physics: const AlwaysScrollableScrollPhysics(),
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
                           itemCount: transacoes.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 8),
+                          separatorBuilder: (_, _) => const SizedBox(height: 8),
                           itemBuilder: (_, i) => _CartaoTransacao(tx: transacoes[i]),
                         ),
                 );
@@ -235,7 +235,7 @@ class _CartaoTransacao extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),

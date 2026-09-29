@@ -37,8 +37,8 @@ class _TelaSplashState extends State<TelaSplash>
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const TelaLogin(),
-          transitionsBuilder: (_, animacao, __, filho) =>
+          pageBuilder: (_, _, _) => const TelaLogin(),
+          transitionsBuilder: (_, animacao, _, filho) =>
               FadeTransition(opacity: animacao, child: filho),
           transitionDuration: const Duration(milliseconds: 400),
         ),
@@ -68,7 +68,7 @@ class _TelaSplashState extends State<TelaSplash>
                   width: 88,
                   height: 88,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -92,7 +92,7 @@ class _TelaSplashState extends State<TelaSplash>
                   'Seu bolso. O planeta. Em equilíbrio.',
                   style: GoogleFonts.outfit(
                     fontSize: 14,
-                    color: Colors.white.withOpacity(0.7),
+                    color: Colors.white.withValues(alpha: 0.7),
                     letterSpacing: 0.3,
                   ),
                 ),

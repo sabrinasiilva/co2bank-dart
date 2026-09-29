@@ -408,10 +408,10 @@ class _CartaoHero extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
               decoration: BoxDecoration(
-                color: CoresApp.accentWarm.withOpacity(0.15),
+                color: CoresApp.accentWarm.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                    color: CoresApp.accentWarm.withOpacity(0.5)),
+                    color: CoresApp.accentWarm.withValues(alpha: 0.5)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -451,7 +451,7 @@ class _PintorArco extends CustomPainter {
     const sweepAngle = math.pi * 1.5;
 
     final bgPaint = Paint()
-      ..color = Colors.white.withOpacity(0.12)
+      ..color = Colors.white.withValues(alpha: 0.12)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 14
       ..strokeCap = StrokeCap.round;
@@ -513,7 +513,7 @@ class _FileiraStat extends StatelessWidget {
             valor: '${resumo?.quantidadeTransacoes ?? 0}',
             icone: Icons.swap_horiz_rounded,
             corIcone: CoresApp.primary,
-            corFundo: CoresApp.primaryMuted.withOpacity(0.3),
+            corFundo: CoresApp.primaryMuted.withValues(alpha: 0.3),
           ),
         ),
       ],
@@ -545,7 +545,7 @@ class _CartaoStat extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -602,7 +602,7 @@ class _ItemTransacao extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -685,10 +685,10 @@ class _BannerAlertaIA extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: CoresApp.accentWarm.withOpacity(0.12),
+        color: CoresApp.accentWarm.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(16),
         border:
-            Border.all(color: CoresApp.accentWarm.withOpacity(0.5)),
+            Border.all(color: CoresApp.accentWarm.withValues(alpha: 0.5)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -235,7 +235,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withValues(alpha: 0.1),
                         shape: BoxShape.circle),
                     child: const Icon(Icons.eco_rounded,
                         size: 24, color: CoresApp.mintGreen),

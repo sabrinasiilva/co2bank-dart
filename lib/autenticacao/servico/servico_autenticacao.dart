@@ -75,7 +75,7 @@ class ServicoAutenticacao {
         'birth_date': dataNascimento,
         'password': senha,
         'co2_limit_kg': limiteCo2Kg,
-        if (fotoBase64 != null) 'face_photo': fotoBase64,
+        'face_photo': ?fotoBase64,
       };
       final resposta = await _cliente.post('/auth/register', corpo);
       if (resposta.sucesso) {
