@@ -8,6 +8,8 @@ class ItemTransacao {
   final double valor;
   final double co2Kg;
   final DateTime ocorreuEm;
+  final String origem;
+  final String? idBanco;
 
   const ItemTransacao({
     required this.id,
@@ -16,7 +18,11 @@ class ItemTransacao {
     required this.valor,
     required this.co2Kg,
     required this.ocorreuEm,
+    this.origem = 'manual',
+    this.idBanco,
   });
+
+  bool get importadaOpenFinance => origem == 'open_finance';
 
   factory ItemTransacao.fromJson(Map<String, dynamic> json) => ItemTransacao(
         id: json['id'] as String,
@@ -25,6 +31,8 @@ class ItemTransacao {
         valor: (json['amount'] as num).toDouble(),
         co2Kg: (json['co2_kg'] as num).toDouble(),
         ocorreuEm: DateTime.parse(json['occurred_at'] as String),
+        origem: json['source'] as String? ?? 'manual',
+        idBanco: json['bank_id'] as String?,
       );
 }
 

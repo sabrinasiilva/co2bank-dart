@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../nucleo/cores_app.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
+import '../../../open_finance/bancos_open_finance.dart';
 
 class Etapa3OpenFinance extends StatelessWidget {
   final Set<String> bancosConectados;
@@ -15,15 +16,6 @@ class Etapa3OpenFinance extends StatelessWidget {
     required this.aoAlternarBanco,
     required this.aoContinuar,
   });
-
-  static const _bancos = [
-    ('Nubank', Icons.credit_card, Color(0xFF8A05BE)),
-    ('Itaú', Icons.account_balance, Color(0xFFEC7000)),
-    ('Bradesco', Icons.account_balance, Color(0xFFCC092F)),
-    ('C6 Bank', Icons.credit_card, Color(0xFF242424)),
-    ('Inter', Icons.account_balance, Color(0xFFFF6600)),
-    ('Santander', Icons.account_balance, Color(0xFFEC0000)),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +34,7 @@ class Etapa3OpenFinance extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: CoresApp.textPrimary)),
           const SizedBox(height: 12),
-          ..._bancos.map((banco) => _cartaoBanco(banco)),
+          ...bancosOpenFinance.map(_cartaoBanco),
           const SizedBox(height: 8),
           BotaoPrimario(
             rotulo:
@@ -88,10 +80,10 @@ class Etapa3OpenFinance extends StatelessWidget {
     );
   }
 
-  Widget _cartaoBanco((String, IconData, Color) banco) {
-    final selecionado = bancosConectados.contains(banco.$1);
+  Widget _cartaoBanco(BancoOpenFinance banco) {
+    final selecionado = bancosConectados.contains(banco.id);
     return GestureDetector(
-      onTap: () => aoAlternarBanco(banco.$1),
+      onTap: () => aoAlternarBanco(banco.id),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         margin: const EdgeInsets.only(bottom: 10),
@@ -110,12 +102,12 @@ class Etapa3OpenFinance extends StatelessWidget {
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                  color: banco.$3.withValues(alpha: 0.1),
+                  color: banco.cor.withValues(alpha: 0.1),
                   shape: BoxShape.circle),
-              child: Icon(banco.$2, size: 18, color: banco.$3),
+              child: Icon(banco.icone, size: 18, color: banco.cor),
             ),
             const SizedBox(width: 12),
-            Text(banco.$1,
+            Text(banco.nome,
                 style: GoogleFonts.outfit(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,

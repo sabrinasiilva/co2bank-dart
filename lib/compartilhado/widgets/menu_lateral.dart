@@ -6,15 +6,18 @@ import '../../nucleo/armazenamento_token.dart';
 import '../../perfil/servico/servico_usuario.dart';
 import '../../autenticacao/telas/tela_login.dart';
 import '../../presentation/rewards/rewards_screen.dart';
+import '../../open_finance/tela_open_finance.dart';
 
 class MenuLateral extends StatelessWidget {
   final int abaAtual;
   final ValueChanged<int> aoNavegar;
+  final VoidCallback? aoDadosAlterados;
 
   const MenuLateral({
     super.key,
     required this.abaAtual,
     required this.aoNavegar,
+    this.aoDadosAlterados,
   });
 
   static const _itens = [
@@ -38,6 +41,19 @@ class MenuLateral extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const RewardsScreen()),
+    );
+  }
+
+  void _abrirOpenFinance(BuildContext context) {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TelaOpenFinance(
+          aoDadosAlterados: aoDadosAlterados,
+          aoVerExtrato: () => aoNavegar(1),
+        ),
+      ),
     );
   }
 
@@ -76,6 +92,12 @@ class MenuLateral extends StatelessWidget {
                   rotulo: 'Recompensas',
                   ativo: false,
                   aoTocar: () => _abrirRecompensas(context),
+                ),
+                _ItemDrawer(
+                  icone: Icons.account_balance_rounded,
+                  rotulo: 'Open Finance',
+                  ativo: false,
+                  aoTocar: () => _abrirOpenFinance(context),
                 ),
               ],
             ),

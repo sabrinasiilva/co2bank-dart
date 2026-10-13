@@ -37,6 +37,14 @@ class ClienteApi {
     return RespostaApi(resposta.statusCode, _decodificar(resposta.body));
   }
 
+  Future<RespostaApi> delete(String caminho) async {
+    final resposta = await _cliente.delete(
+      Uri.parse('$urlBaseApi$caminho'),
+      headers: _cabecalhos,
+    );
+    return RespostaApi(resposta.statusCode, _decodificar(resposta.body));
+  }
+
   dynamic _decodificar(String corpo) {
     try {
       return jsonDecode(corpo);
