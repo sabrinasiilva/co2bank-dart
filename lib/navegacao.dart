@@ -8,14 +8,14 @@ import 'co2/aba_co2.dart';
 import 'perfil/aba_perfil.dart';
 import 'compartilhado/widgets/menu_lateral.dart';
 
-class Casca extends StatefulWidget {
-  const Casca({super.key});
+class Navegacao extends StatefulWidget {
+  const Navegacao({super.key});
 
   @override
-  State<Casca> createState() => _CascaState();
+  State<Navegacao> createState() => _NavegacaoState();
 }
 
-class _CascaState extends State<Casca> {
+class _NavegacaoState extends State<Navegacao> {
   int _abaAtual = 0;
   late final List<Widget> _abas;
 

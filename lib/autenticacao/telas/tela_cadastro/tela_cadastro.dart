@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../nucleo/cores_app.dart';
 import '../../../nucleo/validadores.dart';
 import '../../servico/servico_autenticacao.dart';
-import '../../../casca.dart';
+import '../../../navegacao.dart';
 import '../../../compartilhado/widgets/indicador_etapa.dart';
 import 'etapa1_dados_pessoais.dart';
 import 'etapa2_acesso.dart';
@@ -340,7 +340,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           aoIniciar: () =>
                               Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (_) => const Casca()),
+                                builder: (_) => const Navegacao()),
                             (_) => false,
                           ),
                         ),

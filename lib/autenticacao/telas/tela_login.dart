@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cores_app.dart';
 import '../servico/servico_autenticacao.dart';
-import '../../casca.dart';
+import '../../navegacao.dart';
 import '../../compartilhado/widgets/campo_autenticacao.dart';
 import '../../compartilhado/widgets/botao_primario.dart';
 import 'tela_cadastro/tela_cadastro.dart';
@@ -50,7 +50,7 @@ class _TelaLoginState extends State<TelaLogin> {
     switch (resultado) {
       case LoginSucesso():
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const Casca()));
+            MaterialPageRoute(builder: (_) => const Navegacao()));
       case LoginErroCredenciais():
         setState(() => _erro = 'E-mail ou senha incorretos');
       case LoginErroRede():
