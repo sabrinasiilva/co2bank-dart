@@ -4,7 +4,7 @@ import 'package:co2bank_app/main.dart';
 
 void main() {
   testWidgets('HomeScreen mostra o título CO2Bank', (WidgetTester tester) async {
-    await tester.pumpWidget(const CO2BankApp());
+    await tester.pumpWidget(const AplicativoCo2Bank());
 
     expect(find.text('CO2Bank'), findsOneWidget);
   });

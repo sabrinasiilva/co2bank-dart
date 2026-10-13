@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'core/app_colors.dart';
-import 'presentation/splash_screen.dart';
+
+import 'nucleo/cores_app.dart';
+import 'tela_splash.dart';
 
 void main() {
-  runApp(const CO2BankApp());
+  runApp(const AplicativoCo2Bank());
 }
 
-class CO2BankApp extends StatelessWidget {
-  const CO2BankApp({super.key});
+class AplicativoCo2Bank extends StatelessWidget {
+  const AplicativoCo2Bank({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +24,11 @@ class CO2BankApp extends StatelessWidget {
       ],
       supportedLocales: const [Locale('pt', 'BR')],
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
-        scaffoldBackgroundColor: AppColors.background,
+        colorScheme: ColorScheme.fromSeed(seedColor: CoresApp.darkGreen),
+        scaffoldBackgroundColor: CoresApp.background,
         fontFamily: 'Outfit',
       ),
-      home: const SplashScreen(),
+      home: const TelaSplash(),
     );
   }
 }
