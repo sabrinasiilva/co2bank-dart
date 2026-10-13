@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../nucleo/cores_app.dart';
 import '../../transacoes/servico/servico_transacao.dart';
+import '../../open_finance/bancos_open_finance.dart';
 
 IconData _iconePorCategoria(String rotulo) {
   switch (rotulo) {
@@ -298,6 +299,7 @@ class _CartaoTransacao extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (tx.importadaOpenFinance) _SeloOpenFinance(idBanco: tx.idBanco),
               ],
             ),
           ),
@@ -329,6 +331,43 @@ class _CartaoTransacao extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SeloOpenFinance extends StatelessWidget {
+  final String? idBanco;
+
+  const _SeloOpenFinance({required this.idBanco});
+
+  @override
+  Widget build(BuildContext context) {
+    final banco = bancoPorId(idBanco);
+    final cor = banco?.cor ?? CoresApp.gray;
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        decoration: BoxDecoration(
+          color: cor.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.sync_alt_rounded, size: 11, color: cor),
+            const SizedBox(width: 4),
+            Text(
+              'via ${banco?.nome ?? 'Open Finance'}',
+              style: GoogleFonts.outfit(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: cor,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

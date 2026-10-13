@@ -5,9 +5,15 @@ import '../../nucleo/cores_app.dart';
 
 class BotaoPrimario extends StatelessWidget {
   final String rotulo;
-  final VoidCallback aoTocar;
+  final VoidCallback? aoTocar;
+  final bool carregando;
 
-  const BotaoPrimario({super.key, required this.rotulo, required this.aoTocar});
+  const BotaoPrimario({
+    super.key,
+    required this.rotulo,
+    required this.aoTocar,
+    this.carregando = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +21,33 @@ class BotaoPrimario extends StatelessWidget {
       width: double.infinity,
       height: 52,
       child: ElevatedButton(
-        onPressed: aoTocar,
+        onPressed: carregando ? null : aoTocar,
         style: ElevatedButton.styleFrom(
           backgroundColor: CoresApp.darkGreen,
           foregroundColor: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          disabledBackgroundColor: CoresApp.border,
+          disabledForegroundColor: CoresApp.textSecondary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           elevation: 0,
         ),
-        child: Text(rotulo,
-            style: GoogleFonts.outfit(
-                fontSize: 16, fontWeight: FontWeight.w600)),
+        child: carregando
+            ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: CoresApp.textSecondary,
+                ),
+              )
+            : Text(
+                rotulo,
+                style: GoogleFonts.outfit(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ),
     );
   }

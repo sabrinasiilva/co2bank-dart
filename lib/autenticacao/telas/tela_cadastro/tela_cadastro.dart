@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../nucleo/cores_app.dart';
 import '../../../nucleo/validadores.dart';
 import '../../servico/servico_autenticacao.dart';
 import '../../../navegacao.dart';
+import '../../../open_finance/servico/servico_open_finance.dart';
 import '../../../compartilhado/widgets/indicador_etapa.dart';
 import 'etapa1_dados_pessoais.dart';
 import 'etapa2_acesso.dart';
@@ -164,6 +167,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
     switch (resultado) {
       case CadastroSucesso():
+        unawaited(_conectarBancosEscolhidos());
         _controladorPagina.nextPage(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut);
@@ -174,6 +178,15 @@ class _TelaCadastroState extends State<TelaCadastro> {
         setState(
             () => _erroCadastro = 'Não foi possível conectar ao servidor');
     }
+  }
+
+  // Falhar aqui não deve travar o cadastro: o usuário pode conectar depois pela tela de Open Finance.
+  // A sincronização já roda em seguida para a Home abrir com as compras do mês.
+  Future<void> _conectarBancosEscolhidos() async {
+    if (_bancosConectados.isEmpty) return;
+    final servico = await ServicoOpenFinance.autenticado();
+    final resultado = await servico.conectar(_bancosConectados);
+    if (resultado is OperacaoConcluida) await servico.sincronizar();
   }
 
   void _etapaAnterior() {

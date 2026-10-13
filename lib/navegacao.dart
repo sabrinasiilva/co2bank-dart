@@ -17,6 +17,7 @@ class Navegacao extends StatefulWidget {
 
 class _NavegacaoState extends State<Navegacao> {
   int _abaAtual = 0;
+  int _versaoDados = 0;
   late final List<Widget> _abas;
 
   @override
@@ -48,8 +49,17 @@ class _NavegacaoState extends State<Navegacao> {
       drawer: MenuLateral(
         abaAtual: _abaAtual,
         aoNavegar: (i) => setState(() => _abaAtual = i),
+        aoDadosAlterados: () => setState(() => _versaoDados++),
       ),
-      body: IndexedStack(index: _abaAtual, children: _abas),
+      // A chave muda quando chegam dados novos (ex.: sincronização do Open
+      // Finance), o que recria as abas e faz cada uma buscar de novo na API.
+      body: IndexedStack(
+        index: _abaAtual,
+        children: [
+          for (var i = 0; i < _abas.length; i++)
+            KeyedSubtree(key: ValueKey('$i-$_versaoDados'), child: _abas[i]),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _abaAtual,
         onTap: (i) => setState(() => _abaAtual = i),
