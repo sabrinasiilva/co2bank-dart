@@ -58,7 +58,7 @@ class StoreLogo extends StatelessWidget {
       child: Image.network(
         offer.logoUrl,
         fit: BoxFit.contain,
-        errorBuilder: (_, __, ___) =>
+        errorBuilder: (_, _, _) =>
             Icon(offer.fallbackIcon, color: offer.color, size: 28),
       ),
     );

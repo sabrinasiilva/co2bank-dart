@@ -65,7 +65,7 @@ class BalanceCard extends StatelessWidget {
             child: TweenAnimationBuilder<double>(
               tween: Tween<double>(begin: 0, end: progress),
               duration: const Duration(milliseconds: 700),
-              builder: (_, value, __) => LinearProgressIndicator(
+              builder: (_, value, _) => LinearProgressIndicator(
                 value: value,
                 minHeight: 10,
                 backgroundColor: Colors.white24,
@@ -105,7 +105,7 @@ class SearchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<TextEditingValue>(
       valueListenable: controller,
-      builder: (_, value, __) => TextField(
+      builder: (_, value, _) => TextField(
         controller: controller,
         onChanged: onChanged,
         decoration: InputDecoration(
