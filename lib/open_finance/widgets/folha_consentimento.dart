@@ -232,7 +232,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       ),
       const SizedBox(height: 6),
       Text(
-        'Agora é só sincronizar para trazer as compras do mês.',
+        'Agora é só sincronizar para trazer o histórico de compras.',
         style: GoogleFonts.outfit(fontSize: 14, color: CoresApp.textSecondary),
       ),
       const SizedBox(height: 20),

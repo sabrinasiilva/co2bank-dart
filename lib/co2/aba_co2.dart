@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../nucleo/cores_app.dart';
+import '../presentation/rewards/reward_service.dart';
 import '../transacoes/servico/servico_transacao.dart';
+import 'cartao_impacto.dart';
+import 'grafico_evolucao_mensal.dart';
 
 class AbaCo2 extends StatefulWidget {
   const AbaCo2({super.key});
@@ -12,9 +15,12 @@ class AbaCo2 extends StatefulWidget {
 }
 
 class _AbaCo2State extends State<AbaCo2> {
-  late Future<ResultadoResumoMensal> _dados;
   late int _mes;
   late int _ano;
+  ResultadoResumoMensal? _resultado;
+  bool _carregando = true;
+  List<ResumoDoMes>? _historico;
+  int? _coinsDoMes;
 
   @override
   void initState() {
@@ -22,119 +28,193 @@ class _AbaCo2State extends State<AbaCo2> {
     final agora = DateTime.now();
     _mes = agora.month;
     _ano = agora.year;
-    _dados = _carregar();
+    _carregarTudo();
   }
 
-  Future<ResultadoResumoMensal> _carregar() async {
+  Future<void> _carregarTudo() async {
+    await Future.wait([
+      _carregarResumo(),
+      _carregarHistorico(),
+      _carregarCoins(),
+    ]);
+  }
+
+  Future<void> _carregarResumo() async {
+    final mes = _mes;
+    final ano = _ano;
+    // Na primeira carga o _carregando já começa verdadeiro.
+    if (_resultado != null) setState(() => _carregando = true);
     final servico = await ServicoTransacao.autenticado();
-    return servico.resumoMensal(mes: _mes, ano: _ano);
+    final resultado = await servico.resumoMensal(mes: mes, ano: ano);
+    // Se a pessoa trocou de mês enquanto carregava, ignora a resposta antiga.
+    if (!mounted || mes != _mes || ano != _ano) return;
+    setState(() {
+      _resultado = resultado;
+      _carregando = false;
+    });
+  }
+
+  Future<void> _carregarHistorico() async {
+    final agora = DateTime.now();
+    final servico = await ServicoTransacao.autenticado();
+    final historico = await servico.resumosDosUltimosMeses(
+      mes: agora.month,
+      ano: agora.year,
+    );
+    if (mounted) setState(() => _historico = historico);
+  }
+
+  Future<void> _carregarCoins() async {
+    final servico = await RewardService.authenticated();
+    final resultado = await servico.loadTokens();
+    if (!mounted) return;
+    if (resultado case TokensLoaded(:final summary)) {
+      setState(() => _coinsDoMes = summary.earned);
+    }
+  }
+
+  void _selecionarMes(int mes, int ano) {
+    final agora = DateTime.now();
+    if (DateTime(ano, mes).isAfter(DateTime(agora.year, agora.month))) return;
+    if (mes == _mes && ano == _ano) return;
+    setState(() {
+      _mes = mes;
+      _ano = ano;
+    });
+    _carregarResumo();
   }
 
   void _alterarMes(int delta) {
     final candidato = DateTime(_ano, _mes + delta);
-    final agora = DateTime.now();
-    if (candidato.isAfter(DateTime(agora.year, agora.month))) return;
-    setState(() {
-      _mes = candidato.month;
-      _ano = candidato.year;
-      _dados = _carregar();
-    });
+    _selecionarMes(candidato.month, candidato.year);
   }
-
-  void _atualizar() => setState(() => _dados = _carregar());
 
   @override
   Widget build(BuildContext context) {
     const meses = [
-      '', 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez',
+      '',
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
     ];
 
     final agora = DateTime.now();
     final mesAtual = _mes == agora.month && _ano == agora.year;
 
+    if (_resultado == null && _carregando) {
+      return const SafeArea(
+        child: Center(
+          child: CircularProgressIndicator(color: CoresApp.darkGreen),
+        ),
+      );
+    }
+
+    final ResumoMensal? resumo = switch (_resultado) {
+      ResumoCarregado(:final resumo) => resumo,
+      _ => null,
+    };
+
     return SafeArea(
-      child: FutureBuilder<ResultadoResumoMensal>(
-        future: _dados,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(
-              child: CircularProgressIndicator(color: CoresApp.darkGreen),
-            );
-          }
-
-          final ResumoMensal? resumo = switch (snapshot.data) {
-            ResumoCarregado(:final resumo) => resumo,
-            _ => null,
-          };
-
-          return RefreshIndicator(
-            onRefresh: () async => _atualizar(),
-            color: CoresApp.darkGreen,
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: Row(
-                      children: [
-                        Text(
-                          'Relatório de CO2',
-                          style: GoogleFonts.outfit(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: CoresApp.textPrimary,
-                          ),
-                        ),
-                        const Spacer(),
-                        _SeletorMes(
-                          rotulo: '${meses[_mes]} $_ano',
-                          aoAnterior: () => _alterarMes(-1),
-                          aoProximo: mesAtual ? null : () => _alterarMes(1),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: _CartaoResumo(resumo: resumo),
-                  ),
-                ),
-                if (resumo != null && resumo.principaisCategorias.isNotEmpty) ...[
-                  SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
-                    sliver: SliverToBoxAdapter(
-                      child: Text(
-                        'Por categoria',
-                        style: GoogleFonts.outfit(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: CoresApp.textPrimary,
-                        ),
+      child: RefreshIndicator(
+        onRefresh: _carregarTudo,
+        color: CoresApp.darkGreen,
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: Row(
+                  children: [
+                    Text(
+                      'Relatório de CO2',
+                      style: GoogleFonts.outfit(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: CoresApp.textPrimary,
                       ),
                     ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (_, i) => _FileiraCategorias(
-                          categoria: resumo.principaisCategorias[i],
-                          maxCo2: resumo.principaisCategorias.first.co2Kg,
-                          posicao: i,
-                        ),
-                        childCount: resumo.principaisCategorias.length,
-                      ),
+                    const Spacer(),
+                    _SeletorMes(
+                      rotulo: '${meses[_mes]} $_ano',
+                      aoAnterior: () => _alterarMes(-1),
+                      aoProximo: mesAtual ? null : () => _alterarMes(1),
                     ),
-                  ),
-                ],
-              ],
+                  ],
+                ),
+              ),
             ),
-          );
-        },
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: AnimatedOpacity(
+                  opacity: _carregando ? 0.5 : 1,
+                  duration: const Duration(milliseconds: 200),
+                  child: _CartaoResumo(resumo: resumo),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: CartaoEvolucaoMensal(
+                  meses: _historico,
+                  mesSelecionado: _mes,
+                  anoSelecionado: _ano,
+                  aoSelecionarMes: _selecionarMes,
+                ),
+              ),
+            ),
+            if (resumo != null && resumo.quantidadeTransacoes > 0)
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                sliver: SliverToBoxAdapter(
+                  child: CartaoImpacto(
+                    resumo: resumo,
+                    coinsDoMes: mesAtual ? _coinsDoMes : null,
+                  ),
+                ),
+              ),
+            if (resumo != null && resumo.principaisCategorias.isNotEmpty) ...[
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    'Por categoria',
+                    style: GoogleFonts.outfit(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: CoresApp.textPrimary,
+                    ),
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (_, i) => _FileiraCategorias(
+                      categoria: resumo.principaisCategorias[i],
+                      maxCo2: resumo.principaisCategorias.first.co2Kg,
+                      posicao: i,
+                    ),
+                    childCount: resumo.principaisCategorias.length,
+                  ),
+                ),
+              ),
+            ] else
+              const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          ],
+        ),
       ),
     );
   }
@@ -181,7 +261,9 @@ class _SeletorMes extends StatelessWidget {
             icon: Icon(
               Icons.chevron_right_rounded,
               size: 20,
-              color: aoProximo != null ? CoresApp.textSecondary : CoresApp.border,
+              color: aoProximo != null
+                  ? CoresApp.textSecondary
+                  : CoresApp.border,
             ),
             onPressed: aoProximo,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -206,14 +288,15 @@ class _CartaoResumo extends StatelessWidget {
 
     final Color corStatus;
     final String rotuloStatus;
+    // O card é preto: as cores precisam aparecer bem sobre ele.
     if (pct < 50) {
-      corStatus = CoresApp.darkGreen;
+      corStatus = CoresApp.primary;
       rotuloStatus = 'Ótimo';
     } else if (pct < 80) {
-      corStatus = CoresApp.mintGreen;
+      corStatus = CoresApp.accent;
       rotuloStatus = 'Atenção';
     } else if (pct < 100) {
-      corStatus = CoresApp.orange;
+      corStatus = CoresApp.accentWarm;
       rotuloStatus = 'Limite alto';
     } else {
       corStatus = Colors.red.shade400;
@@ -252,8 +335,10 @@ class _CartaoResumo extends StatelessWidget {
                 ],
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: corStatus.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),

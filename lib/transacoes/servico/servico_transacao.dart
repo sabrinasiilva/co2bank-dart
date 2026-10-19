@@ -120,6 +120,16 @@ class AlertaCarregado extends ResultadoAlertaLimite {
 
 class AlertaIndisponivel extends ResultadoAlertaLimite {}
 
+class ResumoDoMes {
+  final int mes;
+  final int ano;
+
+  /// Nulo quando não deu para carregar aquele mês.
+  final ResumoMensal? resumo;
+
+  const ResumoDoMes({required this.mes, required this.ano, this.resumo});
+}
+
 sealed class ResultadoDetalheTransacao {}
 
 class DetalheCarregado extends ResultadoDetalheTransacao {
@@ -183,6 +193,29 @@ class ServicoTransacao {
     } catch (_) {
       return ResumoIndisponivel();
     }
+  }
+
+  /// Resumos dos [quantidade] meses que terminam em [mes]/[ano], do mais antigo
+  /// para o mais recente. As chamadas são feitas em paralelo.
+  Future<List<ResumoDoMes>> resumosDosUltimosMeses({
+    required int mes,
+    required int ano,
+    int quantidade = 6,
+  }) {
+    final meses = [
+      for (var i = quantidade - 1; i >= 0; i--) DateTime(ano, mes - i),
+    ];
+    return Future.wait(meses.map((data) async {
+      final resultado = await resumoMensal(mes: data.month, ano: data.year);
+      return ResumoDoMes(
+        mes: data.month,
+        ano: data.year,
+        resumo: switch (resultado) {
+          ResumoCarregado(:final resumo) => resumo,
+          ResumoIndisponivel() => null,
+        },
+      );
+    }));
   }
 
   Future<ResultadoAlertaLimite> verificarLimite() async {

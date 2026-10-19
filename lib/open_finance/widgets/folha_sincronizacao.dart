@@ -61,7 +61,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
 
   List<String> get _etapas => [
     'Conectando com ${_juntarNomes(widget.bancos.map((b) => b.nome))}',
-    'Buscando as compras do mês',
+    'Buscando o histórico de compras',
     'Calculando o CO2 de cada compra',
   ];
 
@@ -137,8 +137,12 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
                 const SizedBox(height: 20),
                 ...switch (resultado) {
                   null => _sincronizando(),
-                  SincronizacaoConcluida(:final novas, :final ignoradas) =>
-                    _concluido(novas, ignoradas),
+                  SincronizacaoConcluida(
+                    :final novas,
+                    :final ignoradas,
+                    :final meses,
+                  ) =>
+                    _concluido(novas, ignoradas, meses),
                   SincronizacaoErro(:final mensagem) => _erro(mensagem),
                 },
               ],
@@ -158,7 +162,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
     ];
   }
 
-  List<Widget> _concluido(int novas, int ignoradas) {
+  List<Widget> _concluido(int novas, int ignoradas, int meses) {
     final co2Total = _importadas.fold<double>(0, (soma, t) => soma + t.co2Kg);
     final recentes = [..._importadas]
       ..sort((a, b) => b.ocorreuEm.compareTo(a.ocorreuEm));
@@ -194,7 +198,9 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
                 }),
                 Text(
                   novas > 0
-                      ? 'O CO2 de cada uma já foi calculado.'
+                      ? meses > 1
+                            ? 'Dos últimos $meses meses. O CO2 de cada uma já foi calculado.'
+                            : 'O CO2 de cada uma já foi calculado.'
                       : ignoradas > 0
                       ? 'Nenhuma compra nova. As $ignoradas encontradas já estavam no extrato.'
                       : 'Nenhuma compra nova desde a última sincronização.',
@@ -248,7 +254,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
         ),
         const SizedBox(height: 20),
         Text(
-          novas > 0 ? 'O que chegou' : 'Compras já importadas',
+          'Compras deste mês',
           style: GoogleFonts.outfit(
             fontSize: 15,
             fontWeight: FontWeight.bold,

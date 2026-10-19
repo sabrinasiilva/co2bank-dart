@@ -45,7 +45,15 @@ sealed class ResultadoSincronizacao {}
 class SincronizacaoConcluida extends ResultadoSincronizacao {
   final int novas;
   final int ignoradas;
-  SincronizacaoConcluida({required this.novas, required this.ignoradas});
+
+  /// Quantos meses de histórico o banco compartilhou nesta sincronização.
+  final int meses;
+
+  SincronizacaoConcluida({
+    required this.novas,
+    required this.ignoradas,
+    this.meses = 1,
+  });
 }
 
 class SincronizacaoErro extends ResultadoSincronizacao {
@@ -114,6 +122,7 @@ class ServicoOpenFinance {
         return SincronizacaoConcluida(
           novas: resposta.corpo['synced'] as int? ?? 0,
           ignoradas: resposta.corpo['skipped'] as int? ?? 0,
+          meses: resposta.corpo['months'] as int? ?? 1,
         );
       }
       return SincronizacaoErro(
