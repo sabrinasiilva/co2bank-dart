@@ -10,6 +10,8 @@ class ItemTransacao {
   final DateTime ocorreuEm;
   final String origem;
   final String? idBanco;
+  final String? codigoCategoria;
+  final DateTime? registradaEm;
 
   const ItemTransacao({
     required this.id,
@@ -20,6 +22,8 @@ class ItemTransacao {
     required this.ocorreuEm,
     this.origem = 'manual',
     this.idBanco,
+    this.codigoCategoria,
+    this.registradaEm,
   });
 
   bool get importadaOpenFinance => origem == 'open_finance';
@@ -33,6 +37,8 @@ class ItemTransacao {
         ocorreuEm: DateTime.parse(json['occurred_at'] as String),
         origem: json['source'] as String? ?? 'manual',
         idBanco: json['bank_id'] as String?,
+        codigoCategoria: json['merchant_category_code'] as String?,
+        registradaEm: DateTime.tryParse(json['created_at'] as String? ?? ''),
       );
 }
 
@@ -114,6 +120,15 @@ class AlertaCarregado extends ResultadoAlertaLimite {
 
 class AlertaIndisponivel extends ResultadoAlertaLimite {}
 
+sealed class ResultadoDetalheTransacao {}
+
+class DetalheCarregado extends ResultadoDetalheTransacao {
+  final ItemTransacao transacao;
+  DetalheCarregado(this.transacao);
+}
+
+class DetalheIndisponivel extends ResultadoDetalheTransacao {}
+
 class ServicoTransacao {
   final ClienteApi _cliente;
 
@@ -141,6 +156,18 @@ class ServicoTransacao {
           .toList();
     } catch (_) {
       return [];
+    }
+  }
+
+  Future<ResultadoDetalheTransacao> obterTransacao(String id) async {
+    try {
+      final resposta = await _cliente.get('/transactions/$id');
+      if (resposta.sucesso) {
+        return DetalheCarregado(ItemTransacao.fromJson(resposta.corpo));
+      }
+      return DetalheIndisponivel();
+    } catch (_) {
+      return DetalheIndisponivel();
     }
   }
 

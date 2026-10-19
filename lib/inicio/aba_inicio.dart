@@ -6,38 +6,9 @@ import 'package:intl/intl.dart';
 
 import '../nucleo/cores_app.dart';
 import '../transacoes/servico/servico_transacao.dart';
+import '../transacoes/icone_categoria.dart';
+import '../transacoes/telas/tela_detalhe_transacao.dart';
 import '../perfil/servico/servico_usuario.dart';
-
-IconData _iconePorCategoria(String rotulo) {
-  switch (rotulo) {
-    case 'Combustível':
-      return Icons.local_gas_station_rounded;
-    case 'Hospedagem':
-      return Icons.hotel_rounded;
-    case 'Restaurante':
-      return Icons.restaurant_rounded;
-    case 'Supermercado':
-      return Icons.shopping_cart_rounded;
-    case 'Transporte':
-      return Icons.directions_car_rounded;
-    case 'Moda':
-      return Icons.shopping_bag_rounded;
-    case 'Eletrônicos':
-      return Icons.devices_rounded;
-    case 'Farmácia':
-      return Icons.local_pharmacy_rounded;
-    case 'Streaming':
-      return Icons.play_circle_rounded;
-    case 'Educação':
-      return Icons.school_rounded;
-    case 'Financeiro':
-      return Icons.account_balance_rounded;
-    case 'Passagem aérea':
-      return Icons.flight_rounded;
-    default:
-      return Icons.receipt_rounded;
-  }
-}
 
 class AbaInicio extends StatefulWidget {
   final VoidCallback? aoVerTransacoes;
@@ -594,82 +565,90 @@ class _ItemTransacao extends StatelessWidget {
   Widget build(BuildContext context) {
     final fmt = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(
-        color: CoresApp.surface,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => TelaDetalheTransacao(transacao: transacao),
+        ),
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: CoresApp.background,
-              borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: CoresApp.surface,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
             ),
-            child: Icon(
-                _iconePorCategoria(transacao.rotuloCategoria),
-                size: 20,
-                color: CoresApp.gray),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: CoresApp.background,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                  iconePorCategoria(transacao.rotuloCategoria),
+                  size: 20,
+                  color: CoresApp.gray),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    transacao.nomeEstabelecimento.isEmpty
+                        ? transacao.rotuloCategoria
+                        : transacao.nomeEstabelecimento,
+                    style: GoogleFonts.outfit(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: CoresApp.textPrimary,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    transacao.rotuloCategoria,
+                    style: GoogleFonts.outfit(
+                      fontSize: 12,
+                      color: CoresApp.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  transacao.nomeEstabelecimento.isEmpty
-                      ? transacao.rotuloCategoria
-                      : transacao.nomeEstabelecimento,
+                  fmt.format(transacao.valor),
                   style: GoogleFonts.outfit(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                     color: CoresApp.textPrimary,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  transacao.rotuloCategoria,
+                  '${transacao.co2Kg.toStringAsFixed(1)} kg CO2',
                   style: GoogleFonts.outfit(
-                    fontSize: 12,
-                    color: CoresApp.textSecondary,
+                    fontSize: 11,
+                    color: CoresApp.gray,
                   ),
                 ),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                fmt.format(transacao.valor),
-                style: GoogleFonts.outfit(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: CoresApp.textPrimary,
-                ),
-              ),
-              Text(
-                '${transacao.co2Kg.toStringAsFixed(1)} kg CO2',
-                style: GoogleFonts.outfit(
-                  fontSize: 11,
-                  color: CoresApp.gray,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
