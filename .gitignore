@@ -44,3 +44,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /android/build/
+
+# Material de design exportado do Canva (arquivo grande, fica fora do repo)
+/logo.pdf
