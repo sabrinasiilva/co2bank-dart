@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../nucleo/cores_app.dart';
 
 // DADOS E LÓGICA: lojas, cálculos, busca e abertura do site.
 
@@ -11,6 +12,7 @@ class Offer {
   final String description;
   final String category;
   final int cost;
+  final int discountPercent;
   final String url;
   final IconData fallbackIcon;
   final Color color;
@@ -20,67 +22,60 @@ class Offer {
     required this.description,
     required this.category,
     required this.cost,
+    this.discountPercent = 0,
     required this.url,
     required this.fallbackIcon,
     required this.color,
   });
 
+  /// DADOS: monta a oferta a partir de um parceiro do GET /rewards/tokens.
+  factory Offer.fromPartner(Map<String, dynamic> json) {
+    final category = json['category'] as String? ?? '';
+    final (icon, color) = _visualFor(category);
+    final discount = json['discount_percent'] as int? ?? 0;
+    return Offer(
+      store: json['name'] as String,
+      description: '$discount% de desconto',
+      discountPercent: discount,
+      category: category,
+      cost: json['cost'] as int? ?? 0,
+      url: json['url'] as String? ?? '',
+      fallbackIcon: icon,
+      color: color,
+    );
+  }
+
+  /// Se a loja tem site de verdade. Os parceiros do protótipo usam links de
+  /// exemplo (example.com), que não levam a lugar nenhum: nesse caso a tela
+  /// não oferece "abrir loja" e mostra o ícone da categoria no lugar do logo.
+  bool get hasWebsite {
+    final host = Uri.tryParse(url)?.host ?? '';
+    return host.isNotEmpty && !host.endsWith('example.com');
+  }
+
   /// Endereço do logotipo, derivado do domínio do site da loja.
-  String get logoUrl =>
-      'https://www.google.com/s2/favicons?domain=${Uri.parse(url).host}&sz=128';
+  String? get logoUrl => hasWebsite
+      ? 'https://www.google.com/s2/favicons?domain=${Uri.parse(url).host}&sz=128'
+      : null;
 }
 
-// ======== Lista de lojas (adicione novas aqui) ========
+// ======== Visual de cada categoria de parceiro ========
 
-/// DADOS: lista de lojas. Para adicionar uma loja, inclua um item aqui.
-/// Atenção: descontos e custos são valores de exemplo do app.
-const List<Offer> kOffers = [
-  Offer(
-    store: 'Casas Bahia',
-    description: '15% de desconto em eletrodomésticos',
-    category: 'Casa e eletro',
-    cost: 300,
-    url: 'https://www.casasbahia.com.br',
-    fallbackIcon: Icons.store,
-    color: Colors.blue,
-  ),
-  Offer(
-    store: 'Renner',
-    description: '10% de cashback em roupas',
-    category: 'Moda',
-    cost: 200,
-    url: 'https://www.lojasrenner.com.br',
-    fallbackIcon: Icons.checkroom,
-    color: Colors.purple,
-  ),
-  Offer(
-    store: 'Magazine Luiza',
-    description: '20% de desconto em energia solar',
-    category: 'Tecnologia',
-    cost: 500,
-    url: 'https://www.magazineluiza.com.br',
-    fallbackIcon: Icons.solar_power,
-    color: Colors.orange,
-  ),
-  Offer(
-    store: 'Natura',
-    description: '12% de desconto em cosméticos com refil',
-    category: 'Beleza',
-    cost: 250,
-    url: 'https://www.natura.com.br',
-    fallbackIcon: Icons.spa,
-    color: Colors.teal,
-  ),
-  Offer(
-    store: 'Decathlon',
-    description: 'R\$ 50 de desconto em bicicletas',
-    category: 'Esporte',
-    cost: 1500,
-    url: 'https://www.decathlon.com.br',
-    fallbackIcon: Icons.pedal_bike,
-    color: Colors.indigo,
-  ),
-];
+/// DESIGN: ícone e cor de cada categoria que vem do backend.
+/// Para uma categoria nova, inclua um item aqui.
+(IconData, Color) _visualFor(String category) => switch (category) {
+      'Casa e eletro' => (Icons.store, CoresApp.accentWarm),
+      'Moda' => (Icons.checkroom, CoresApp.brandText),
+      'Tecnologia' => (Icons.devices, CoresApp.dark),
+      'Beleza' => (Icons.spa, CoresApp.accentWarm),
+      'Esporte' => (Icons.pedal_bike, CoresApp.brandText),
+      'Alimentação' => (Icons.restaurant, CoresApp.brandText),
+      'Transporte' => (Icons.pedal_bike, CoresApp.dark),
+      'Cosméticos' => (Icons.spa, CoresApp.accentWarm),
+      'Entretenimento' => (Icons.movie, CoresApp.dark),
+      'Educação' => (Icons.menu_book, CoresApp.accentWarm),
+      _ => (Icons.store, CoresApp.gray),
+    };
 
 // ======== Lógica (cálculos, busca, abrir URL) ========
 

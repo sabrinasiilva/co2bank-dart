@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../nucleo/cores_app.dart';
 import 'rewards_data.dart';
 
 // DESIGN: cores, estilos e pequenas peças visuais reutilizáveis.
@@ -7,29 +9,40 @@ import 'rewards_data.dart';
 
 /// DESIGN: cores, gradientes e estilos reutilizáveis.
 /// Para mudar o visual do app, edite só este arquivo.
+/// As cores vêm da paleta da marca (CoresApp), a mesma do resto do app.
 class RewardsStyle {
-  static const Color green = Color(0xFF2E7D32);
-  static const Color greenLight = Color(0xFF4CAF50);
-  static const Color gold = Color(0xFFFFC107);
+  static const Color green = CoresApp.brandText; // textos em destaque
+  static const Color greenLight = CoresApp.primary; // preenchimentos (barra, selo)
+  static const Color action = CoresApp.dark; // botões e barra do topo
+  static const Color gold = CoresApp.accent;
+  static const Color warning = CoresApp.accentWarm;
   static const Color shadow = Color(0x0D000000);
 
-  static const LinearGradient balanceGradient = LinearGradient(
-    colors: [Color(0xFF1B5E20), Color(0xFF43A047)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
+  static const LinearGradient balanceGradient = CoresApp.brandGradient;
 
-  static const TextStyle sectionTitle =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
-  static const TextStyle storeName =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+  /// Fonte Outfit, a mesma do resto do app.
+  static TextStyle font({
+    double fontSize = 14,
+    FontWeight fontWeight = FontWeight.normal,
+    Color color = CoresApp.textPrimary,
+  }) =>
+      GoogleFonts.outfit(
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        color: color,
+      );
+
+  static final TextStyle sectionTitle =
+      font(fontSize: 18, fontWeight: FontWeight.bold);
+  static final TextStyle storeName =
+      font(fontSize: 16, fontWeight: FontWeight.bold);
   static final TextStyle caption =
-      TextStyle(color: Colors.grey.shade600, fontSize: 13);
+      font(fontSize: 13, color: CoresApp.textSecondary);
 
   static final BoxDecoration cardDecoration = BoxDecoration(
-    color: Colors.white,
+    color: CoresApp.surface,
     borderRadius: BorderRadius.circular(16),
-    border: Border.all(color: Colors.grey.shade200),
+    border: Border.all(color: CoresApp.border),
     boxShadow: const [
       BoxShadow(color: shadow, blurRadius: 10, offset: Offset(0, 4)),
     ],
@@ -39,7 +52,7 @@ class RewardsStyle {
 // ======== Logotipo da loja ========
 
 /// DESIGN: logotipo da loja, carregado da internet.
-/// Se a imagem falhar (sem rede), mostra o ícone de reserva.
+/// Se a loja não tiver logo ou a imagem falhar (sem rede), mostra o ícone de reserva.
 class StoreLogo extends StatelessWidget {
   final Offer offer;
 
@@ -47,6 +60,8 @@ class StoreLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final icon = Icon(offer.fallbackIcon, color: offer.color, size: 28);
+    final logoUrl = offer.logoUrl;
     return Container(
       width: 56,
       height: 56,
@@ -55,12 +70,13 @@ class StoreLogo extends StatelessWidget {
         color: offer.color.withAlpha(30),
         borderRadius: BorderRadius.circular(14),
       ),
-      child: Image.network(
-        offer.logoUrl,
-        fit: BoxFit.contain,
-        errorBuilder: (_, _, _) =>
-            Icon(offer.fallbackIcon, color: offer.color, size: 28),
-      ),
+      child: logoUrl == null
+          ? icon
+          : Image.network(
+              logoUrl,
+              fit: BoxFit.contain,
+              errorBuilder: (_, _, _) => icon,
+            ),
     );
   }
 }
@@ -78,11 +94,20 @@ class OfferInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: [
+        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(child: Text(offer.store, style: RewardsStyle.storeName)),
-          Icon(Icons.open_in_new, size: 18, color: Colors.grey.shade500),
+          DiscountBadge(percent: offer.discountPercent),
         ]),
-        Text(offer.category, style: TextStyle(color: offer.color, fontSize: 12)),
+        Row(children: [
+          Text(
+            offer.category,
+            style: RewardsStyle.font(fontSize: 12, color: offer.color),
+          ),
+          if (offer.hasWebsite) ...[
+            const SizedBox(width: 6),
+            const Icon(Icons.open_in_new, size: 14, color: CoresApp.gray),
+          ],
+        ]),
         const SizedBox(height: 4),
         Text(offer.description, style: RewardsStyle.caption),
       ],
@@ -114,13 +139,41 @@ class OfferStatus extends StatelessWidget {
           canRedeem
               ? 'Pronto para resgatar'
               : 'Faltam ${fmt(offer.cost - balance)} CO₂Coins',
-          style: TextStyle(
+          style: RewardsStyle.font(
             fontWeight: FontWeight.bold,
             fontSize: 13,
-            color: canRedeem ? RewardsStyle.green : Colors.orange.shade800,
+            color: canRedeem ? RewardsStyle.green : RewardsStyle.warning,
           ),
         ),
       ],
+    );
+  }
+}
+
+// ======== Selo de desconto ========
+
+/// DESIGN: selo "X% OFF" no canto do card da oferta.
+class DiscountBadge extends StatelessWidget {
+  final int percent;
+
+  const DiscountBadge({super.key, required this.percent});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: RewardsStyle.greenLight.withAlpha(60),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        '$percent% OFF',
+        style: RewardsStyle.font(
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
+          color: RewardsStyle.green,
+        ),
+      ),
     );
   }
 }

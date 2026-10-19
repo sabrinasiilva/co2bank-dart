@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../nucleo/cores_app.dart';
 import 'rewards_data.dart';
 import 'rewards_style.dart';
 
@@ -7,7 +8,7 @@ import 'rewards_style.dart';
 // ======== Card da oferta ========
 
 /// ESTRUTURA: card de uma oferta.
-/// Tocar no card abre o site da loja; o botão resgata o desconto.
+/// Tocar no card abre o site da loja (quando ela tem site); o botão resgata o desconto.
 class OfferCard extends StatelessWidget {
   final Offer offer;
   final int balance;
@@ -32,7 +33,7 @@ class OfferCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: onOpen,
+          onTap: offer.hasWebsite ? onOpen : null,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -52,7 +53,7 @@ class OfferCard extends StatelessWidget {
                   child: LinearProgressIndicator(
                     value: RewardsLogic.progress(balance, offer.cost),
                     minHeight: 8,
-                    backgroundColor: Colors.grey.shade200,
+                    backgroundColor: CoresApp.border,
                     color: _canRedeem
                         ? RewardsStyle.greenLight
                         : RewardsStyle.gold,
@@ -63,9 +64,10 @@ class OfferCard extends StatelessWidget {
                   Expanded(child: OfferStatus(offer: offer, balance: balance)),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: RewardsStyle.greenLight,
+                      backgroundColor: RewardsStyle.action,
                       foregroundColor: Colors.white,
                       shape: const StadiumBorder(),
+                      textStyle: RewardsStyle.font(fontWeight: FontWeight.w600),
                     ),
                     onPressed: _canRedeem ? onRedeem : null,
                     child: const Text('Resgatar'),
@@ -88,22 +90,35 @@ Future<bool> confirmRedeem(BuildContext context, Offer offer) async {
   final result = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Resgatar desconto?'),
+      title: Text(
+        'Resgatar desconto?',
+        style: RewardsStyle.font(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
       content: Text(
         'Você vai usar ${RewardsLogic.format(offer.cost)} CO₂Coins para '
         'garantir "${offer.description}" na ${offer.store}.',
+        style: RewardsStyle.font(color: CoresApp.textSecondary),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child: const Text('Cancelar'),
+          child: Text(
+            'Cancelar',
+            style: RewardsStyle.font(color: CoresApp.textSecondary),
+          ),
         ),
         FilledButton(
           style: FilledButton.styleFrom(
-            backgroundColor: RewardsStyle.greenLight,
+            backgroundColor: RewardsStyle.action,
           ),
           onPressed: () => Navigator.pop(ctx, true),
-          child: const Text('Resgatar'),
+          child: Text(
+            'Resgatar',
+            style: RewardsStyle.font(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ],
     ),
@@ -123,7 +138,7 @@ void showRewardsSnack(
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(message, style: RewardsStyle.font(color: Colors.white)),
       action: action,
       behavior: SnackBarBehavior.floating,
     ));

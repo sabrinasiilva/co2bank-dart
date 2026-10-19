@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../nucleo/cores_app.dart';
 import 'rewards_data.dart';
 import 'rewards_style.dart';
 
@@ -6,23 +7,23 @@ import 'rewards_style.dart';
 
 // ======== Cartão de saldo e progresso ========
 
-/// ESTRUTURA: cartão do topo com saldo atual e progresso acumulado.
+/// ESTRUTURA: cartão do topo com saldo atual e quanto ainda resta do que foi ganho no mês.
 class BalanceCard extends StatelessWidget {
-  final int balance; // moedas disponíveis para gastar
-  final int earned; // total acumulado desde o início (nunca diminui)
-  final int goal; // meta de moedas acumuladas
+  final int balance; // moedas disponíveis para gastar (diminui ao resgatar)
+  final int earned; // ganhas no mês por ficar abaixo do limite
+  final double kgSaved; // kg de CO₂ abaixo do limite no mês
 
   const BalanceCard({
     super.key,
     required this.balance,
     required this.earned,
-    required this.goal,
+    required this.kgSaved,
   });
 
   @override
   Widget build(BuildContext context) {
     final fmt = RewardsLogic.format;
-    final progress = RewardsLogic.progress(earned, goal);
+    final progress = earned > 0 ? RewardsLogic.progress(balance, earned) : 0.0;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -33,9 +34,9 @@ class BalanceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(children: [
-            Icon(Icons.eco, color: Colors.white70, size: 18),
-            SizedBox(width: 6),
+          Row(children: [
+            const Icon(Icons.eco, color: RewardsStyle.green, size: 18),
+            const SizedBox(width: 6),
             Text('Seu Saldo Verde', style: _light),
           ]),
           const SizedBox(height: 8),
@@ -44,8 +45,8 @@ class BalanceCard extends StatelessWidget {
             child: Text(
               '${fmt(balance)} CO₂Coins',
               key: ValueKey(balance),
-              style: const TextStyle(
-                color: Colors.white,
+              style: RewardsStyle.font(
+                color: RewardsStyle.green,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
@@ -55,8 +56,8 @@ class BalanceCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Acumulado até agora', style: _light),
-              Text('${fmt(earned)} / ${fmt(goal)}', style: _light),
+              Text('Disponível do que ganhou no mês', style: _light),
+              Text('${fmt(balance)} / ${fmt(earned)}', style: _light),
             ],
           ),
           const SizedBox(height: 8),
@@ -68,16 +69,16 @@ class BalanceCard extends StatelessWidget {
               builder: (_, value, _) => LinearProgressIndicator(
                 value: value,
                 minHeight: 10,
-                backgroundColor: Colors.white24,
-                color: RewardsStyle.gold,
+                backgroundColor: RewardsStyle.green.withAlpha(40),
+                color: RewardsStyle.green,
               ),
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            progress >= 1
-                ? 'Meta atingida!'
-                : 'Faltam ${fmt(goal - earned)} para a próxima meta',
+            earned > 0
+                ? '${kgSaved.toStringAsFixed(1)} kg de CO₂ abaixo do seu limite este mês'
+                : 'Fique abaixo do limite este mês para ganhar CO₂Coins',
             style: _light,
           ),
         ],
@@ -86,7 +87,7 @@ class BalanceCard extends StatelessWidget {
   }
 }
 
-const _light = TextStyle(color: Colors.white70, fontSize: 14);
+final _light = RewardsStyle.font(color: RewardsStyle.green);
 
 // ======== Campo de busca ========
 
@@ -108,8 +109,10 @@ class SearchBox extends StatelessWidget {
       builder: (_, value, _) => TextField(
         controller: controller,
         onChanged: onChanged,
+        style: RewardsStyle.font(),
         decoration: InputDecoration(
           hintText: 'Pesquisar lojas ou descontos...',
+          hintStyle: RewardsStyle.caption,
           prefixIcon: const Icon(Icons.search),
           suffixIcon: value.text.isEmpty
               ? null
@@ -126,7 +129,7 @@ class SearchBox extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: Colors.grey.shade100,
+          fillColor: CoresApp.background,
         ),
       ),
     );
