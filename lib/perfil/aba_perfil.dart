@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../nucleo/cores_app.dart';
 import '../nucleo/armazenamento_token.dart';
 import '../perfil/servico/servico_usuario.dart';
+import 'sugestao_limite.dart';
 import '../autenticacao/telas/tela_login.dart';
 
 class AbaPerfil extends StatefulWidget {
@@ -15,11 +16,18 @@ class AbaPerfil extends StatefulWidget {
 
 class _AbaPerfilState extends State<AbaPerfil> {
   late Future<ResultadoPerfil> _dados;
+  SugestaoLimite? _sugestao;
 
   @override
   void initState() {
     super.initState();
     _dados = _carregar();
+    _carregarSugestao();
+  }
+
+  Future<void> _carregarSugestao() async {
+    final sugestao = await calcularSugestaoLimite();
+    if (mounted) setState(() => _sugestao = sugestao);
   }
 
   Future<ResultadoPerfil> _carregar() async {
@@ -81,7 +89,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
                       style: GoogleFonts.outfit(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: CoresApp.darkGreen,
+                        color: CoresApp.primary,
                       ),
                     ),
                   ),
@@ -122,6 +130,13 @@ class _AbaPerfilState extends State<AbaPerfil> {
                   ],
                 ],
               ),
+              if (perfil != null && _sugestao != null) ...[
+                const SizedBox(height: 16),
+                CartaoSugestaoLimite(
+                  sugestao: _sugestao!,
+                  limiteAtualKg: perfil.limiteCo2Kg,
+                ),
+              ],
               const SizedBox(height: 32),
               GestureDetector(
                 onTap: _sair,
