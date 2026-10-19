@@ -6,6 +6,7 @@ import '../servico/servico_autenticacao.dart';
 import '../../navegacao.dart';
 import '../../compartilhado/widgets/campo_autenticacao.dart';
 import '../../compartilhado/widgets/botao_primario.dart';
+import '../../compartilhado/widgets/logo_co2bank.dart';
 import 'tela_cadastro/tela_cadastro.dart';
 import 'tela_esqueci_senha/tela_esqueci_senha.dart';
 
@@ -63,17 +64,11 @@ class _TelaLoginState extends State<TelaLogin> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: CoresApp.darkGreen,
+      backgroundColor: CoresApp.primary,
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.center,
-                colors: [CoresApp.darkGreen, Color(0xFF2D6A4F)],
-              ),
-            ),
+            decoration: const BoxDecoration(gradient: CoresApp.brandGradient),
           ),
           Positioned(
             top: size.height * 0.1,
@@ -81,22 +76,14 @@ class _TelaLoginState extends State<TelaLogin> {
             right: 0,
             child: Column(
               children: [
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      shape: BoxShape.circle),
-                  child: const Icon(Icons.eco_rounded,
-                      size: 34, color: CoresApp.mintGreen),
-                ),
+                const LogoCo2Bank(tamanho: 68, comSelo: true),
                 const SizedBox(height: 12),
                 Text(
                   'CO2Bank',
                   style: GoogleFonts.outfit(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      color: CoresApp.brandText),
                 ),
               ],
             ),

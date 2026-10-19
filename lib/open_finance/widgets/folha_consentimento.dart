@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cores_app.dart';
 import '../../compartilhado/widgets/botao_primario.dart';
+import '../../compartilhado/widgets/logo_co2bank.dart';
 import '../bancos_open_finance.dart';
 import '../servico/servico_open_finance.dart';
 import 'progresso_etapas.dart';
@@ -305,15 +306,13 @@ class _CabecalhoConexao extends StatelessWidget {
           Container(
             width: 56,
             height: 56,
-            decoration: const BoxDecoration(
-              color: CoresApp.dark,
+            padding: const EdgeInsets.all(7),
+            decoration: BoxDecoration(
+              color: CoresApp.surface,
               shape: BoxShape.circle,
+              border: Border.all(color: CoresApp.border),
             ),
-            child: const Icon(
-              Icons.eco_rounded,
-              size: 28,
-              color: CoresApp.primary,
-            ),
+            child: const LogoCo2Bank(tamanho: 42),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
