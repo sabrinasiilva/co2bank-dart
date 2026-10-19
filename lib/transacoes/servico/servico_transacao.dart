@@ -130,6 +130,107 @@ class ResumoDoMes {
   const ResumoDoMes({required this.mes, required this.ano, this.resumo});
 }
 
+class CategoriaCompra {
+  final String codigo; // MCC usado no cálculo do backend
+  final String rotulo;
+
+  /// CO2 a cada R$ 100 nessa categoria. Nulo quando a lista veio da reserva local.
+  final double? kgPor100;
+
+  const CategoriaCompra({
+    required this.codigo,
+    required this.rotulo,
+    this.kgPor100,
+  });
+
+  factory CategoriaCompra.fromJson(Map<String, dynamic> json) =>
+      CategoriaCompra(
+        codigo: json['mcc'] as String,
+        rotulo: json['label'] as String,
+        kgPor100: (json['kg_per_100_brl'] as num?)?.toDouble(),
+      );
+}
+
+// Reserva para quando o GET /transactions/categories ainda não está no ar:
+// MCCs que o backend já conhece, para dar para registrar compra mesmo assim.
+const categoriasDeReserva = [
+  CategoriaCompra(codigo: '5541', rotulo: 'Combustível'),
+  CategoriaCompra(codigo: '8220', rotulo: 'Educação'),
+  CategoriaCompra(codigo: '5732', rotulo: 'Eletrônicos'),
+  CategoriaCompra(codigo: '5912', rotulo: 'Farmácia'),
+  CategoriaCompra(codigo: '5699', rotulo: 'Moda'),
+  CategoriaCompra(codigo: '5812', rotulo: 'Restaurante'),
+  CategoriaCompra(codigo: '5815', rotulo: 'Streaming'),
+  CategoriaCompra(codigo: '5411', rotulo: 'Supermercado'),
+  CategoriaCompra(codigo: '4121', rotulo: 'Transporte'),
+];
+
+class EstimativaCompra {
+  final String rotuloCategoria;
+  final double co2Kg;
+  final double totalMesKg;
+  final double limiteKg;
+  final double percentualAntes;
+  final double percentualDepois;
+  final bool passaDoLimite;
+
+  const EstimativaCompra({
+    required this.rotuloCategoria,
+    required this.co2Kg,
+    required this.totalMesKg,
+    required this.limiteKg,
+    required this.percentualAntes,
+    required this.percentualDepois,
+    required this.passaDoLimite,
+  });
+
+  factory EstimativaCompra.fromJson(Map<String, dynamic> json) {
+    final depois = (json['percentage_after'] as num).toDouble();
+    return EstimativaCompra(
+      rotuloCategoria: json['category_label'] as String? ?? '',
+      co2Kg: (json['co2_kg'] as num).toDouble(),
+      totalMesKg: (json['month_total_co2_kg'] as num? ?? 0).toDouble(),
+      limiteKg: (json['limit_kg'] as num).toDouble(),
+      percentualAntes: (json['percentage_before'] as num).toDouble(),
+      percentualDepois: depois,
+      passaDoLimite: json['exceeds_limit'] as bool? ?? depois > 100,
+    );
+  }
+}
+
+sealed class ResultadoCategorias {}
+
+class CategoriasCarregadas extends ResultadoCategorias {
+  final List<CategoriaCompra> categorias;
+  CategoriasCarregadas(this.categorias);
+}
+
+class CategoriasDeReserva extends ResultadoCategorias {}
+
+sealed class ResultadoEstimativa {}
+
+class EstimativaCalculada extends ResultadoEstimativa {
+  final EstimativaCompra estimativa;
+  EstimativaCalculada(this.estimativa);
+}
+
+class EstimativaErro extends ResultadoEstimativa {
+  final String mensagem;
+  EstimativaErro(this.mensagem);
+}
+
+sealed class ResultadoNovaTransacao {}
+
+class TransacaoRegistrada extends ResultadoNovaTransacao {
+  final ItemTransacao transacao;
+  TransacaoRegistrada(this.transacao);
+}
+
+class RegistroErro extends ResultadoNovaTransacao {
+  final String mensagem;
+  RegistroErro(this.mensagem);
+}
+
 sealed class ResultadoDetalheTransacao {}
 
 class DetalheCarregado extends ResultadoDetalheTransacao {
@@ -230,7 +331,42 @@ class ServicoTransacao {
     }
   }
 
-  Future<ItemTransacao?> criarTransacao({
+  Future<ResultadoCategorias> listarCategorias() async {
+    try {
+      final resposta = await _cliente.get('/transactions/categories');
+      if (!resposta.sucesso || resposta.listaCorpo.isEmpty) {
+        return CategoriasDeReserva();
+      }
+      return CategoriasCarregadas(resposta.listaCorpo
+          .map((e) => CategoriaCompra.fromJson(e as Map<String, dynamic>))
+          .toList());
+    } catch (_) {
+      return CategoriasDeReserva();
+    }
+  }
+
+  Future<ResultadoEstimativa> estimarCompra({
+    required String codigoCategoria,
+    required double valor,
+  }) async {
+    try {
+      final resposta = await _cliente.post('/transactions/estimate', {
+        'merchant_category_code': codigoCategoria,
+        'amount': valor,
+      });
+      if (resposta.sucesso) {
+        return EstimativaCalculada(EstimativaCompra.fromJson(resposta.corpo));
+      }
+      if (resposta.codigoStatus == 404) {
+        return EstimativaErro('O simulador ainda não está disponível no servidor.');
+      }
+      return EstimativaErro(resposta.erro ?? 'Não foi possível simular agora.');
+    } catch (_) {
+      return EstimativaErro('Não foi possível conectar ao servidor.');
+    }
+  }
+
+  Future<ResultadoNovaTransacao> criarTransacao({
     required String nomeEstabelecimento,
     required String codigoCategoria,
     required double valor,
@@ -244,10 +380,13 @@ class ServicoTransacao {
         if (ocorreuEm != null) 'occurred_at': ocorreuEm.toIso8601String(),
       };
       final resposta = await _cliente.post('/transactions', corpo);
-      if (resposta.sucesso) return ItemTransacao.fromJson(resposta.corpo);
-      return null;
+      if (resposta.sucesso) {
+        return TransacaoRegistrada(ItemTransacao.fromJson(resposta.corpo));
+      }
+      return RegistroErro(
+          resposta.erro ?? 'Não foi possível registrar a compra.');
     } catch (_) {
-      return null;
+      return RegistroErro('Não foi possível conectar ao servidor.');
     }
   }
 }

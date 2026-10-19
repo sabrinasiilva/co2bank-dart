@@ -122,7 +122,7 @@ class _AbaTransacoesState extends State<AbaTransacoes> {
                         )
                       : ListView.separated(
                           physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
                           itemCount: transacoes.length,
                           separatorBuilder: (_, _) => const SizedBox(height: 8),
                           itemBuilder: (_, i) => _CartaoTransacao(tx: transacoes[i]),

@@ -180,7 +180,7 @@ class _AbaInicioState extends State<AbaInicio> {
               ),
               if (dados.recentes.isEmpty)
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 96),
                   sliver: SliverToBoxAdapter(
                     child: _SemTransacoes(),
                   ),
@@ -197,7 +197,7 @@ class _AbaInicioState extends State<AbaInicio> {
                   ),
                 ),
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 96),
                   sliver: SliverToBoxAdapter(
                     child: TextButton(
                       onPressed: widget.aoVerTransacoes,

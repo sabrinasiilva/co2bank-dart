@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'nucleo/cores_app.dart';
 import 'inicio/aba_inicio.dart';
 import 'transacoes/telas/aba_transacoes.dart';
+import 'transacoes/telas/tela_nova_compra.dart';
 import 'co2/aba_co2.dart';
 import 'perfil/aba_perfil.dart';
 import 'compartilhado/widgets/menu_lateral.dart';
@@ -29,6 +30,14 @@ class _NavegacaoState extends State<Navegacao> {
       const AbaCo2(),
       const AbaPerfil(),
     ];
+  }
+
+  Future<void> _abrirNovaCompra() async {
+    final registrou = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(builder: (_) => const TelaNovaCompra()),
+    );
+    if (registrou == true) setState(() => _versaoDados++);
   }
 
   static const _itensNavegacao = [
@@ -60,6 +69,19 @@ class _NavegacaoState extends State<Navegacao> {
             KeyedSubtree(key: ValueKey('$i-$_versaoDados'), child: _abas[i]),
         ],
       ),
+      // Nova compra só faz sentido nas abas que mostram as compras.
+      floatingActionButton: _abaAtual <= 1
+          ? FloatingActionButton.extended(
+              onPressed: _abrirNovaCompra,
+              backgroundColor: CoresApp.dark,
+              foregroundColor: Colors.white,
+              icon: const Icon(Icons.add_rounded),
+              label: Text(
+                'Nova compra',
+                style: GoogleFonts.outfit(fontWeight: FontWeight.w600),
+              ),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _abaAtual,
         onTap: (i) => setState(() => _abaAtual = i),
