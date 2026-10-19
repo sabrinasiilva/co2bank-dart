@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'nucleo/cores_app.dart';
+import 'compartilhado/widgets/logo_co2bank.dart';
 import 'autenticacao/telas/tela_login.dart';
 
 class TelaSplash extends StatefulWidget {
@@ -24,8 +25,7 @@ class _TelaSplashState extends State<TelaSplash>
       vsync: this,
       duration: const Duration(milliseconds: 900),
     );
-    _animacaoFade =
-        CurvedAnimation(parent: _controlador, curve: Curves.easeIn);
+    _animacaoFade = CurvedAnimation(parent: _controlador, curve: Curves.easeIn);
     _animacaoDeslizamento = Tween<Offset>(
       begin: const Offset(0, 0.15),
       end: Offset.zero,
@@ -55,51 +55,52 @@ class _TelaSplashState extends State<TelaSplash>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CoresApp.darkGreen,
-      body: Center(
-        child: FadeTransition(
-          opacity: _animacaoFade,
-          child: SlideTransition(
-            position: _animacaoDeslizamento,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 88,
-                  height: 88,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.eco_rounded,
-                    size: 48,
-                    color: CoresApp.mintGreen,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'CO2Bank',
-                  style: GoogleFonts.outfit(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Seu bolso. O planeta. Em equilíbrio.',
-                  style: GoogleFonts.outfit(
-                    fontSize: 14,
-                    color: Colors.white.withValues(alpha: 0.7),
-                    letterSpacing: 0.3,
-                  ),
-                ),
-              ],
+      backgroundColor: CoresApp.surface,
+      body: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: MediaQuery.of(context).size.height * 0.22,
+            child: const DecoratedBox(
+              decoration: BoxDecoration(gradient: CoresApp.brandGradient),
             ),
           ),
-        ),
+          Center(
+            child: FadeTransition(
+              opacity: _animacaoFade,
+              child: SlideTransition(
+                position: _animacaoDeslizamento,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const LogoCo2Bank(tamanho: 120),
+                    const SizedBox(height: 24),
+                    Text(
+                      'CO2Bank',
+                      style: GoogleFonts.outfit(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: CoresApp.brandText,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'As finanças de quem se importa.',
+                      style: GoogleFonts.outfit(
+                        fontSize: 14,
+                        color: CoresApp.textSecondary,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

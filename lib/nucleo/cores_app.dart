@@ -15,4 +15,10 @@ class CoresApp {
   static const darkGreen = dark;
   static const mintGreen = primary;
   static const orange = accentWarm;
+
+  // Verde escuro do nome "CO2Bank" e dos títulos no material da marca (Canva).
+  static const brandText = Color(0xFF2E4D1B);
+  static const brandGradient = LinearGradient(
+    colors: [primary, primaryMuted],
+  );
 }
