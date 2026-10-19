@@ -34,6 +34,14 @@ class LogoCo2Bank extends StatelessWidget {
       fit: BoxFit.contain,
       filterQuality: FilterQuality.medium,
       semanticLabel: 'CO2Bank',
+      // Aparece com um fade curto em vez de "pipocar" quando termina de carregar.
+      frameBuilder: (_, filho, quadro, carregadaNaHora) => carregadaNaHora
+          ? filho
+          : AnimatedOpacity(
+              opacity: quadro == null ? 0 : 1,
+              duration: const Duration(milliseconds: 250),
+              child: filho,
+            ),
     );
 
     if (!comSelo) {

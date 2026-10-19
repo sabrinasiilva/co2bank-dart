@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'nucleo/cores_app.dart';
 import 'tela_splash.dart';
 
 void main() {
+  // A Outfit vem dentro do app (assets/google_fonts); não precisa baixar nada.
+  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(const AplicativoCo2Bank());
 }
 

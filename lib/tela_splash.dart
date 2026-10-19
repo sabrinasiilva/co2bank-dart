@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,6 +19,7 @@ class _TelaSplashState extends State<TelaSplash>
   late AnimationController _controlador;
   late Animation<double> _animacaoFade;
   late Animation<Offset> _animacaoDeslizamento;
+  Timer? _timerParaLogin;
 
   @override
   void initState() {
@@ -33,7 +36,7 @@ class _TelaSplashState extends State<TelaSplash>
 
     _controlador.forward();
 
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    _timerParaLogin = Timer(const Duration(milliseconds: 2500), () {
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
@@ -48,6 +51,7 @@ class _TelaSplashState extends State<TelaSplash>
 
   @override
   void dispose() {
+    _timerParaLogin?.cancel();
     _controlador.dispose();
     super.dispose();
   }

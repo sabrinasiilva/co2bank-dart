@@ -70,6 +70,20 @@ flutter:
     - assets/logo.png
     - assets/logo_branca.png
     - assets/logo_preta.png
+    # Outfit dentro do app: o google_fonts usa estes arquivos em vez de baixar
+    # a fonte da internet na abertura (licença em assets/google_fonts/OFL.txt).
+    - assets/google_fonts/
+
+  fonts:
+    - family: Outfit
+      fonts:
+        - asset: assets/google_fonts/Outfit-Regular.ttf
+        - asset: assets/google_fonts/Outfit-Medium.ttf
+          weight: 500
+        - asset: assets/google_fonts/Outfit-SemiBold.ttf
+          weight: 600
+        - asset: assets/google_fonts/Outfit-Bold.ttf
+          weight: 700
 
   # To add assets to your application, add an assets section, like this:
   # assets:
