@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../nucleo/cores_app.dart';
 import 'achievements_screen.dart';
+import 'coupons_screen.dart';
 import 'reward_service.dart';
 import 'rewards_data.dart';
 import 'rewards_header.dart';
@@ -20,6 +21,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
   RewardService? _service;
   TokensSummary? _summary;
   AchievementsSummary? _achievements;
+  int? _couponsCount;
   bool _loading = true;
   bool _failed = false;
   bool _redeeming = false;
@@ -43,15 +45,19 @@ class _RewardsScreenState extends State<RewardsScreen> {
       _failed = false;
     });
     _service ??= await RewardService.authenticated();
-    final (result, achievements) = await (
+    final (result, achievements, redemptions) = await (
       _service!.loadTokens(),
       _service!.loadAchievements(),
+      _service!.loadRedemptions(),
     ).wait;
     if (!mounted) return;
     setState(() {
       _loading = false;
       if (achievements case AchievementsLoaded(:final summary)) {
         _achievements = summary;
+      }
+      if (redemptions case RedemptionsLoaded(:final items)) {
+        _couponsCount = items.length;
       }
       switch (result) {
         case TokensLoaded(:final summary):
@@ -60,6 +66,16 @@ class _RewardsScreenState extends State<RewardsScreen> {
           _failed = true;
       }
     });
+  }
+
+  Future<void> _openCoupons({String? highlightCode}) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CouponsScreen(highlightCode: highlightCode),
+      ),
+    );
+    if (mounted) await _load();
   }
 
   Future<void> _openAchievements() async {
@@ -88,16 +104,16 @@ class _RewardsScreenState extends State<RewardsScreen> {
     setState(() => _redeeming = false);
 
     switch (result) {
-      case RedeemSuccess():
+      case RedeemSuccess(:final couponCode):
         showRewardsSnack(
           context,
-          'Cupom da ${offer.store} resgatado!',
-          action: offer.hasWebsite
-              ? SnackBarAction(
-                  label: 'Abrir loja',
-                  onPressed: () => _open(offer),
-                )
-              : null,
+          couponCode == null
+              ? 'Cupom da ${offer.store} resgatado!'
+              : 'Cupom da ${offer.store} resgatado: $couponCode',
+          action: SnackBarAction(
+            label: 'Ver cupom',
+            onPressed: () => _openCoupons(highlightCode: couponCode),
+          ),
         );
         await _load();
       case RedeemFailed(:final message):
@@ -169,6 +185,8 @@ class _RewardsScreenState extends State<RewardsScreen> {
               total: _achievements?.total,
               onTap: _openAchievements,
             ),
+            const SizedBox(height: 12),
+            CouponsShortcut(count: _couponsCount, onTap: _openCoupons),
             const SizedBox(height: 20),
             SearchBox(
               controller: _search,
@@ -223,7 +241,10 @@ class _LoadError extends StatelessWidget {
             Text(
               'Não foi possível carregar suas recompensas',
               textAlign: TextAlign.center,
-              style: RewardsStyle.font(fontSize: 16, fontWeight: FontWeight.w600),
+              style: RewardsStyle.font(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 16),
             FilledButton(

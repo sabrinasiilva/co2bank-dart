@@ -2,7 +2,8 @@ import '../../nucleo/armazenamento_token.dart';
 import '../../nucleo/cliente_api.dart';
 import 'rewards_data.dart';
 
-// API: conquistas (GET /rewards), saldo de CO₂Coins e parceiros (GET /rewards/tokens) e resgate (POST /rewards/redeem).
+// API: conquistas (GET /rewards), saldo de CO₂Coins e parceiros (GET /rewards/tokens),
+// resgate (POST /rewards/redeem) e cupons resgatados (GET /rewards/redemptions).
 
 class TokensSummary {
   final int earned; // ganhos no mês
@@ -82,6 +83,58 @@ class AchievementsSummary {
   }
 }
 
+class Redemption {
+  final String id;
+  final String partnerName;
+  final int cost;
+  final int? discountPercent; // nulo quando o parceiro não existe mais
+  final String? category;
+  final String? url;
+  final String? couponCode;
+  final DateTime? redeemedAt;
+
+  const Redemption({
+    required this.id,
+    required this.partnerName,
+    required this.cost,
+    this.discountPercent,
+    this.category,
+    this.url,
+    this.couponCode,
+    this.redeemedAt,
+  });
+
+  factory Redemption.fromJson(Map<String, dynamic> json) => Redemption(
+    id: '${json['id'] ?? ''}',
+    partnerName: json['partner_name'] as String? ?? '',
+    cost: json['cost'] as int? ?? 0,
+    discountPercent: json['discount_percent'] as int?,
+    category: json['category'] as String?,
+    url: json['url'] as String?,
+    couponCode: json['coupon_code'] as String?,
+    redeemedAt: DateTime.tryParse(json['redeemed_at'] as String? ?? ''),
+  );
+
+  /// Mesma regra das ofertas: link de exemplo não conta como site.
+  bool get hasWebsite {
+    final host = Uri.tryParse(url ?? '')?.host ?? '';
+    return host.isNotEmpty && !host.endsWith('example.com');
+  }
+}
+
+sealed class RedemptionsResult {}
+
+class RedemptionsLoaded extends RedemptionsResult {
+  final List<Redemption> items;
+  RedemptionsLoaded(this.items);
+}
+
+class RedemptionsUnavailable extends RedemptionsResult {
+  /// true quando o servidor ainda não tem essa rota (404).
+  final bool notDeployedYet;
+  RedemptionsUnavailable({this.notDeployedYet = false});
+}
+
 sealed class AchievementsResult {}
 
 class AchievementsLoaded extends AchievementsResult {
@@ -104,7 +157,8 @@ sealed class RedeemResult {}
 
 class RedeemSuccess extends RedeemResult {
   final int remaining;
-  RedeemSuccess(this.remaining);
+  final String? couponCode;
+  RedeemSuccess(this.remaining, {this.couponCode});
 }
 
 class RedeemFailed extends RedeemResult {
@@ -122,6 +176,28 @@ class RewardService {
     final token = await ArmazenamentoToken.obter();
     if (token != null) client.definirToken(token);
     return RewardService._(client);
+  }
+
+  Future<RedemptionsResult> loadRedemptions() async {
+    try {
+      final response = await _client.get('/rewards/redemptions');
+      if (response.codigoStatus == 404) {
+        return RedemptionsUnavailable(notDeployedYet: true);
+      }
+      if (!response.sucesso) return RedemptionsUnavailable();
+      final items =
+          response.listaCorpo
+              .map((r) => Redemption.fromJson(r as Map<String, dynamic>))
+              .toList()
+            ..sort(
+              (a, b) => (b.redeemedAt ?? DateTime(0)).compareTo(
+                a.redeemedAt ?? DateTime(0),
+              ),
+            );
+      return RedemptionsLoaded(items);
+    } catch (_) {
+      return RedemptionsUnavailable();
+    }
   }
 
   Future<AchievementsResult> loadAchievements() async {
@@ -150,7 +226,10 @@ class RewardService {
         'partner_name': offer.store,
       });
       if (response.sucesso) {
-        return RedeemSuccess(response.corpo['tokens_remaining'] as int? ?? 0);
+        return RedeemSuccess(
+          response.corpo['tokens_remaining'] as int? ?? 0,
+          couponCode: response.corpo['coupon_code'] as String?,
+        );
       }
       return RedeemFailed(response.erro ?? 'Não foi possível resgatar agora.');
     } catch (_) {
