@@ -1,5 +1,6 @@
 import '../../nucleo/cliente_api.dart';
 import '../../nucleo/armazenamento_token.dart';
+import '../../nucleo/notificacoes.dart';
 
 class ItemTransacao {
   final String id;
@@ -317,6 +318,16 @@ class ServicoTransacao {
         },
       );
     }));
+  }
+
+  /// Consulta o alerta do limite e, se ele estiver ativo, avisa no celular
+  /// (no máximo uma vez por mês, e só se a pessoa ligou as notificações).
+  Future<void> avisarSeLimiteAlto() async {
+    final resultado = await verificarLimite();
+    if (resultado case AlertaCarregado(:final alerta)
+        when alerta.ativo && alerta.mensagem != null) {
+      await Notificacoes.avisarLimite(alerta.mensagem!);
+    }
   }
 
   Future<ResultadoAlertaLimite> verificarLimite() async {

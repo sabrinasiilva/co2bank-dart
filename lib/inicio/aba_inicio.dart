@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../nucleo/cores_app.dart';
 import '../transacoes/servico/servico_transacao.dart';
+import '../nucleo/notificacoes.dart';
 import '../transacoes/icone_categoria.dart';
 import '../transacoes/telas/tela_detalhe_transacao.dart';
 import '../perfil/servico/servico_usuario.dart';
@@ -54,6 +56,11 @@ class _AbaInicioState extends State<AbaInicio> {
       AlertaCarregado(:final alerta) => alerta,
       AlertaIndisponivel() => null,
     };
+    if (alertaLimite != null &&
+        alertaLimite.ativo &&
+        alertaLimite.mensagem != null) {
+      unawaited(Notificacoes.avisarLimite(alertaLimite.mensagem!));
+    }
 
     return _DadosInicio(
       usuario: usuario,

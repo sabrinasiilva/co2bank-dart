@@ -174,7 +174,12 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
               aoVerExtrato();
             },
     );
-    if (houveNovas) widget.aoDadosAlterados?.call();
+    if (houveNovas) {
+      widget.aoDadosAlterados?.call();
+      // Compras novas podem ter levado o mês para perto do limite.
+      final servico = await ServicoTransacao.autenticado();
+      await servico.avisarSeLimiteAlto();
+    }
     if (mounted) await _carregar();
   }
 
