@@ -1,0 +1,19 @@
+# O plano gratuito do Render dorme depois de 15 min sem requisições, e a
+# primeira chamada depois disso demora quase um minuto. Este workflow chama o
+# /health a cada 10 min para a API continuar acordada.
+name: Manter API acordada
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Chamar /health (com 1 nova tentativa)
+        run: |
+          url=https://co2bank-flask.onrender.com/health
+          curl -fsS --max-time 90 "$url" || { sleep 15; curl -fsS --max-time 90 "$url"; }
