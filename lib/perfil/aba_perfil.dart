@@ -93,7 +93,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(
-              child: CircularProgressIndicator(color: CoresApp.darkGreen),
+              child: CircularProgressIndicator(color: CoresApp.primary),
             );
           }
 
@@ -340,7 +340,7 @@ class _CartaoNotificacoes extends StatelessWidget {
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: CoresApp.darkGreen,
+                  color: CoresApp.primary,
                 ),
               ),
             )
@@ -349,7 +349,7 @@ class _CartaoNotificacoes extends StatelessWidget {
               value: ativas,
               onChanged: aoAlternar,
               activeThumbColor: Colors.white,
-              activeTrackColor: CoresApp.darkGreen,
+              activeTrackColor: CoresApp.primary,
             ),
         ],
       ),

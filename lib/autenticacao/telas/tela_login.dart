@@ -152,7 +152,7 @@ class _TelaLoginState extends State<TelaLogin> {
                         child: Text('Esqueci minha senha',
                             style: GoogleFonts.outfit(
                                 fontSize: 13,
-                                color: CoresApp.darkGreen,
+                                color: CoresApp.dark,
                                 fontWeight: FontWeight.w500)),
                       ),
                     ),
@@ -168,7 +168,7 @@ class _TelaLoginState extends State<TelaLogin> {
                     _carregando
                         ? const Center(
                             child: CircularProgressIndicator(
-                                color: CoresApp.darkGreen))
+                                color: CoresApp.primary))
                         : BotaoPrimario(
                             rotulo: 'Entrar', aoTocar: _entrar),
                     const SizedBox(height: 28),
@@ -203,7 +203,7 @@ class _TelaLoginState extends State<TelaLogin> {
                               TextSpan(
                                 text: 'Cadastre-se',
                                 style: GoogleFonts.outfit(
-                                    color: CoresApp.darkGreen,
+                                    color: CoresApp.dark,
                                     fontWeight: FontWeight.w600),
                               ),
                             ],

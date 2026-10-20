@@ -218,7 +218,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
   Widget _conteudo() {
     if (_carregando && _conexoes.isEmpty && !_indisponivel) {
       return const Center(
-        child: CircularProgressIndicator(color: CoresApp.darkGreen),
+        child: CircularProgressIndicator(color: CoresApp.primary),
       );
     }
 
@@ -227,7 +227,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
     }
 
     return RefreshIndicator(
-      color: CoresApp.darkGreen,
+      color: CoresApp.primary,
       onRefresh: _carregar,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
@@ -588,7 +588,7 @@ class _CartaoBanco extends StatelessWidget {
           color: CoresApp.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: conectado ? CoresApp.darkGreen : CoresApp.border,
+            color: conectado ? CoresApp.dark : CoresApp.border,
             width: conectado ? 1.5 : 1,
           ),
         ),
@@ -632,7 +632,7 @@ class _CartaoBanco extends StatelessWidget {
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: CoresApp.darkGreen,
+                  color: CoresApp.primary,
                 ),
               )
             else if (conectado)

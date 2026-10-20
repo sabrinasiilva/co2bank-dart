@@ -12,6 +12,10 @@ class CoresApp {
   static const textPrimary = Color(0xFF1A1A1A);
   static const textSecondary = Color(0xFF737373);
   static const border = Color(0xFFE5E7EB);
+
+  // Nomes antigos, de antes da paleta preto + verde. darkGreen virou preto e já
+  // deixou elementos invisíveis sobre cards pretos, por isso está depreciado.
+  @Deprecated('É preto, não verde. Use CoresApp.dark ou CoresApp.primary.')
   static const darkGreen = dark;
   static const mintGreen = primary;
   static const orange = accentWarm;

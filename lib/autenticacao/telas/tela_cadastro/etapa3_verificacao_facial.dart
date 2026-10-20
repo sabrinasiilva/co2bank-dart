@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../nucleo/cores_app.dart';
+import '../../../../nucleo/registro_erros.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
 
 class Etapa3VerificacaoFacial extends StatefulWidget {
@@ -49,7 +50,9 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
         final base64 = base64Encode(bytes);
         widget.aoCapturarFoto(base64);
       }
-    } catch (e) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha,
+          contexto: 'Etapa3VerificacaoFacial._tirarSelfie');
       setState(() => _erro = 'Não foi possível acessar a câmera.');
     } finally {
       setState(() => _capturando = false);

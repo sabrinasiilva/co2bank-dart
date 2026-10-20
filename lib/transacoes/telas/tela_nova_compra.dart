@@ -318,7 +318,7 @@ class _SeletorCategoria extends StatelessWidget {
               height: 22,
               child: CircularProgressIndicator(
                 strokeWidth: 2.5,
-                color: CoresApp.darkGreen,
+                color: CoresApp.primary,
               ),
             ),
           )

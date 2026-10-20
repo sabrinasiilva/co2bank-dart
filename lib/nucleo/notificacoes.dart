@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'registro_erros.dart';
+
 /// Notificação no celular (ou no navegador) quando o limite de CO2 do mês passa
 /// de 80%. É uma notificação local: o próprio app dispara quando consulta o
 /// alerta no backend, sem servidor de push.
@@ -46,7 +48,8 @@ class Notificacoes {
         ),
       );
       _iniciado = ok ?? false;
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'Notificacoes.iniciar');
       _iniciado = false;
     }
   }
@@ -113,8 +116,9 @@ class Notificacoes {
         notificationDetails: _detalhes,
       );
       await prefs.setString(_chaveUltimoAviso, mesAtual);
-    } catch (_) {
+    } catch (e, pilha) {
       // Sem permissão ou sem suporte: o aviso continua aparecendo na tela inicial.
+      registrarErro(e, pilha, contexto: 'Notificacoes.avisarLimite');
     }
   }
 }

@@ -113,7 +113,7 @@ class _AbaCo2State extends State<AbaCo2> {
     if (_resultado == null && _carregando) {
       return const SafeArea(
         child: Center(
-          child: CircularProgressIndicator(color: CoresApp.darkGreen),
+          child: CircularProgressIndicator(color: CoresApp.primary),
         ),
       );
     }
@@ -126,7 +126,7 @@ class _AbaCo2State extends State<AbaCo2> {
     return SafeArea(
       child: RefreshIndicator(
         onRefresh: _carregarTudo,
-        color: CoresApp.darkGreen,
+        color: CoresApp.primary,
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
@@ -422,7 +422,7 @@ class _FileiraCategorias extends StatelessWidget {
     } else if (posicao == 1) {
       corBarra = CoresApp.mintGreen;
     } else {
-      corBarra = CoresApp.darkGreen;
+      corBarra = CoresApp.dark;
     }
 
     return Container(

@@ -1,5 +1,6 @@
 import '../../nucleo/armazenamento_token.dart';
 import '../../nucleo/cliente_api.dart';
+import '../../nucleo/registro_erros.dart';
 import 'rewards_data.dart';
 
 // API: conquistas (GET /rewards), saldo de CO₂Coins e parceiros (GET /rewards/tokens),
@@ -195,7 +196,8 @@ class RewardService {
               ),
             );
       return RedemptionsLoaded(items);
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'RewardService.loadRedemptions');
       return RedemptionsUnavailable();
     }
   }
@@ -205,7 +207,8 @@ class RewardService {
       final response = await _client.get('/rewards');
       if (!response.sucesso) return AchievementsUnavailable();
       return AchievementsLoaded(AchievementsSummary.fromJson(response.corpo));
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'RewardService.loadAchievements');
       return AchievementsUnavailable();
     }
   }
@@ -215,7 +218,8 @@ class RewardService {
       final response = await _client.get('/rewards/tokens');
       if (!response.sucesso) return TokensUnavailable();
       return TokensLoaded(TokensSummary.fromJson(response.corpo));
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'RewardService.loadTokens');
       return TokensUnavailable();
     }
   }
@@ -232,7 +236,8 @@ class RewardService {
         );
       }
       return RedeemFailed(response.erro ?? 'Não foi possível resgatar agora.');
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'RewardService.redeem');
       return RedeemFailed('Não foi possível conectar ao servidor.');
     }
   }

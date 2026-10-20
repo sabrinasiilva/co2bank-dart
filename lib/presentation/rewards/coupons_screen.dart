@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../nucleo/cores_app.dart';
+import '../../nucleo/registro_erros.dart';
 import 'reward_service.dart';
 import 'rewards_offers.dart';
 import 'rewards_style.dart';
@@ -115,7 +116,9 @@ class CouponCard extends StatelessWidget {
     var ok = false;
     try {
       ok = await launchUrl(Uri.parse(redemption.url!));
-    } catch (_) {}
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'CouponCard._openStore');
+    }
     if (!ok && context.mounted) {
       showRewardsSnack(
         context,

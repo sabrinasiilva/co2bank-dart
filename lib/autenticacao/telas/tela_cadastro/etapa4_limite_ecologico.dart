@@ -56,7 +56,7 @@ class Etapa4LimiteEcologico extends StatelessWidget {
                     style: GoogleFonts.outfit(
                         fontSize: 52,
                         fontWeight: FontWeight.bold,
-                        color: CoresApp.darkGreen)),
+                        color: CoresApp.dark)),
                 Text('CO2 por mês',
                     style: GoogleFonts.outfit(
                         fontSize: 14,
@@ -80,10 +80,10 @@ class Etapa4LimiteEcologico extends StatelessWidget {
           const SizedBox(height: 24),
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: CoresApp.darkGreen,
+              activeTrackColor: CoresApp.dark,
               inactiveTrackColor: CoresApp.border,
-              thumbColor: CoresApp.darkGreen,
-              overlayColor: CoresApp.darkGreen.withValues(alpha: 0.1),
+              thumbColor: CoresApp.dark,
+              overlayColor: CoresApp.dark.withValues(alpha: 0.1),
               trackHeight: 4,
             ),
             child: Slider(
@@ -130,7 +130,7 @@ class Etapa4LimiteEcologico extends StatelessWidget {
           carregando
               ? const Center(
                   child: CircularProgressIndicator(
-                      color: CoresApp.darkGreen))
+                      color: CoresApp.primary))
               : BotaoPrimario(
                   rotulo: 'Finalizar', aoTocar: aoContinuar),
         ],

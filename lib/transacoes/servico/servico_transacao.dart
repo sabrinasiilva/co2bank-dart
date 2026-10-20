@@ -1,6 +1,7 @@
 import '../../nucleo/cliente_api.dart';
 import '../../nucleo/armazenamento_token.dart';
 import '../../nucleo/notificacoes.dart';
+import '../../nucleo/registro_erros.dart';
 
 class ItemTransacao {
   final String id;
@@ -266,7 +267,8 @@ class ServicoTransacao {
       return resposta.listaCorpo
           .map((e) => ItemTransacao.fromJson(e as Map<String, dynamic>))
           .toList();
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoTransacao.listarTransacoes');
       return [];
     }
   }
@@ -278,7 +280,8 @@ class ServicoTransacao {
         return DetalheCarregado(ItemTransacao.fromJson(resposta.corpo));
       }
       return DetalheIndisponivel();
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoTransacao.obterTransacao');
       return DetalheIndisponivel();
     }
   }
@@ -292,7 +295,8 @@ class ServicoTransacao {
         return ResumoCarregado(ResumoMensal.fromJson(resposta.corpo));
       }
       return ResumoIndisponivel();
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoTransacao.resumoMensal');
       return ResumoIndisponivel();
     }
   }
@@ -337,7 +341,8 @@ class ServicoTransacao {
         return AlertaCarregado(AlertaLimite.fromJson(resposta.corpo));
       }
       return AlertaIndisponivel();
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoTransacao.verificarLimite');
       return AlertaIndisponivel();
     }
   }
@@ -351,7 +356,8 @@ class ServicoTransacao {
       return CategoriasCarregadas(resposta.listaCorpo
           .map((e) => CategoriaCompra.fromJson(e as Map<String, dynamic>))
           .toList());
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoTransacao.listarCategorias');
       return CategoriasDeReserva();
     }
   }
@@ -372,7 +378,8 @@ class ServicoTransacao {
         return EstimativaErro('O simulador ainda não está disponível no servidor.');
       }
       return EstimativaErro(resposta.erro ?? 'Não foi possível simular agora.');
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoTransacao.estimarCompra');
       return EstimativaErro('Não foi possível conectar ao servidor.');
     }
   }
@@ -396,7 +403,8 @@ class ServicoTransacao {
       }
       return RegistroErro(
           resposta.erro ?? 'Não foi possível registrar a compra.');
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoTransacao.criarTransacao');
       return RegistroErro('Não foi possível conectar ao servidor.');
     }
   }

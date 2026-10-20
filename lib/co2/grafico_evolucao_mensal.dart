@@ -92,7 +92,7 @@ class CartaoEvolucaoMensal extends StatelessWidget {
               height: 24,
               child: CircularProgressIndicator(
                 strokeWidth: 2.5,
-                color: CoresApp.darkGreen,
+                color: CoresApp.primary,
               ),
             ),
           ),
