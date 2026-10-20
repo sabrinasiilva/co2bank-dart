@@ -1,11 +1,11 @@
 {
-    "name": "co2bank_app",
-    "short_name": "co2bank_app",
+    "name": "CO2Bank",
+    "short_name": "CO2Bank",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFFFFF",
     "theme_color": "#7ED957",
-    "description": "A new Flutter project.",
+    "description": "Carteira inteligente com limite ecológico: o CO₂ de cada compra e o aviso antes de passar do limite do mês.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
