@@ -117,7 +117,11 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
     setState(() => _bancosEmAlteracao.remove(banco.id));
     switch (resultado) {
       case OperacaoConcluida():
+        // As compras desse banco saíram do extrato: as abas precisam recarregar.
+        widget.aoDadosAlterados?.call();
         await _carregar();
+        if (!mounted) return;
+        _avisar('${banco.nome} desconectado. As compras dele saíram do extrato.');
       case OperacaoErro(:final mensagem):
         _avisar(mensagem);
     }
@@ -132,7 +136,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
           style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
         ),
         content: Text(
-          'As compras desse banco deixam de ser importadas. As que já estão no extrato continuam lá.',
+          'As compras importadas desse banco saem do extrato. As que você lançou manualmente continuam.',
           style: GoogleFonts.outfit(color: CoresApp.textSecondary),
         ),
         actions: [
