@@ -110,7 +110,7 @@ class Etapa1DadosPessoais extends StatelessWidget {
               builder: (context, child) => Theme(
                 data: Theme.of(context).copyWith(
                     colorScheme: const ColorScheme.light(
-                        primary: CoresApp.darkGreen)),
+                        primary: CoresApp.dark)),
                 child: child!,
               ),
             );

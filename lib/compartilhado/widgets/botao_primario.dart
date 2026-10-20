@@ -23,7 +23,7 @@ class BotaoPrimario extends StatelessWidget {
       child: ElevatedButton(
         onPressed: carregando ? null : aoTocar,
         style: ElevatedButton.styleFrom(
-          backgroundColor: CoresApp.darkGreen,
+          backgroundColor: CoresApp.dark,
           foregroundColor: Colors.white,
           disabledBackgroundColor: CoresApp.border,
           disabledForegroundColor: CoresApp.textSecondary,

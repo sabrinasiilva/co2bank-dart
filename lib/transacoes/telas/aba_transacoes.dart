@@ -114,7 +114,7 @@ class _AbaTransacoesState extends State<AbaTransacoes> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return const Center(
-                    child: CircularProgressIndicator(color: CoresApp.darkGreen),
+                    child: CircularProgressIndicator(color: CoresApp.primary),
                   );
                 }
 
@@ -122,7 +122,7 @@ class _AbaTransacoesState extends State<AbaTransacoes> {
 
                 return RefreshIndicator(
                   onRefresh: () async => _atualizar(),
-                  color: CoresApp.darkGreen,
+                  color: CoresApp.primary,
                   child: transacoes.isEmpty
                       ? ListView(
                           physics: const AlwaysScrollableScrollPhysics(),
@@ -321,13 +321,13 @@ class _CartaoTransacao extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.eco_rounded, size: 11, color: CoresApp.darkGreen),
+                    const Icon(Icons.eco_rounded, size: 11, color: CoresApp.dark),
                     const SizedBox(width: 2),
                     Text(
                       '${tx.co2Kg.toStringAsFixed(1)} kg',
                       style: GoogleFonts.outfit(
                         fontSize: 11,
-                        color: CoresApp.darkGreen,
+                        color: CoresApp.dark,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

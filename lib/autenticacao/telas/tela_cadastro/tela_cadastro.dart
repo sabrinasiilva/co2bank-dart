@@ -218,7 +218,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
     final topPadding = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      backgroundColor: CoresApp.darkGreen,
+      backgroundColor: CoresApp.dark,
       body: Stack(
         children: [
           Container(
@@ -226,7 +226,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.center,
-                colors: [CoresApp.darkGreen, Color(0xFF2D6A4F)],
+                colors: [CoresApp.dark, Color(0xFF2D6A4F)],
               ),
             ),
           ),

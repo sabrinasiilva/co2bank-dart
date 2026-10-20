@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import 'registro_erros.dart';
+
 const String urlBaseApi = String.fromEnvironment(
   'API_BASE_URL',
   defaultValue: 'https://co2bank-flask.onrender.com',
@@ -82,7 +84,8 @@ class ClienteApi {
   dynamic _decodificar(String corpo) {
     try {
       return jsonDecode(corpo);
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ClienteApi._decodificar');
       return {'error': 'Resposta inválida do servidor'};
     }
   }

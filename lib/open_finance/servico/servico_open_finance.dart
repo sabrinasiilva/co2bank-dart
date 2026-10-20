@@ -1,5 +1,6 @@
 import '../../nucleo/cliente_api.dart';
 import '../../nucleo/armazenamento_token.dart';
+import '../../nucleo/registro_erros.dart';
 
 class ConexaoBanco {
   final String idBanco;
@@ -82,7 +83,8 @@ class ServicoOpenFinance {
             .map((e) => ConexaoBanco.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoOpenFinance.listarConexoes');
       return ConexoesIndisponiveis();
     }
   }
@@ -96,7 +98,8 @@ class ServicoOpenFinance {
       });
       if (resposta.sucesso) return OperacaoConcluida();
       return OperacaoErro(resposta.erro ?? 'Não foi possível conectar o banco');
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoOpenFinance.conectar');
       return OperacaoErro('Não foi possível conectar ao servidor');
     }
   }
@@ -110,7 +113,8 @@ class ServicoOpenFinance {
       return OperacaoErro(
         resposta.erro ?? 'Não foi possível desconectar o banco',
       );
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoOpenFinance.desconectar');
       return OperacaoErro('Não foi possível conectar ao servidor');
     }
   }
@@ -128,7 +132,8 @@ class ServicoOpenFinance {
       return SincronizacaoErro(
         resposta.erro ?? 'Não foi possível sincronizar agora',
       );
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoOpenFinance.sincronizar');
       return SincronizacaoErro('Não foi possível conectar ao servidor');
     }
   }

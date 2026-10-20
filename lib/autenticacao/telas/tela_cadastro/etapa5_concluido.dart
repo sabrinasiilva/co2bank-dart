@@ -21,7 +21,7 @@ class Etapa5Concluido extends StatelessWidget {
               width: 96,
               height: 96,
               decoration: const BoxDecoration(
-                  color: CoresApp.darkGreen, shape: BoxShape.circle),
+                  color: CoresApp.dark, shape: BoxShape.circle),
               child: const Icon(Icons.check_rounded,
                   size: 52, color: Colors.white),
             ),

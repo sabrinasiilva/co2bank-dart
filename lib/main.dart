@@ -34,7 +34,7 @@ class AplicativoCo2Bank extends StatelessWidget {
       ],
       supportedLocales: const [Locale('pt', 'BR')],
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: CoresApp.darkGreen),
+        colorScheme: ColorScheme.fromSeed(seedColor: CoresApp.dark),
         scaffoldBackgroundColor: CoresApp.background,
         fontFamily: 'Outfit',
       ),

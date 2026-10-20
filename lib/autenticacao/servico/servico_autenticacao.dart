@@ -1,5 +1,6 @@
 import '../../nucleo/cliente_api.dart';
 import '../../nucleo/armazenamento_token.dart';
+import '../../nucleo/registro_erros.dart';
 
 sealed class ResultadoLogin {}
 
@@ -84,7 +85,8 @@ class ServicoAutenticacao {
         return CadastroSucesso(token);
       }
       return CadastroErro(resposta.erro ?? 'Erro ao criar conta');
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoAutenticacao.cadastrar');
       return CadastroErroRede();
     }
   }
@@ -104,7 +106,8 @@ class ServicoAutenticacao {
         return LoginSucesso(token);
       }
       return LoginErroCredenciais();
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoAutenticacao.entrar');
       return LoginErroRede();
     }
   }
@@ -118,7 +121,9 @@ class ServicoAutenticacao {
       });
       if (resposta.sucesso) return CodigoEnviado();
       return ErroSolicitacaoCodigo(resposta.erro ?? 'Erro ao enviar código');
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha,
+          contexto: 'ServicoAutenticacao.solicitarCodigoRecuperacao');
       return ErroRedeSolicitacao();
     }
   }
@@ -135,7 +140,8 @@ class ServicoAutenticacao {
       if (resposta.sucesso) return SenhaRedefinida();
       if (resposta.codigoStatus == 401) return CodigoInvalidoOuExpirado();
       return ErroRedefinicao(resposta.erro ?? 'Erro ao redefinir senha');
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoAutenticacao.redefinirSenha');
       return ErroRedeRedefinicao();
     }
   }

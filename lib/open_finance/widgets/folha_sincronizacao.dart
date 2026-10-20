@@ -441,7 +441,7 @@ class _ItemImportado extends StatelessWidget {
                     const Icon(
                       Icons.eco_rounded,
                       size: 11,
-                      color: CoresApp.darkGreen,
+                      color: CoresApp.dark,
                     ),
                     const SizedBox(width: 2),
                     Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../nucleo/cores_app.dart';
+import '../../nucleo/registro_erros.dart';
 
 // DADOS E LÓGICA: lojas, cálculos, busca e abertura do site.
 
@@ -109,7 +110,8 @@ class RewardsLogic {
     try {
       final Uri url = Uri.parse(offer.url);
       return await launchUrl(url);
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'RewardsLogic.openStore');
       return false;
     }
   }

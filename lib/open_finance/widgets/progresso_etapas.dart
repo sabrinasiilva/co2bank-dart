@@ -125,7 +125,7 @@ class _LinhaEtapa extends StatelessWidget {
             padding: EdgeInsets.all(2),
             child: CircularProgressIndicator(
               strokeWidth: 2.5,
-              color: CoresApp.darkGreen,
+              color: CoresApp.primary,
             ),
           ),
         );

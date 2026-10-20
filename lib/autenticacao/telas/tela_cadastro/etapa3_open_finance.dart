@@ -75,7 +75,7 @@ class Etapa3OpenFinance extends StatelessWidget {
       child: Text(
         'O Open Finance permite que o CO2Bank leia seus dados de compras diretamente do seu banco, sem precisar digitar nada. O acesso é só leitura — nunca movemos seu dinheiro.',
         style: GoogleFonts.outfit(
-            fontSize: 13, color: CoresApp.darkGreen, height: 1.5),
+            fontSize: 13, color: CoresApp.dark, height: 1.5),
       ),
     );
   }
@@ -93,7 +93,7 @@ class Etapa3OpenFinance extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-              color: selecionado ? CoresApp.darkGreen : CoresApp.border,
+              color: selecionado ? CoresApp.dark : CoresApp.border,
               width: selecionado ? 1.5 : 1),
         ),
         child: Row(
@@ -119,12 +119,12 @@ class Etapa3OpenFinance extends StatelessWidget {
               height: 22,
               decoration: BoxDecoration(
                 color: selecionado
-                    ? CoresApp.darkGreen
+                    ? CoresApp.dark
                     : Colors.transparent,
                 shape: BoxShape.circle,
                 border: Border.all(
                     color: selecionado
-                        ? CoresApp.darkGreen
+                        ? CoresApp.dark
                         : CoresApp.border),
               ),
               child: selecionado

@@ -1,5 +1,6 @@
 import '../../nucleo/cliente_api.dart';
 import '../../nucleo/armazenamento_token.dart';
+import '../../nucleo/registro_erros.dart';
 
 class PerfilUsuario {
   final String id;
@@ -56,7 +57,8 @@ class ServicoUsuario {
         return PerfilCarregado(PerfilUsuario.fromJson(resposta.corpo));
       }
       return PerfilIndisponivel();
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoUsuario.obterPerfil');
       return PerfilIndisponivel();
     }
   }
