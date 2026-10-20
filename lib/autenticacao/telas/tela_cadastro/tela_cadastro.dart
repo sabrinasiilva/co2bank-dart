@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../nucleo/cores_app.dart';
 import '../../../nucleo/validadores.dart';
 import '../../servico/servico_autenticacao.dart';
-import '../../../navegacao.dart';
+import '../tela_boas_vindas.dart';
 import '../../../open_finance/servico/servico_open_finance.dart';
 import '../../../compartilhado/widgets/indicador_etapa.dart';
 import 'etapa1_dados_pessoais.dart';
@@ -349,11 +349,20 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           carregando: _carregando,
                           erro: _erroCadastro,
                         ),
+                        // Antes da Home, a tela de boas-vindas explica o app
+                        // e oferece conectar o banco.
                         Etapa5Concluido(
                           aoIniciar: () =>
                               Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (_) => const Navegacao()),
+                                builder: (_) => TelaBoasVindas(
+                                      primeiroNome: _controladorNome.text
+                                          .trim()
+                                          .split(' ')
+                                          .first,
+                                      bancoJaConectado:
+                                          _bancosConectados.isNotEmpty,
+                                    )),
                             (_) => false,
                           ),
                         ),

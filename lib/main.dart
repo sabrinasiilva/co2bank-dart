@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'compartilhado/widgets/aviso_servidor_lento.dart';
 import 'nucleo/cores_app.dart';
 import 'nucleo/notificacoes.dart';
 import 'tela_splash.dart';
@@ -37,6 +38,7 @@ class AplicativoCo2Bank extends StatelessWidget {
         scaffoldBackgroundColor: CoresApp.background,
         fontFamily: 'Outfit',
       ),
+      builder: (_, filho) => AvisoServidorLento(child: filho!),
       home: const TelaSplash(),
     );
   }
