@@ -8,13 +8,25 @@ pela notificação local (só com o app aberto).
 O backend (CO2B-57) recebe o aparelho em `POST /devices` e envia o push quando o
 mês passa de 80% do limite. Se essas rotas ainda responderem 404, o app ignora.
 
-## 1. Criar e ligar o projeto Firebase
+## 0. Quem faz o quê
+
+O Gustavo cria o projeto Firebase (plano Spark, gratuito) e:
+
+- gera a chave da conta de serviço para o backend em **Configurações do projeto >
+  Contas de serviço > Gerar nova chave privada** e coloca no Render como
+  `FIREBASE_CREDENTIALS` (nunca no Git);
+- adiciona a Sabrina como membro em **Configurações do projeto > Usuários e
+  permissões > Adicionar membro** (papel Editor), para ela ligar o app ao
+  projeto no passo 1. Se ele preferir, ele mesmo pode rodar o passo 1 no
+  repositório do app e commitar os arquivos gerados.
+
+## 1. Ligar o app ao projeto Firebase
 
 ```bash
 npm install -g firebase-tools        # se ainda não tiver o Firebase CLI
 firebase login --reauth
 dart pub global activate flutterfire_cli
-flutterfire configure --platforms=android,web
+flutterfire configure --platforms=android,web   # escolha o projeto que o Gustavo criou
 ```
 
 O `flutterfire configure` cria/sobrescreve:
