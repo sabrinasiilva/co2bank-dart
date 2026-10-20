@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../compartilhado/widgets/botao_primario.dart';
 import '../transacoes/servico/servico_transacao.dart';
@@ -11,11 +12,9 @@ import 'widgets/folha_consentimento.dart';
 import 'widgets/folha_sincronizacao.dart';
 
 class TelaOpenFinance extends StatefulWidget {
-  /// Chamado quando novas compras entram no extrato, para as abas recarregarem.
-  final VoidCallback? aoDadosAlterados;
   final VoidCallback? aoVerExtrato;
 
-  const TelaOpenFinance({super.key, this.aoDadosAlterados, this.aoVerExtrato});
+  const TelaOpenFinance({super.key, this.aoVerExtrato});
 
   @override
   State<TelaOpenFinance> createState() => _TelaOpenFinanceState();
@@ -118,7 +117,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
     switch (resultado) {
       case OperacaoConcluida():
         // As compras desse banco saíram do extrato: as abas precisam recarregar.
-        widget.aoDadosAlterados?.call();
+        AvisoDadosAlterados.instancia.avisar();
         await _carregar();
         if (!mounted) return;
         _avisar('${banco.nome} desconectado. As compras dele saíram do extrato.');
@@ -179,7 +178,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
             },
     );
     if (houveNovas) {
-      widget.aoDadosAlterados?.call();
+      AvisoDadosAlterados.instancia.avisar();
       // Compras novas podem ter levado o mês para perto do limite.
       final servico = await ServicoTransacao.autenticado();
       await servico.avisarSeLimiteAlto();

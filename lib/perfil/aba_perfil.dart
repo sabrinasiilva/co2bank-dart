@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../nucleo/armazenamento_token.dart';
 import '../perfil/servico/servico_usuario.dart';
@@ -28,6 +29,14 @@ class _AbaPerfilState extends State<AbaPerfil> {
     _dados = _carregar();
     _carregarSugestao();
     _carregarNotificacoes();
+    // A sugestão de limite sai do histórico de compras.
+    AvisoDadosAlterados.instancia.addListener(_carregarSugestao);
+  }
+
+  @override
+  void dispose() {
+    AvisoDadosAlterados.instancia.removeListener(_carregarSugestao);
+    super.dispose();
   }
 
   Future<void> _carregarNotificacoes() async {

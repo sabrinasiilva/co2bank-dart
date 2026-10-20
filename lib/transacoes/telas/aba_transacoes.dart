@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../../nucleo/aviso_dados_alterados.dart';
 import '../../nucleo/cores_app.dart';
 import '../../transacoes/servico/servico_transacao.dart';
 import '../icone_categoria.dart';
@@ -17,6 +19,7 @@ class AbaTransacoes extends StatefulWidget {
 
 class _AbaTransacoesState extends State<AbaTransacoes> {
   late Future<List<ItemTransacao>> _dados;
+  Future<List<ItemTransacao>>? _cargaEmSegundoPlano;
   int _mes = DateTime.now().month;
   int _ano = DateTime.now().year;
 
@@ -24,6 +27,32 @@ class _AbaTransacoesState extends State<AbaTransacoes> {
   void initState() {
     super.initState();
     _dados = _carregar();
+    AvisoDadosAlterados.instancia.addListener(_recarregarEmSegundoPlano);
+  }
+
+  @override
+  void dispose() {
+    AvisoDadosAlterados.instancia.removeListener(_recarregarEmSegundoPlano);
+    super.dispose();
+  }
+
+  /// Busca de novo sem trocar a lista pelo carregando: o extrato visível fica
+  /// no lugar (com o mesmo scroll) até as compras novas chegarem.
+  Future<void> _recarregarEmSegundoPlano() async {
+    final mes = _mes;
+    final ano = _ano;
+    final carga = _carregar();
+    _cargaEmSegundoPlano = carga;
+    final List<ItemTransacao> transacoes;
+    try {
+      transacoes = await carga;
+    } catch (_) {
+      return; // Mantém o extrato que já estava na tela.
+    }
+    // Ignora se a pessoa trocou de mês ou se outro aviso chegou nesse meio-tempo.
+    if (!mounted || carga != _cargaEmSegundoPlano) return;
+    if (mes != _mes || ano != _ano) return;
+    setState(() => _dados = SynchronousFuture(transacoes));
   }
 
   Future<List<ItemTransacao>> _carregar() async {

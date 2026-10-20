@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'nucleo/aviso_dados_alterados.dart';
 import 'nucleo/cores_app.dart';
 import 'inicio/aba_inicio.dart';
 import 'transacoes/telas/aba_transacoes.dart';
@@ -18,7 +19,6 @@ class Navegacao extends StatefulWidget {
 
 class _NavegacaoState extends State<Navegacao> {
   int _abaAtual = 0;
-  int _versaoDados = 0;
   late final List<Widget> _abas;
 
   @override
@@ -37,7 +37,7 @@ class _NavegacaoState extends State<Navegacao> {
       context,
       MaterialPageRoute(builder: (_) => const TelaNovaCompra()),
     );
-    if (registrou == true) setState(() => _versaoDados++);
+    if (registrou == true) AvisoDadosAlterados.instancia.avisar();
   }
 
   static const _itensNavegacao = [
@@ -58,17 +58,10 @@ class _NavegacaoState extends State<Navegacao> {
       drawer: MenuLateral(
         abaAtual: _abaAtual,
         aoNavegar: (i) => setState(() => _abaAtual = i),
-        aoDadosAlterados: () => setState(() => _versaoDados++),
       ),
-      // A chave muda quando chegam dados novos (ex.: sincronização do Open
-      // Finance), o que recria as abas e faz cada uma buscar de novo na API.
-      body: IndexedStack(
-        index: _abaAtual,
-        children: [
-          for (var i = 0; i < _abas.length; i++)
-            KeyedSubtree(key: ValueKey('$i-$_versaoDados'), child: _abas[i]),
-        ],
-      ),
+      // Quando chegam dados novos, cada aba recarrega sozinha ao ouvir o
+      // AvisoDadosAlterados, sem ser recriada.
+      body: IndexedStack(index: _abaAtual, children: _abas),
       // Nova compra só faz sentido nas abas que mostram as compras.
       floatingActionButton: _abaAtual <= 1
           ? FloatingActionButton.extended(

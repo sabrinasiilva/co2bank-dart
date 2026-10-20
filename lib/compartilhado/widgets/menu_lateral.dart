@@ -11,13 +11,11 @@ import '../../open_finance/tela_open_finance.dart';
 class MenuLateral extends StatelessWidget {
   final int abaAtual;
   final ValueChanged<int> aoNavegar;
-  final VoidCallback? aoDadosAlterados;
 
   const MenuLateral({
     super.key,
     required this.abaAtual,
     required this.aoNavegar,
-    this.aoDadosAlterados,
   });
 
   static const _itens = [
@@ -49,10 +47,7 @@ class MenuLateral extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => TelaOpenFinance(
-          aoDadosAlterados: aoDadosAlterados,
-          aoVerExtrato: () => aoNavegar(1),
-        ),
+        builder: (_) => TelaOpenFinance(aoVerExtrato: () => aoNavegar(1)),
       ),
     );
   }

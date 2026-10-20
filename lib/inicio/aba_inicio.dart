@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../transacoes/servico/servico_transacao.dart';
 import '../nucleo/notificacoes.dart';
@@ -23,11 +25,35 @@ class AbaInicio extends StatefulWidget {
 
 class _AbaInicioState extends State<AbaInicio> {
   late Future<_DadosInicio> _dados;
+  Future<_DadosInicio>? _cargaEmSegundoPlano;
 
   @override
   void initState() {
     super.initState();
     _dados = _carregarDados();
+    AvisoDadosAlterados.instancia.addListener(_recarregarEmSegundoPlano);
+  }
+
+  @override
+  void dispose() {
+    AvisoDadosAlterados.instancia.removeListener(_recarregarEmSegundoPlano);
+    super.dispose();
+  }
+
+  /// Busca de novo sem trocar a tela pelo carregando: o que já está visível
+  /// fica no lugar (com o mesmo scroll) até os dados novos chegarem.
+  Future<void> _recarregarEmSegundoPlano() async {
+    final carga = _carregarDados();
+    _cargaEmSegundoPlano = carga;
+    final _DadosInicio dados;
+    try {
+      dados = await carga;
+    } catch (_) {
+      return; // Mantém os dados que já estavam na tela.
+    }
+    // Se outro aviso chegou nesse meio-tempo, a carga mais nova é que vale.
+    if (!mounted || carga != _cargaEmSegundoPlano) return;
+    setState(() => _dados = SynchronousFuture(dados));
   }
 
   Future<_DadosInicio> _carregarDados() async {

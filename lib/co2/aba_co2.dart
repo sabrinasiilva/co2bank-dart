@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../presentation/rewards/reward_service.dart';
 import '../transacoes/servico/servico_transacao.dart';
@@ -29,6 +30,13 @@ class _AbaCo2State extends State<AbaCo2> {
     _mes = agora.month;
     _ano = agora.year;
     _carregarTudo();
+    AvisoDadosAlterados.instancia.addListener(_carregarTudo);
+  }
+
+  @override
+  void dispose() {
+    AvisoDadosAlterados.instancia.removeListener(_carregarTudo);
+    super.dispose();
   }
 
   Future<void> _carregarTudo() async {
