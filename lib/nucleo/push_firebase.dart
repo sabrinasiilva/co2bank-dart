@@ -9,6 +9,7 @@ import '../firebase_options.dart';
 import 'armazenamento_token.dart';
 import 'cliente_api.dart';
 import 'notificacoes.dart';
+import 'registro_erros.dart';
 
 /// Chave pública (VAPID) do Web Push, gerada no console do Firebase em
 /// Cloud Messaging > Web Push certificates. Só é usada na versão web:
@@ -62,6 +63,9 @@ class PushFirebase {
   static StreamSubscription<RemoteMessage>? _assinaturaMensagens;
 
   static const _tempoLimite = Duration(seconds: 5);
+  // O cadastro roda em segundo plano e precisa esperar o Render acordar
+  // (até ~1 min no plano gratuito); a remoção, no logout, não pode prender a tela.
+  static const _tempoLimiteCadastro = Duration(seconds: 90);
   static const _chaveToken = 'push_token_aparelho';
 
   static bool get suportado =>
@@ -224,9 +228,10 @@ class PushFirebase {
       final resposta = await cliente.post('/devices', {
         'token': token,
         'platform': _plataforma,
-      }).timeout(_tempoLimite);
+      }).timeout(_tempoLimiteCadastro);
       return resposta.sucesso;
-    } catch (_) {
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'PushFirebase._registrarNoBackend');
       return false;
     }
   }
