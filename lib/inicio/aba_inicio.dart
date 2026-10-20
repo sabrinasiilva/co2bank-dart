@@ -13,6 +13,7 @@ import '../nucleo/notificacoes.dart';
 import '../transacoes/icone_categoria.dart';
 import '../transacoes/telas/tela_detalhe_transacao.dart';
 import '../perfil/servico/servico_usuario.dart';
+import 'estado_vazio_inicio.dart';
 
 class AbaInicio extends StatefulWidget {
   final VoidCallback? aoVerTransacoes;
@@ -215,7 +216,7 @@ class _AbaInicioState extends State<AbaInicio> {
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 96),
                   sliver: SliverToBoxAdapter(
-                    child: _SemTransacoes(),
+                    child: EstadoVazioInicio(aoAtualizar: _atualizar),
                   ),
                 )
               else ...[
@@ -730,33 +731,6 @@ class _BannerAlertaIA extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SemTransacoes extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: CoresApp.surface,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        children: [
-          const Icon(Icons.receipt_long_rounded,
-              size: 40, color: CoresApp.border),
-          const SizedBox(height: 12),
-          Text(
-            'Nenhuma movimentação este mês',
-            style: GoogleFonts.outfit(
-              fontSize: 14,
-              color: CoresApp.textSecondary,
             ),
           ),
         ],
