@@ -47,3 +47,6 @@ app.*.map.json
 
 # Material de design exportado do Canva (arquivo grande, fica fora do repo)
 /logo.pdf
+
+# Cache do Kotlin criado pelo Gradle
+android/.kotlin/
