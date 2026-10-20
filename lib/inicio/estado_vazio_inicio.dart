@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../compartilhado/widgets/botao_primario.dart';
+import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../open_finance/tela_open_finance.dart';
 import '../transacoes/telas/tela_nova_compra.dart';
@@ -28,7 +29,8 @@ class EstadoVazioInicio extends StatelessWidget {
       context,
       MaterialPageRoute(builder: (_) => const TelaNovaCompra()),
     );
-    if (registrou == true && context.mounted) aoAtualizar();
+    // Avisa todas as abas (a Início também escuta), não só a Home.
+    if (registrou == true) AvisoDadosAlterados.instancia.avisar();
   }
 
   @override
