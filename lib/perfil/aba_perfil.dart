@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -5,6 +7,7 @@ import '../nucleo/cores_app.dart';
 import '../nucleo/armazenamento_token.dart';
 import '../perfil/servico/servico_usuario.dart';
 import '../nucleo/notificacoes.dart';
+import '../nucleo/push_firebase.dart';
 import '../transacoes/servico/servico_transacao.dart';
 import 'sugestao_limite.dart';
 import '../autenticacao/telas/tela_login.dart';
@@ -41,12 +44,15 @@ class _AbaPerfilState extends State<AbaPerfil> {
     if (ligar) {
       ativas = await Notificacoes.ativar();
       if (ativas) {
+        // Push para avisar com o app fechado; se não der, fica só a local.
+        unawaited(PushFirebase.ativar());
         // Se o mês já está perto do limite, o aviso aparece na hora.
         final servico = await ServicoTransacao.autenticado();
         await servico.avisarSeLimiteAlto();
       }
     } else {
       await Notificacoes.desativar();
+      await PushFirebase.desativar();
     }
     if (!mounted) return;
     setState(() {
@@ -77,6 +83,8 @@ class _AbaPerfilState extends State<AbaPerfil> {
   }
 
   Future<void> _sair() async {
+    // Tira o aparelho do push antes de apagar o login (a rota exige o JWT).
+    await PushFirebase.desativar();
     await ArmazenamentoToken.limpar();
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(

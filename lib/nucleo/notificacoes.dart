@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Notificação no celular (ou no navegador) quando o limite de CO2 do mês passa
 /// de 80%. É uma notificação local: o próprio app dispara quando consulta o
-/// alerta no backend, sem servidor de push.
+/// alerta no backend. Com o app fechado, quem avisa é o push (push_firebase.dart).
 class Notificacoes {
   static final _plugin = FlutterLocalNotificationsPlugin();
   static bool _iniciado = false;
@@ -100,9 +100,10 @@ class Notificacoes {
     await iniciar();
     if (!_iniciado) return;
 
-    final agora = DateTime.now();
-    final mesAtual = '${agora.year}-${agora.month.toString().padLeft(2, '0')}';
+    final mesAtual = _mesAtual();
     final prefs = await SharedPreferences.getInstance();
+    // O push com o app fechado grava o aviso em outro isolate; relê do disco.
+    await prefs.reload();
     if (prefs.getString(_chaveUltimoAviso) == mesAtual) return;
 
     try {
@@ -116,5 +117,17 @@ class Notificacoes {
     } catch (_) {
       // Sem permissão ou sem suporte: o aviso continua aparecendo na tela inicial.
     }
+  }
+
+  /// Guarda que o aviso deste mês já foi dado (por exemplo, pelo push que chegou
+  /// com o app fechado), para o app não repetir a mesma notificação depois.
+  static Future<void> marcarAvisoDoMes() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_chaveUltimoAviso, _mesAtual());
+  }
+
+  static String _mesAtual() {
+    final agora = DateTime.now();
+    return '${agora.year}-${agora.month.toString().padLeft(2, '0')}';
   }
 }
