@@ -55,11 +55,11 @@ void main() {
     });
 
     test('aceita domínios com mais de um ponto (.com.br, subdomínios)', () {
-      // Hoje o regex só aceita UM ponto depois do @, então e-mails como
-      // "nome@uol.com.br" são recusados no cadastro.
+      // O regex antigo só aceitava UM ponto depois do @ e recusava
+      // e-mails como "nome@uol.com.br" no cadastro.
       expect(Validadores.emailValido('sabrina@empresa.com.br'), isTrue);
       expect(Validadores.emailValido('nome@mail.empresa.com'), isTrue);
-    }, skip: true); // BUG: e-mail .com.br é recusado
+    });
   });
 
   group('telefoneValido', () {

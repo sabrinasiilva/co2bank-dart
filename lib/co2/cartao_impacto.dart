@@ -69,8 +69,8 @@ class CartaoImpacto extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             dentroDoLimite
-                ? 'Você emitiu ${diferenca.toStringAsFixed(1)} kg a menos que o seu limite'
-                : 'Você passou ${(-diferenca).toStringAsFixed(1)} kg do seu limite',
+                ? 'Você emitiu ${diferenca.toStringAsFixed(1).replaceAll('.', ',')} kg a menos que o seu limite'
+                : 'Você passou ${(-diferenca).toStringAsFixed(1).replaceAll('.', ',')} kg do seu limite',
             style: GoogleFonts.outfit(
               fontSize: 20,
               fontWeight: FontWeight.bold,

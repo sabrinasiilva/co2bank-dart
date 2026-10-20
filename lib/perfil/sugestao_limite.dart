@@ -78,6 +78,21 @@ class CartaoSugestaoLimite extends StatelessWidget {
         ? 'do último mês'
         : 'dos últimos ${sugestao.mesesConsiderados} meses';
     final jaEstaAbaixo = limiteAtualKg <= sugestao.sugeridoKg;
+    // A sugestão pode ter sido levada ao mínimo ou ao máximo do app; aí ela
+    // já não é "10% abaixo da média" e o texto precisa dizer isso.
+    final bruto = ((sugestao.mediaKg * 0.9) / 10).round() * 10.0;
+    final String explicacao;
+    if (jaEstaAbaixo) {
+      explicacao = limiteAtualKg < sugestao.mediaKg
+          ? 'Ele está abaixo da sua média $periodo ($media kg). Continue assim!'
+          : 'Sua média $periodo foi de $media kg, dentro do seu limite. Continue assim!';
+    } else if (bruto < limiteMinimoKg) {
+      explicacao = 'Sua média $periodo foi de $media kg. $sugerido kg é o menor limite do app.';
+    } else if (bruto > limiteMaximoKg) {
+      explicacao = 'Sua média $periodo foi de $media kg. $sugerido kg é o maior limite do app.';
+    } else {
+      explicacao = '10% abaixo da sua média $periodo, que foi de $media kg.';
+    }
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -111,9 +126,7 @@ class CartaoSugestaoLimite extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  jaEstaAbaixo
-                      ? 'Ele está abaixo da sua média $periodo ($media kg). Continue assim!'
-                      : '10% abaixo da sua média $periodo, que foi de $media kg.',
+                  explicacao,
                   style: GoogleFonts.outfit(
                     fontSize: 13,
                     color: CoresApp.brandText,

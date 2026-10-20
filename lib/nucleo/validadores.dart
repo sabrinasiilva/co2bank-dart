@@ -18,7 +18,8 @@ class Validadores {
   }
 
   static bool emailValido(String email) =>
-      RegExp(r'^[\w\.\-\+]+@[\w\-]+\.\w{2,}$').hasMatch(email.trim());
+      // Aceita domínios com mais de um ponto, como "empresa.com.br".
+      RegExp(r'^[\w\.\-\+]+@[\w\-]+(\.[\w\-]+)*\.\w{2,}$').hasMatch(email.trim());
 
   static bool telefoneValido(String telefone) {
     final digits = telefone.replaceAll(RegExp(r'[^\d]'), '');

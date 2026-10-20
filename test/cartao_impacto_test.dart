@@ -41,7 +41,7 @@ void main() {
     await _montar(tester, _resumo(totalCo2Kg: 78));
 
     expect(find.text('Seu impacto em outubro'), findsOneWidget);
-    expect(find.text('Você emitiu 22.0 kg a menos que o seu limite'),
+    expect(find.text('Você emitiu 22,0 kg a menos que o seu limite'),
         findsOneWidget);
     expect(find.text('Cerca do que 12 árvores absorvem em um mês'),
         findsOneWidget);
@@ -64,7 +64,7 @@ void main() {
       (tester) async {
     await _montar(tester, _resumo(totalCo2Kg: 130));
 
-    expect(find.text('Você passou 30.0 kg do seu limite'), findsOneWidget);
+    expect(find.text('Você passou 30,0 kg do seu limite'), findsOneWidget);
     expect(find.textContaining('árvore'), findsNothing);
     expect(find.text('O mesmo que rodar cerca de 250 km a mais de carro'),
         findsOneWidget);

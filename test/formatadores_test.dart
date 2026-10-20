@@ -85,10 +85,10 @@ void main() {
     });
 
     test('telefone fixo (10 dígitos) usa o hífen depois de 4 dígitos', () {
-      // Hoje sai "(11) 33334-444": o hífen fica sempre na posição do celular,
-      // embora Validadores.telefoneValido aceite 10 dígitos.
+      // Antes saía "(11) 33334-444": o hífen ficava sempre na posição do
+      // celular, embora Validadores.telefoneValido aceite 10 dígitos.
       expect(_formatar(formatador, '1133334444'), '(11) 3333-4444');
-    }, skip: true); // BUG: número fixo fica com o hífen no lugar errado
+    });
   });
 
   group('FormatadorMoeda', () {

@@ -186,13 +186,12 @@ void main() {
       'não diz "10% abaixo da média" quando a sugestão foi elevada ao mínimo',
       (tester) async {
         // Média de 30 kg: a sugestão vira 50 kg (o mínimo), que fica ACIMA da
-        // média, mas o texto continua dizendo "10% abaixo da sua média".
+        // média, então o texto não pode dizer "10% abaixo da sua média".
         final elevada = sugerirLimitePeloHistorico([_mes(30)])!;
         await montar(tester, elevada, limiteAtualKg: 100);
 
         expect(find.textContaining('10% abaixo'), findsNothing);
       },
-      skip: true, // BUG: texto do card não considera o limite mínimo/máximo
     );
   });
 }

@@ -25,10 +25,14 @@ class FormatadorTelefone extends TextInputFormatter {
       TextEditingValue oldValue, TextEditingValue newValue) {
     final digits = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
     final buffer = StringBuffer();
+    // Celular começa com 9 depois do DDD: (11) 98765-4321.
+    // Fixo começa com 2 a 5: (11) 3333-4444.
+    final celular = digits.length < 3 || digits[2] == '9';
+    final posicaoHifen = celular ? 7 : 6;
     for (int i = 0; i < digits.length && i < 11; i++) {
       if (i == 0) buffer.write('(');
       if (i == 2) buffer.write(') ');
-      if (i == 7) buffer.write('-');
+      if (i == posicaoHifen) buffer.write('-');
       buffer.write(digits[i]);
     }
     final result = buffer.toString();
