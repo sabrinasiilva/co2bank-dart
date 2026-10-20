@@ -5,6 +5,13 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Push do alerta (Firebase): o google-services.json é criado pelo
+// `flutterfire configure` (docs/FIREBASE.md). Sem ele o build segue normal,
+// só sem push.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 android {
     namespace = "com.co2bank.co2bank_app"
     compileSdk = flutter.compileSdkVersion
@@ -26,6 +33,7 @@ android {
         applicationId = "com.co2bank.co2bank_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // O Flutter 3.38 já usa 24, que é o mínimo do firebase_messaging.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

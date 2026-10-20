@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'compartilhado/widgets/aviso_servidor_lento.dart';
 import 'nucleo/cores_app.dart';
 import 'nucleo/notificacoes.dart';
+import 'nucleo/push_firebase.dart';
 import 'tela_splash.dart';
 
 void main() {
@@ -15,6 +16,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // Sem await para não atrasar a abertura do app.
   unawaited(Notificacoes.iniciar());
+  // Push do alerta (Firebase); sem `flutterfire configure` ele só é pulado.
+  unawaited(PushFirebase.iniciar());
   runApp(const AplicativoCo2Bank());
 }
 

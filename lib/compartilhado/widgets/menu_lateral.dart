@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cores_app.dart';
 import '../../nucleo/armazenamento_token.dart';
+import '../../nucleo/push_firebase.dart';
 import '../../perfil/servico/servico_usuario.dart';
 import '../../autenticacao/telas/tela_login.dart';
 import '../../presentation/rewards/rewards_screen.dart';
@@ -54,6 +55,8 @@ class MenuLateral extends StatelessWidget {
 
   Future<void> _sair(BuildContext context) async {
     Navigator.pop(context);
+    // Tira o aparelho do push antes de apagar o login (a rota exige o JWT).
+    await PushFirebase.desativar();
     await ArmazenamentoToken.limpar();
     if (!context.mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
