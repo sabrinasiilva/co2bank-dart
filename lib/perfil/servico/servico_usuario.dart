@@ -38,6 +38,18 @@ class PerfilCarregado extends ResultadoPerfil {
 
 class PerfilIndisponivel extends ResultadoPerfil {}
 
+// Classes de resultado para a edição de perfil 
+sealed class ResultadoAtualizacaoPerfil {}
+
+class PerfilAtualizado extends ResultadoAtualizacaoPerfil {}
+
+class ErroMensagemPerfil extends ResultadoAtualizacaoPerfil {
+  final String mensagem;
+  ErroMensagemPerfil(this.mensagem);
+}
+
+class ErroRedePerfil extends ResultadoAtualizacaoPerfil {}
+
 class ServicoUsuario {
   final ClienteApi _cliente;
 
@@ -60,6 +72,33 @@ class ServicoUsuario {
     } catch (e, pilha) {
       registrarErro(e, pilha, contexto: 'ServicoUsuario.obterPerfil');
       return PerfilIndisponivel();
+    }
+  }
+  // Método para atualizar o perfil via PATCH
+  Future<ResultadoAtualizacaoPerfil> atualizarPerfil({
+    String? nome,
+    String? telefone,
+    int? limite,
+  }) async {
+    try {
+      final corpo = <String, dynamic>{};
+      if (nome != null) corpo['name'] = nome;
+      if (telefone != null) corpo['phone'] = telefone;
+      if (limite != null) corpo['co2_limit_kg'] = limite;
+
+      final resposta = await _cliente.patch('/auth/me', corpo);
+
+      if (resposta.sucesso) {
+        return PerfilAtualizado();
+      } else if (resposta.codigoStatus == 400) {
+        final mensagem = resposta.erro ?? 'Dados inválidos';
+        return ErroMensagemPerfil(mensagem);
+      } else {
+        return ErroRedePerfil();
+      }
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoUsuario.atualizarPerfil');
+      return ErroRedePerfil();
     }
   }
 }
