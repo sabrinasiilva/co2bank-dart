@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:co2bank_app/open_finance/servico/servico_open_finance.dart';
 import 'package:co2bank_app/perfil/servico/servico_usuario.dart';
-import 'package:co2bank_app/presentation/rewards/reward_service.dart';
+import 'package:co2bank_app/recompensas/servico/servico_recompensas.dart';
 import 'package:co2bank_app/transacoes/servico/servico_transacao.dart';
 
 void main() {
@@ -223,35 +223,35 @@ void main() {
   });
 
   group('Recompensas', () {
-    test('TokensSummary: saldo disponível cai para os ganhos quando ausente',
+    test('ResumoCoins: saldo disponível cai para os ganhos quando ausente',
         () {
-      final resumo = TokensSummary.fromJson({
+      final resumo = ResumoCoins.fromJson({
         'tokens_earned': 40,
         'kg_saved': 12.5,
         'partners': [
           {'name': 'Loja Verde', 'category': 'Moda', 'cost': 30, 'discount_percent': 10},
         ],
       });
-      expect(resumo.earned, 40);
-      expect(resumo.available, 40);
-      expect(resumo.kgSaved, 12.5);
-      expect(resumo.offers.single.store, 'Loja Verde');
+      expect(resumo.ganhos, 40);
+      expect(resumo.disponiveis, 40);
+      expect(resumo.kgEconomizados, 12.5);
+      expect(resumo.ofertas.single.loja, 'Loja Verde');
 
       final comSaldo =
-          TokensSummary.fromJson({'tokens_earned': 40, 'tokens_available': 10});
-      expect(comSaldo.available, 10);
+          ResumoCoins.fromJson({'tokens_earned': 40, 'tokens_available': 10});
+      expect(comSaldo.disponiveis, 10);
     });
 
-    test('TokensSummary: json vazio vira tudo zero', () {
-      final resumo = TokensSummary.fromJson({});
-      expect(resumo.earned, 0);
-      expect(resumo.available, 0);
-      expect(resumo.kgSaved, 0);
-      expect(resumo.offers, isEmpty);
+    test('ResumoCoins: json vazio vira tudo zero', () {
+      final resumo = ResumoCoins.fromJson({});
+      expect(resumo.ganhos, 0);
+      expect(resumo.disponiveis, 0);
+      expect(resumo.kgEconomizados, 0);
+      expect(resumo.ofertas, isEmpty);
     });
 
-    test('AchievementsSummary: conta as conquistas quando o total não vem', () {
-      final resumo = AchievementsSummary.fromJson({
+    test('ResumoConquistas: conta as conquistas quando o total não vem', () {
+      final resumo = ResumoConquistas.fromJson({
         'rewards': [
           {'id': 'a', 'title': 'Primeira compra', 'earned': true, 'earned_at': '2026-01-02T00:00:00'},
           {'id': 'b', 'title': 'Um mês no limite'},
@@ -259,20 +259,20 @@ void main() {
         ],
       });
       expect(resumo.total, 3);
-      expect(resumo.totalEarned, 2);
-      expect(resumo.items.first.earnedAt, DateTime(2026, 1, 2));
-      expect(resumo.items[1].earned, isFalse);
-      expect(resumo.items[1].description, '');
+      expect(resumo.totalConquistadas, 2);
+      expect(resumo.itens.first.conquistadaEm, DateTime(2026, 1, 2));
+      expect(resumo.itens[1].conquistada, isFalse);
+      expect(resumo.itens[1].descricao, '');
 
-      final doServidor = AchievementsSummary.fromJson(
+      final doServidor = ResumoConquistas.fromJson(
           {'rewards': [], 'total': 10, 'total_earned': 4});
       expect(doServidor.total, 10);
-      expect(doServidor.totalEarned, 4);
+      expect(doServidor.totalConquistadas, 4);
     });
 
-    test('Redemption: id numérico vira texto e campos opcionais ficam nulos',
+    test('Resgate: id numérico vira texto e campos opcionais ficam nulos',
         () {
-      final cupom = Redemption.fromJson({
+      final cupom = Resgate.fromJson({
         'id': 7,
         'partner_name': 'Loja Verde',
         'cost': 30,
@@ -280,22 +280,22 @@ void main() {
         'redeemed_at': '2026-03-01T12:00:00',
       });
       expect(cupom.id, '7');
-      expect(cupom.partnerName, 'Loja Verde');
-      expect(cupom.cost, 30);
-      expect(cupom.couponCode, 'VERDE10');
-      expect(cupom.redeemedAt, DateTime(2026, 3, 1, 12));
-      expect(cupom.discountPercent, isNull);
-      expect(cupom.hasWebsite, isFalse);
+      expect(cupom.nomeParceiro, 'Loja Verde');
+      expect(cupom.custo, 30);
+      expect(cupom.codigoCupom, 'VERDE10');
+      expect(cupom.resgatadoEm, DateTime(2026, 3, 1, 12));
+      expect(cupom.percentualDesconto, isNull);
+      expect(cupom.temSite, isFalse);
     });
 
-    test('Redemption.hasWebsite ignora links de exemplo', () {
-      Redemption comUrl(String? url) =>
-          Redemption.fromJson({'id': '1', 'url': url});
-      expect(comUrl('https://www.lojaverde.com.br').hasWebsite, isTrue);
-      expect(comUrl('https://loja.example.com').hasWebsite, isFalse);
-      expect(comUrl('https://example.com').hasWebsite, isFalse);
-      expect(comUrl('').hasWebsite, isFalse);
-      expect(comUrl(null).hasWebsite, isFalse);
+    test('Resgate.temSite ignora links de exemplo', () {
+      Resgate comUrl(String? url) =>
+          Resgate.fromJson({'id': '1', 'url': url});
+      expect(comUrl('https://www.lojaverde.com.br').temSite, isTrue);
+      expect(comUrl('https://loja.example.com').temSite, isFalse);
+      expect(comUrl('https://example.com').temSite, isFalse);
+      expect(comUrl('').temSite, isFalse);
+      expect(comUrl(null).temSite, isFalse);
     });
   });
 }

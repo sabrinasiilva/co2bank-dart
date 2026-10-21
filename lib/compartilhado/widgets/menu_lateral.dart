@@ -6,7 +6,7 @@ import '../../nucleo/armazenamento_token.dart';
 import '../../nucleo/push_firebase.dart';
 import '../../perfil/servico/servico_usuario.dart';
 import '../../autenticacao/telas/tela_login.dart';
-import '../../presentation/rewards/rewards_screen.dart';
+import '../../recompensas/tela_recompensas.dart';
 import '../../open_finance/tela_open_finance.dart';
 
 class MenuLateral extends StatelessWidget {
@@ -39,7 +39,7 @@ class MenuLateral extends StatelessWidget {
     Navigator.pop(context);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const RewardsScreen()),
+      MaterialPageRoute(builder: (_) => const TelaRecompensas()),
     );
   }
 

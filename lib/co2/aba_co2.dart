@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../compartilhado/widgets/aviso_erro_carregamento.dart';
 import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
-import '../presentation/rewards/reward_service.dart';
+import '../recompensas/servico/servico_recompensas.dart';
 import '../transacoes/servico/servico_transacao.dart';
 import 'cartao_impacto.dart';
 import 'grafico_evolucao_mensal.dart';
@@ -74,11 +74,11 @@ class _AbaCo2State extends State<AbaCo2> {
   }
 
   Future<void> _carregarCoins() async {
-    final servico = await RewardService.authenticated();
-    final resultado = await servico.loadTokens();
+    final servico = await ServicoRecompensas.autenticado();
+    final resultado = await servico.carregarCoins();
     if (!mounted) return;
-    if (resultado case TokensLoaded(:final summary)) {
-      setState(() => _coinsDoMes = summary.earned);
+    if (resultado case CoinsCarregados(:final resumo)) {
+      setState(() => _coinsDoMes = resumo.ganhos);
     }
   }
 

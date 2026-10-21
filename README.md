@@ -83,8 +83,7 @@ lib/
 ├── co2/                   # aba Limite Ecológico, gráfico mensal e card de impacto
 ├── perfil/                # aba Perfil e sugestão de limite
 ├── open_finance/          # conexão com bancos e sincronização de compras
-├── presentation/rewards/  # Shopping Verde, conquistas e cupons
-└── core/app_colors.dart   # apelido de CoresApp usado pela tela de Recompensas, não remover
+└── recompensas/           # Shopping Verde, conquistas e cupons
 ```
 
 ## Como rodar o código
