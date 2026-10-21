@@ -50,3 +50,6 @@ app.*.map.json
 
 # Cache do Kotlin criado pelo Gradle
 android/.kotlin/
+
+# Log do Firebase CLI
+firebase-debug.log

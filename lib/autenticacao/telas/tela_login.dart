@@ -8,7 +8,7 @@ import '../../compartilhado/widgets/campo_autenticacao.dart';
 import '../../compartilhado/widgets/botao_primario.dart';
 import '../../compartilhado/widgets/logo_co2bank.dart';
 import 'tela_cadastro/tela_cadastro.dart';
-import 'tela_esqueci_senha/tela_esqueci_senha.dart';
+import 'tela_esqueci_senha.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});

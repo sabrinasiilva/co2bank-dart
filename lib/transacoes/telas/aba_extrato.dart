@@ -11,14 +11,14 @@ import '../icone_categoria.dart';
 import 'tela_detalhe_transacao.dart';
 import '../../open_finance/widgets/selo_open_finance.dart';
 
-class AbaTransacoes extends StatefulWidget {
-  const AbaTransacoes({super.key});
+class AbaExtrato extends StatefulWidget {
+  const AbaExtrato({super.key});
 
   @override
-  State<AbaTransacoes> createState() => _AbaTransacoesState();
+  State<AbaExtrato> createState() => _AbaExtratoState();
 }
 
-class _AbaTransacoesState extends State<AbaTransacoes> {
+class _AbaExtratoState extends State<AbaExtrato> {
   late Future<List<ItemTransacao>> _dados;
   Future<List<ItemTransacao>>? _cargaEmSegundoPlano;
   int _mes = DateTime.now().month;

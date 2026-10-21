@@ -74,7 +74,7 @@ O código fica em `lib/`, organizado por funcionalidade. Cada pasta tem as telas
 lib/
 ├── main.dart              # AplicativoCo2Bank
 ├── navegacao.dart         # barra inferior + menu lateral
-├── tela_splash.dart
+├── tela_abertura.dart     # tela de abertura com a logo
 ├── nucleo/                # cliente HTTP, token JWT, cores, notificações, validadores, formatadores
 ├── compartilhado/widgets/ # widgets reutilizados (botão, campo, logo, menu lateral...)
 ├── autenticacao/          # login, cadastro (etapas) e esqueci a senha
@@ -83,8 +83,7 @@ lib/
 ├── co2/                   # aba Limite Ecológico, gráfico mensal e card de impacto
 ├── perfil/                # aba Perfil e sugestão de limite
 ├── open_finance/          # conexão com bancos e sincronização de compras
-├── presentation/rewards/  # Shopping Verde, conquistas e cupons
-└── core/app_colors.dart   # apelido de CoresApp usado pela tela de Recompensas, não remover
+└── recompensas/           # Shopping Verde, conquistas e cupons
 ```
 
 ## Como rodar o código

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'nucleo/aviso_dados_alterados.dart';
 import 'nucleo/cores_app.dart';
 import 'inicio/aba_inicio.dart';
-import 'transacoes/telas/aba_transacoes.dart';
+import 'transacoes/telas/aba_extrato.dart';
 import 'transacoes/telas/tela_nova_compra.dart';
 import 'co2/aba_co2.dart';
 import 'perfil/aba_perfil.dart';
@@ -26,7 +26,7 @@ class _NavegacaoState extends State<Navegacao> {
     super.initState();
     _abas = [
       AbaInicio(aoVerTransacoes: () => setState(() => _abaAtual = 1)),
-      const AbaTransacoes(),
+      const AbaExtrato(),
       const AbaCo2(),
       const AbaPerfil(),
     ];

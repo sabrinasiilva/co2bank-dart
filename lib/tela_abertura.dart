@@ -7,14 +7,14 @@ import 'nucleo/cores_app.dart';
 import 'compartilhado/widgets/logo_co2bank.dart';
 import 'autenticacao/telas/tela_login.dart';
 
-class TelaSplash extends StatefulWidget {
-  const TelaSplash({super.key});
+class TelaAbertura extends StatefulWidget {
+  const TelaAbertura({super.key});
 
   @override
-  State<TelaSplash> createState() => _TelaSplashState();
+  State<TelaAbertura> createState() => _TelaAberturaState();
 }
 
-class _TelaSplashState extends State<TelaSplash>
+class _TelaAberturaState extends State<TelaAbertura>
     with SingleTickerProviderStateMixin {
   late AnimationController _controlador;
   late Animation<double> _animacaoFade;

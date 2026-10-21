@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../nucleo/cores_app.dart';
-import '../../servico/servico_autenticacao.dart';
-import '../../../compartilhado/widgets/campo_autenticacao.dart';
-import '../../../compartilhado/widgets/botao_primario.dart';
+import '../../nucleo/cores_app.dart';
+import '../servico/servico_autenticacao.dart';
+import '../../compartilhado/widgets/campo_autenticacao.dart';
+import '../../compartilhado/widgets/botao_primario.dart';
 
 enum _Etapa { email, codigo, novaSenha }
 

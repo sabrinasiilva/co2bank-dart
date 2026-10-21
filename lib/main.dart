@@ -8,7 +8,7 @@ import 'compartilhado/widgets/aviso_servidor_lento.dart';
 import 'nucleo/cores_app.dart';
 import 'nucleo/notificacoes.dart';
 import 'nucleo/push_firebase.dart';
-import 'tela_splash.dart';
+import 'tela_abertura.dart';
 
 void main() {
   // A Outfit vem dentro do app (assets/google_fonts); não precisa baixar nada.
@@ -42,7 +42,7 @@ class AplicativoCo2Bank extends StatelessWidget {
         fontFamily: 'Outfit',
       ),
       builder: (_, filho) => AvisoServidorLento(child: filho!),
-      home: const TelaSplash(),
+      home: const TelaAbertura(),
     );
   }
 }
