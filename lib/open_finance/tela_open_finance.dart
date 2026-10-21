@@ -60,11 +60,17 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
   Future<List<ItemTransacao>> _carregarImportadas() async {
     final agora = DateTime.now();
     final servico = await ServicoTransacao.autenticado();
-    final transacoes = await servico.listarTransacoes(
-      mes: agora.month,
-      ano: agora.year,
-    );
-    return transacoes.where((t) => t.importadaOpenFinance).toList();
+    try {
+      final transacoes = await servico.listarTransacoes(
+        mes: agora.month,
+        ano: agora.year,
+      );
+      return transacoes.where((t) => t.importadaOpenFinance).toList();
+    } on FalhaAoCarregarTransacoes {
+      // Aqui a lista é só um complemento (as últimas importadas): sem ela, a
+      // tela do Open Finance continua funcionando.
+      return [];
+    }
   }
 
   DateTime? get _ultimaSincronizacao {

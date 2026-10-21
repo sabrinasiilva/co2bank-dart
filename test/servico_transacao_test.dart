@@ -96,10 +96,12 @@ void main() {
       expect(requisicoes[1].url.query, 'year=2026');
     });
 
-    test('erro do servidor devolve lista vazia', () async {
+    test('erro do servidor avisa a falha (a tela mostra o erro, não um extrato vazio)',
+        () async {
       final servico =
           await _servico((_) async => _json({'error': 'Token inválido'}, 401));
-      expect(await servico.listarTransacoes(), isEmpty);
+      expect(servico.listarTransacoes(),
+          throwsA(isA<FalhaAoCarregarTransacoes>()));
     });
 
     test('resposta que não é lista devolve lista vazia', () async {
@@ -107,16 +109,18 @@ void main() {
       expect(await servico.listarTransacoes(), isEmpty);
     });
 
-    test('sem internet devolve lista vazia', () async {
+    test('sem internet avisa a falha', () async {
       final servico =
           await _servico((_) async => throw http.ClientException('offline'));
-      expect(await servico.listarTransacoes(), isEmpty);
+      expect(servico.listarTransacoes(),
+          throwsA(isA<FalhaAoCarregarTransacoes>()));
     });
 
-    test('item malformado não derruba: devolve lista vazia', () async {
+    test('item malformado não derruba o app: avisa a falha', () async {
       final servico = await _servico(
           (_) async => _json([_transacaoJson('a'), {'id': 'b'}]));
-      expect(await servico.listarTransacoes(), isEmpty);
+      expect(servico.listarTransacoes(),
+          throwsA(isA<FalhaAoCarregarTransacoes>()));
     });
   });
 

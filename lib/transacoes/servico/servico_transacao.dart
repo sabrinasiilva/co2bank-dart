@@ -104,6 +104,12 @@ class AlertaLimite {
       );
 }
 
+/// A API não respondeu (ou respondeu com erro) ao listar as transações.
+class FalhaAoCarregarTransacoes implements Exception {
+  @override
+  String toString() => 'Não foi possível carregar as transações';
+}
+
 sealed class ResultadoResumoMensal {}
 
 class ResumoCarregado extends ResultadoResumoMensal {
@@ -254,6 +260,8 @@ class ServicoTransacao {
     return ServicoTransacao._(cliente);
   }
 
+  /// Lança [FalhaAoCarregarTransacoes] quando a API falha, para a tela poder
+  /// mostrar o erro em vez de um extrato vazio.
   Future<List<ItemTransacao>> listarTransacoes({int? mes, int? ano}) async {
     var caminho = '/transactions';
     final params = <String>[];
@@ -261,15 +269,21 @@ class ServicoTransacao {
     if (ano != null) params.add('year=$ano');
     if (params.isNotEmpty) caminho += '?${params.join('&')}';
 
+    final RespostaApi resposta;
     try {
-      final resposta = await _cliente.get(caminho);
-      if (!resposta.sucesso) return [];
+      resposta = await _cliente.get(caminho);
+    } catch (e, pilha) {
+      registrarErro(e, pilha, contexto: 'ServicoTransacao.listarTransacoes');
+      throw FalhaAoCarregarTransacoes();
+    }
+    if (!resposta.sucesso) throw FalhaAoCarregarTransacoes();
+    try {
       return resposta.listaCorpo
           .map((e) => ItemTransacao.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (e, pilha) {
       registrarErro(e, pilha, contexto: 'ServicoTransacao.listarTransacoes');
-      return [];
+      throw FalhaAoCarregarTransacoes();
     }
   }
 

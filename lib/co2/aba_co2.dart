@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../compartilhado/widgets/aviso_erro_carregamento.dart';
 import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../presentation/rewards/reward_service.dart';
@@ -164,11 +165,18 @@ class _AbaCo2State extends State<AbaCo2> {
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               sliver: SliverToBoxAdapter(
-                child: AnimatedOpacity(
-                  opacity: _carregando ? 0.5 : 1,
-                  duration: const Duration(milliseconds: 200),
-                  child: _CartaoResumo(resumo: resumo),
-                ),
+                child: _resultado is ResumoIndisponivel && !_carregando
+                    // Sem isso o card mostraria 0 kg de um limite padrão,
+                    // como se o mês estivesse vazio.
+                    ? AvisoErroCarregamento(
+                        titulo: 'Não foi possível carregar o resumo do mês',
+                        aoTentarNovamente: _carregarTudo,
+                      )
+                    : AnimatedOpacity(
+                        opacity: _carregando ? 0.5 : 1,
+                        duration: const Duration(milliseconds: 200),
+                        child: _CartaoResumo(resumo: resumo),
+                      ),
               ),
             ),
             SliverPadding(

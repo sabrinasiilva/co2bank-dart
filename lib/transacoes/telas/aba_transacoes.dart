@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../../compartilhado/widgets/aviso_erro_carregamento.dart';
 import '../../nucleo/aviso_dados_alterados.dart';
 import '../../nucleo/cores_app.dart';
 import '../../transacoes/servico/servico_transacao.dart';
@@ -115,6 +116,27 @@ class _AbaTransacoesState extends State<AbaTransacoes> {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return const Center(
                     child: CircularProgressIndicator(color: CoresApp.primary),
+                  );
+                }
+
+                if (snapshot.hasError) {
+                  return RefreshIndicator(
+                    onRefresh: () async => _atualizar(),
+                    color: CoresApp.primary,
+                    child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.55,
+                          child: Center(
+                            child: AvisoErroCarregamento(
+                              titulo: 'Não foi possível carregar o extrato',
+                              aoTentarNovamente: _atualizar,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
 

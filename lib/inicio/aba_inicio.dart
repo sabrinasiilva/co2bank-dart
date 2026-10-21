@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../compartilhado/widgets/aviso_erro_carregamento.dart';
 import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../transacoes/servico/servico_transacao.dart';
@@ -111,31 +112,9 @@ class _AbaInicioState extends State<AbaInicio> {
 
         if (snapshot.hasError) {
           return Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.wifi_off_rounded,
-                    size: 40, color: CoresApp.gray),
-                const SizedBox(height: 12),
-                Text(
-                  'Erro ao carregar dados',
-                  style: GoogleFonts.outfit(
-                    fontSize: 14,
-                    color: CoresApp.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: _atualizar,
-                  child: Text(
-                    'Tentar novamente',
-                    style: GoogleFonts.outfit(
-                      color: CoresApp.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
+            child: AvisoErroCarregamento(
+              titulo: 'Não foi possível carregar o início',
+              aoTentarNovamente: _atualizar,
             ),
           );
         }
