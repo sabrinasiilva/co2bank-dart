@@ -693,7 +693,7 @@ class _BannerAlertaIA extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Alerta de CO2 — IA',
+                  'Alerta de CO2 da IA',
                   style: GoogleFonts.outfit(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,

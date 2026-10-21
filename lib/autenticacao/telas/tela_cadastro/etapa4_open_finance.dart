@@ -5,12 +5,12 @@ import '../../../../nucleo/cores_app.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
 import '../../../open_finance/bancos_open_finance.dart';
 
-class Etapa3OpenFinance extends StatelessWidget {
+class Etapa4OpenFinance extends StatelessWidget {
   final Set<String> bancosConectados;
   final void Function(String) aoAlternarBanco;
   final VoidCallback aoContinuar;
 
-  const Etapa3OpenFinance({
+  const Etapa4OpenFinance({
     super.key,
     required this.bancosConectados,
     required this.aoAlternarBanco,
@@ -73,7 +73,7 @@ class Etapa3OpenFinance extends StatelessWidget {
             Border.all(color: CoresApp.primaryMuted.withValues(alpha: 0.5)),
       ),
       child: Text(
-        'O Open Finance permite que o CO2Bank leia seus dados de compras diretamente do seu banco, sem precisar digitar nada. O acesso é só leitura — nunca movemos seu dinheiro.',
+        'O Open Finance permite que o CO2Bank leia seus dados de compras diretamente do seu banco, sem precisar digitar nada. O acesso é só de leitura: nunca movemos o seu dinheiro.',
         style: GoogleFonts.outfit(
             fontSize: 13, color: CoresApp.dark, height: 1.5),
       ),

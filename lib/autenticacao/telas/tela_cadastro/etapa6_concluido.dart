@@ -4,10 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../nucleo/cores_app.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
 
-class Etapa5Concluido extends StatelessWidget {
+class Etapa6Concluido extends StatelessWidget {
   final VoidCallback aoIniciar;
 
-  const Etapa5Concluido({super.key, required this.aoIniciar});
+  const Etapa6Concluido({super.key, required this.aoIniciar});
 
   @override
   Widget build(BuildContext context) {

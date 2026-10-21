@@ -4,14 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../nucleo/cores_app.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
 
-class Etapa4LimiteEcologico extends StatelessWidget {
+class Etapa5LimiteEcologico extends StatelessWidget {
   final double limiteCo2;
   final void Function(double) aoAlterarLimite;
   final VoidCallback aoContinuar;
   final bool carregando;
   final String? erro;
 
-  const Etapa4LimiteEcologico({
+  const Etapa5LimiteEcologico({
     super.key,
     required this.limiteCo2,
     required this.aoAlterarLimite,

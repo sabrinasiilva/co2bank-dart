@@ -1,7 +1,7 @@
-// PROVISÓRIO: o projeto Firebase do CO2Bank ainda não foi configurado.
+// Arquivo provisório: o projeto Firebase do CO2Bank ainda não foi configurado.
 //
-// O comando `flutterfire configure --platforms=android,web` vai SOBRESCREVER
-// este arquivo com as chaves do projeto (passo a passo em docs/FIREBASE.md).
+// O comando `flutterfire configure --platforms=android,web` substitui este
+// arquivo pelas chaves do projeto (passo a passo em docs/FIREBASE.md).
 // Enquanto isso, `currentPlatform` lança UnsupportedError e o app só pula o
 // push (lib/nucleo/push_firebase.dart): a notificação local continua valendo.
 //

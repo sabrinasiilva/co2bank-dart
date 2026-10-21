@@ -11,9 +11,9 @@ import '../../../compartilhado/widgets/indicador_etapa.dart';
 import 'etapa1_dados_pessoais.dart';
 import 'etapa2_acesso.dart';
 import 'etapa3_verificacao_facial.dart';
-import 'etapa3_open_finance.dart';
-import 'etapa4_limite_ecologico.dart';
-import 'etapa5_concluido.dart';
+import 'etapa4_open_finance.dart';
+import 'etapa5_limite_ecologico.dart';
+import 'etapa6_concluido.dart';
 
 class TelaCadastro extends StatefulWidget {
   const TelaCadastro({super.key});
@@ -332,7 +332,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                               setState(() => _fotoBase64 = b64),
                           aoContinuar: _tentarAvancar,
                         ),
-                        Etapa3OpenFinance(
+                        Etapa4OpenFinance(
                           bancosConectados: _bancosConectados,
                           aoAlternarBanco: (banco) => setState(() {
                             _bancosConectados.contains(banco)
@@ -341,7 +341,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           }),
                           aoContinuar: _tentarAvancar,
                         ),
-                        Etapa4LimiteEcologico(
+                        Etapa5LimiteEcologico(
                           limiteCo2: _limiteCo2,
                           aoAlterarLimite: (v) =>
                               setState(() => _limiteCo2 = v),
@@ -351,7 +351,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                         ),
                         // Antes da Home, a tela de boas-vindas explica o app
                         // e oferece conectar o banco.
-                        Etapa5Concluido(
+                        Etapa6Concluido(
                           aoIniciar: () =>
                               Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(

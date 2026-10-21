@@ -1,4 +1,4 @@
-# Push do alerta de limite (Firebase) — CO2B-58
+# Push do alerta de limite com Firebase (CO2B-58)
 
 O app já tem o código do push (`lib/nucleo/push_firebase.dart`), mas o projeto
 Firebase ainda não existe. Enquanto ninguém fizer os passos abaixo, o app abre e
@@ -73,7 +73,7 @@ separado do service worker do Flutter); não mova para a raiz do `web/`.
 3. No console do Firebase: **Messaging > Nova campanha > Notificações >
    Enviar mensagem de teste**, cole o token e envie.
 4. Com o app fechado/em segundo plano, a notificação aparece pelo sistema.
-   Com o app aberto, ela aparece como notificação local do CO2Bank — mas só
+   Com o app aberto, ela aparece como notificação local do CO2Bank, mas só
    uma vez por mês, como o aviso local. Se o aviso do mês já saiu, para testar
    de novo limpe os dados do app (ou o armazenamento do site).
 

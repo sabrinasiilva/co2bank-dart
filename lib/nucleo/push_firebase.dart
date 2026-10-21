@@ -55,8 +55,8 @@ class PushNaoRegistrado extends ResultadoPush {}
 /// o app fechado. O backend envia o push quando o mês passa de 80% do limite
 /// para os aparelhos cadastrados em `POST /devices`.
 ///
-/// Tudo aqui é "melhor esforço": sem Firebase configurado, sem permissão ou sem
-/// as rotas no backend, o app segue normal com a notificação local.
+/// Se faltar alguma coisa (Firebase configurado, permissão ou as rotas no
+/// backend), o push fica desligado e o app segue com a notificação local.
 class PushFirebase {
   static Future<bool>? _iniciando;
   static StreamSubscription<String>? _assinaturaToken;
@@ -146,7 +146,7 @@ class PushFirebase {
   }
 
   /// Desliga o push neste aparelho: tira o cadastro do backend e apaga o token.
-  /// Chamar também ao sair da conta, ANTES de apagar o token de login.
+  /// Chamar também ao sair da conta, antes de apagar o token de login.
   static Future<void> desativar() async {
     try {
       // Usa o token guardado: pedir um novo aqui abriria o pedido de permissão
