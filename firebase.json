@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"co2bank","appId":"1:166356725639:android:c034de3a73a399c7c36d22","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"co2bank","configurations":{"android":"1:166356725639:android:c034de3a73a399c7c36d22","web":"1:166356725639:web:44f1680ebcdcdf05c36d22"}}}}}}

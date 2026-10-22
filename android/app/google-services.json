@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "166356725639",
+    "project_id": "co2bank",
+    "storage_bucket": "co2bank.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166356725639:android:c034de3a73a399c7c36d22",
+        "android_client_info": {
+          "package_name": "com.co2bank.co2bank_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_l5k163-TmK9w7lO04vGXTEd6auitcsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

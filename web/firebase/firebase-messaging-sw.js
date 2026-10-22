@@ -5,9 +5,9 @@
 // para ter um escopo só dele: na raiz, ele brigaria com o flutter_service_worker.js
 // pelo mesmo escopo e um ficaria substituindo o outro a cada abertura do site.
 //
-// PREENCHER: copie os valores de `web` do lib/firebase_options.dart gerado pelo
-// `flutterfire configure` (passo a passo em docs/FIREBASE.md). Enquanto estiver
-// com os placeholders abaixo, o app não usa este arquivo (o push fica desligado).
+// Os valores abaixo são os mesmos de `web` em lib/firebase_options.dart (gerado
+// pelo `flutterfire configure`). Se rodar o configure de novo, atualize aqui.
+// São dados de app cliente, não são segredo.
 //
 // A versão das bibliotecas é a mesma que o firebase_core_web usa
 // (supportedFirebaseJsSdkVersion). Ao atualizar o firebase_core, confira.
@@ -15,12 +15,12 @@ importScripts('https://www.gstatic.com/firebasejs/13.0.0/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/13.0.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: 'PREENCHER_API_KEY',
-  appId: 'PREENCHER_APP_ID',
-  messagingSenderId: 'PREENCHER_MESSAGING_SENDER_ID',
-  projectId: 'PREENCHER_PROJECT_ID',
-  authDomain: 'PREENCHER_PROJECT_ID.firebaseapp.com',
-  storageBucket: 'PREENCHER_PROJECT_ID.firebasestorage.app',
+  apiKey: 'AIzaSyC2bpKr_rcRQN_FpW_gGO2HAT2J3VSOXpM',
+  appId: '1:166356725639:web:44f1680ebcdcdf05c36d22',
+  messagingSenderId: '166356725639',
+  projectId: 'co2bank',
+  authDomain: 'co2bank.firebaseapp.com',
+  storageBucket: 'co2bank.firebasestorage.app',
 });
 
 const messaging = firebase.messaging();
