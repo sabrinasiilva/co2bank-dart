@@ -1,0 +1,80 @@
+name: Publicar site e APK
+
+# A cada push na main, o GitHub compila o app e atualiza o site e o APK do
+# GitHub Pages (https://sabrinasiilva.github.io/co2bank-dart/). Também dá para
+# rodar na mão pela aba Actions.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Dois pushes seguidos: só o último é publicado.
+concurrency:
+  group: publicar
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    name: Compilar e publicar
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.38.x
+          cache: true
+
+      - name: Instalar dependências
+        run: flutter pub get
+
+      - name: Rodar os testes
+        run: flutter test
+
+      # Sem a chave fixa, cada APK sai com uma assinatura diferente e o Android
+      # pede para desinstalar antes de atualizar.
+      - name: Preparar a chave de assinatura
+        env:
+          CHAVE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          CHAVE_SENHA: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$CHAVE_BASE64" ]; then
+            echo "Segredos da chave não configurados: o APK sai com a chave de debug."
+            exit 0
+          fi
+          echo "$CHAVE_BASE64" | base64 -d > android/co2bank.jks
+          printf 'storeFile=co2bank.jks\nstorePassword=%s\nkeyAlias=co2bank\nkeyPassword=%s\n' \
+            "$CHAVE_SENHA" "$CHAVE_SENHA" > android/key.properties
+
+      - name: Compilar o APK (celulares atuais, arm64)
+        run: flutter build apk --release --target-platform android-arm64
+
+      - name: Compilar a versão web
+        run: flutter build web --release --base-href /co2bank-dart/
+
+      - name: Juntar o APK ao site
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk build/web/co2bank.apk
+          touch build/web/.nojekyll
+          ls -lh build/web/co2bank.apk
+
+      - name: Publicar na branch gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          publish_branch: gh-pages
+          # Guarda só a versão mais recente, para o repositório não crescer
+          # com um APK novo a cada push.
+          force_orphan: true
+          commit_message: 'deploy: site e APK da main'

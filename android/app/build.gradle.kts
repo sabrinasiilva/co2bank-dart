@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -10,6 +12,15 @@ plugins {
 // só sem push.
 if (file("google-services.json").exists()) {
     apply(plugin = "com.google.gms.google-services")
+}
+
+// Chave fixa do app para o APK de release. Sem ela, cada build sai com uma
+// assinatura diferente e o Android não deixa atualizar por cima: é preciso
+// desinstalar. O arquivo android/key.properties não vai para o Git; no GitHub
+// Actions ele é montado a partir dos segredos do repositório.
+val propriedadesChave = Properties().apply {
+    val arquivo = rootProject.file("key.properties")
+    if (arquivo.exists()) arquivo.inputStream().use { load(it) }
 }
 
 android {
@@ -40,11 +51,26 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (propriedadesChave.isNotEmpty()) {
+            create("release") {
+                storeFile = rootProject.file(propriedadesChave.getProperty("storeFile"))
+                storePassword = propriedadesChave.getProperty("storePassword")
+                keyAlias = propriedadesChave.getProperty("keyAlias")
+                keyPassword = propriedadesChave.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // Com a chave do app quando ela existe; senão, a de debug (o build
+            // continua funcionando, só não dá para atualizar por cima).
+            signingConfig = if (propriedadesChave.isNotEmpty()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }
