@@ -11,6 +11,7 @@ import '../nucleo/notificacoes.dart';
 import '../nucleo/push_firebase.dart';
 import '../transacoes/servico/servico_transacao.dart';
 import 'sugestao_limite.dart';
+import 'tela_editar_perfil.dart';
 import '../autenticacao/telas/tela_login.dart';
 
 class AbaPerfil extends StatefulWidget {
@@ -32,7 +33,6 @@ class _AbaPerfilState extends State<AbaPerfil> {
     _dados = _carregar();
     _carregarSugestao();
     _carregarNotificacoes();
-    // A sugestão de limite sai do histórico de compras.
     AvisoDadosAlterados.instancia.addListener(_carregarSugestao);
   }
 
@@ -53,9 +53,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
     if (ligar) {
       ativas = await Notificacoes.ativar();
       if (ativas) {
-        // Push para avisar com o app fechado; se não der, fica só a local.
         unawaited(PushFirebase.ativar());
-        // Se o mês já está perto do limite, o aviso aparece na hora.
         final servico = await ServicoTransacao.autenticado();
         await servico.avisarSeLimiteAlto();
       }
@@ -69,6 +67,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
       _alterandoNotificacoes = false;
     });
     if (ligar && !ativas) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
           Notificacoes.suportado
@@ -91,8 +90,13 @@ class _AbaPerfilState extends State<AbaPerfil> {
     return servico.obterPerfil();
   }
 
+  Future<void> _recarregarPerfil() async {
+    setState(() {
+      _dados = _carregar();
+    });
+  }
+
   Future<void> _sair() async {
-    // Tira o aparelho do push antes de apagar o login (a rota exige o JWT).
     await PushFirebase.desativar();
     await ArmazenamentoToken.limpar();
     if (!mounted) return;
@@ -122,13 +126,50 @@ class _AbaPerfilState extends State<AbaPerfil> {
           return ListView(
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
             children: [
-              Text(
-                'Perfil',
-                style: GoogleFonts.outfit(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: CoresApp.textPrimary,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Perfil',
+                    style: GoogleFonts.outfit(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: CoresApp.textPrimary,
+                    ),
+                  ),
+                  if (perfil != null)
+                    TextButton.icon(
+                      onPressed: () async {
+                        final alterado = await Navigator.push<bool>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => TelaEditarPerfil(perfilInicial: perfil),
+                          ),
+                        );
+                        if (alterado == true) {
+                          _recarregarPerfil();
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Perfil atualizado',
+                                style: GoogleFonts.outfit(),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: CoresApp.primary,
+                      ),
+                      icon: const Icon(Icons.edit_outlined, size: 18),
+                      label: Text(
+                        'Editar perfil',
+                        style: GoogleFonts.outfit(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(height: 24),
               Center(
@@ -180,7 +221,10 @@ class _AbaPerfilState extends State<AbaPerfil> {
                 itens: [
                   if (perfil != null) ...[
                     _LinhaInfo(rotulo: 'CPF', valor: perfil.cpf),
-                    _LinhaInfo(rotulo: 'Telefone', valor: perfil.telefone),
+                    _LinhaInfo(
+                      rotulo: 'Telefone',
+                      valor: perfil.telefone.isNotEmpty ? perfil.telefone : '-',
+                    ),
                     _LinhaInfo(
                       rotulo: 'Limite de CO2',
                       valor: '${perfil.limiteCo2Kg.toStringAsFixed(0)} kg/mês',

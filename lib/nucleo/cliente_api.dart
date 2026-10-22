@@ -54,6 +54,15 @@ class ClienteApi {
         ),
       );
 
+  Future<RespostaApi> patch(String caminho, Map<String, dynamic> corpo) =>
+      _enviar(
+        () => _cliente.patch(
+          Uri.parse('$urlBaseApi$caminho'),
+          headers: _cabecalhos,
+          body: jsonEncode(corpo),
+        ),
+      );
+
   Future<RespostaApi> delete(String caminho) => _enviar(
         () => _cliente.delete(
           Uri.parse('$urlBaseApi$caminho'),
