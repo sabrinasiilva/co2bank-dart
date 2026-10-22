@@ -147,8 +147,10 @@ O `10.0.2.2` só funciona dentro do emulador Android: é como o emulador enxerga
 ### Gerar o APK e a versão web
 
 ```bash
-flutter build apk --release                              # build/app/outputs/flutter-apk/app-release.apk
-flutter build web --release --base-href /co2bank-dart/   # build/web, publicado no GitHub Pages
+flutter build apk --release --target-platform android-arm64   # build/app/outputs/flutter-apk/app-release.apk
+flutter build web --release --base-href /co2bank-dart/        # build/web, publicado no GitHub Pages
 ```
+
+O `--target-platform android-arm64` gera o APK só para o processador dos celulares atuais. Sem ele, o APK leva também as versões para celulares antigos de 32 bits e para emuladores de PC, e fica com uns 55 MB em vez de uns 20 MB, além de demorar mais para compilar. Para testar no emulador, use `flutter run`, que já compila para o processador certo.
 
 O site e o APK ficam na branch `gh-pages`: o conteúdo de `build/web` vai na raiz, e o APK vai junto como `co2bank.apk`.
