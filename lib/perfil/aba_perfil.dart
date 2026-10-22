@@ -148,7 +148,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
                         );
                         if (alterado == true) {
                           _recarregarPerfil();
-                          if (!mounted) return;
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
