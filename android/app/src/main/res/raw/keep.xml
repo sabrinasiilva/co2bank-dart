@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- O código só cita esses ícones pelo nome, então o build de release poderia
+     apagar achando que não são usados. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/ic_notificacao,@drawable/ic_launcher_foreground" />

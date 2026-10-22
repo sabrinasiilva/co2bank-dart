@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'cores_app.dart';
 import 'registro_erros.dart';
 
 /// Notificação no celular (ou no navegador) quando o limite de CO2 do mês passa
@@ -15,17 +16,29 @@ class Notificacoes {
   static const _chaveUltimoAviso = 'notificacoes_ultimo_aviso_limite';
   static const _idAvisoLimite = 1;
 
-  static const _detalhes = NotificationDetails(
-    android: AndroidNotificationDetails(
-      'alertas_limite',
-      'Alertas do limite de CO2',
-      channelDescription: 'Aviso quando o limite ecológico do mês passa de 80%',
-      importance: Importance.high,
-      priority: Priority.high,
-    ),
-    iOS: DarwinNotificationDetails(),
-    web: WebNotificationDetails(),
-  );
+  // No Android o ícone pequeno precisa ser uma silhueta branca: com o ícone
+  // colorido do app o sistema pinta tudo de uma cor e sobra só um círculo.
+  static const _iconeAndroid = 'ic_notificacao';
+
+  static NotificationDetails _detalhes(String mensagem) => NotificationDetails(
+        android: AndroidNotificationDetails(
+          'alertas_limite',
+          'Alertas do limite de CO2',
+          channelDescription:
+              'Aviso quando o limite ecológico do mês passa de 80%',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: _iconeAndroid,
+          color: CoresApp.brandText,
+          largeIcon: const DrawableResourceAndroidBitmap('ic_launcher_foreground'),
+          // Fechada mostra uma linha; ao abrir, a mensagem inteira.
+          styleInformation: BigTextStyleInformation(mensagem),
+        ),
+        iOS: const DarwinNotificationDetails(),
+        web: WebNotificationDetails(
+          iconUrl: Uri.base.resolve('icons/Icon-192.png'),
+        ),
+      );
 
   static bool get suportado =>
       kIsWeb ||
@@ -37,7 +50,7 @@ class Notificacoes {
     try {
       final ok = await _plugin.initialize(
         settings: const InitializationSettings(
-          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+          android: AndroidInitializationSettings(_iconeAndroid),
           // A permissão é pedida só quando a pessoa liga a opção no Perfil.
           iOS: DarwinInitializationSettings(
             requestAlertPermission: false,
@@ -114,7 +127,7 @@ class Notificacoes {
         id: _idAvisoLimite,
         title: 'Atenção ao seu limite de CO2',
         body: mensagem,
-        notificationDetails: _detalhes,
+        notificationDetails: _detalhes(mensagem),
       );
       await prefs.setString(_chaveUltimoAviso, mesAtual);
     } catch (e, pilha) {
