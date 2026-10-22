@@ -148,8 +148,6 @@ class _AbaPerfilState extends State<AbaPerfil> {
                         );
                         if (alterado == true) {
                           _recarregarPerfil();
-                          // ignore: invalid_use_protected_visible_for_testing, invalid_use_of_protected_member
-                          AvisoDadosAlterados.instancia.notifyListeners();
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
