@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:co2bank_app/recompensas/oferta.dart';
+import 'package:co2bank_app/recompensas/servico/servico_recompensas.dart';
 import 'package:co2bank_app/recompensas/tela_conquistas.dart';
 
 Oferta _oferta(String loja, {String descricao = '', String categoria = ''}) =>
@@ -15,7 +16,37 @@ Oferta _oferta(String loja, {String descricao = '', String categoria = ''}) =>
       cor: Colors.green,
     );
 
+Resgate _resgate(String loja, String codigo, String quando) => Resgate(
+  id: codigo,
+  nomeParceiro: loja,
+  custo: 10,
+  codigoCupom: codigo,
+  resgatadoEm: DateTime.parse(quando),
+);
+
 void main() {
+  group('cuponsDoMes', () {
+    final agora = DateTime.utc(2026, 10, 23, 15);
+
+    test('só conta os resgates do mês atual, um por loja', () {
+      final cupons = cuponsDoMes([
+        _resgate('Renner', 'CO2B-NOVO-AAAA', '2026-10-22T10:00:00Z'),
+        _resgate('Renner', 'CO2B-VELH-BBBB', '2026-10-01T08:00:00Z'),
+        _resgate('Natura', 'CO2B-SETE-CCCC', '2026-09-30T23:00:00Z'),
+      ], agora: agora);
+
+      expect(cupons, {'Renner': 'CO2B-NOVO-AAAA'});
+    });
+
+    test('usa o mês em UTC, como o backend', () {
+      // 31/10 às 22h em São Paulo já é 1º de novembro em UTC.
+      final cupons = cuponsDoMes([
+        _resgate('Natura', 'CO2B-NOVE-DDDD', '2026-11-01T01:00:00Z'),
+      ], agora: DateTime.utc(2026, 11, 1, 2));
+      expect(cupons, {'Natura': 'CO2B-NOVE-DDDD'});
+    });
+  });
+
   group('LogicaRecompensas.formatar', () {
     test('separa milhares com ponto', () {
       expect(LogicaRecompensas.formatar(0), '0');
@@ -30,7 +61,11 @@ void main() {
     final ofertas = [
       _oferta('Loja Verde', descricao: '10% de desconto', categoria: 'Moda'),
       _oferta('Bike Já', descricao: '5% de desconto', categoria: 'Esporte'),
-      _oferta('Mercado Bom', descricao: '15% de desconto', categoria: 'Alimentação'),
+      _oferta(
+        'Mercado Bom',
+        descricao: '15% de desconto',
+        categoria: 'Alimentação',
+      ),
     ];
 
     test('busca vazia devolve tudo', () {
@@ -38,14 +73,25 @@ void main() {
       expect(LogicaRecompensas.filtrar(ofertas, '   '), ofertas);
     });
 
-    test('busca pelo nome, descrição ou categoria, sem diferenciar maiúsculas',
-        () {
-      expect(LogicaRecompensas.filtrar(ofertas, 'verde').single.loja, 'Loja Verde');
-      expect(LogicaRecompensas.filtrar(ofertas, ' ESPORTE ').single.loja, 'Bike Já');
-      expect(LogicaRecompensas.filtrar(ofertas, '15%').single.loja, 'Mercado Bom');
-      expect(LogicaRecompensas.filtrar(ofertas, 'desconto'), hasLength(3));
-      expect(LogicaRecompensas.filtrar(ofertas, 'nada disso'), isEmpty);
-    });
+    test(
+      'busca pelo nome, descrição ou categoria, sem diferenciar maiúsculas',
+      () {
+        expect(
+          LogicaRecompensas.filtrar(ofertas, 'verde').single.loja,
+          'Loja Verde',
+        );
+        expect(
+          LogicaRecompensas.filtrar(ofertas, ' ESPORTE ').single.loja,
+          'Bike Já',
+        );
+        expect(
+          LogicaRecompensas.filtrar(ofertas, '15%').single.loja,
+          'Mercado Bom',
+        );
+        expect(LogicaRecompensas.filtrar(ofertas, 'desconto'), hasLength(3));
+        expect(LogicaRecompensas.filtrar(ofertas, 'nada disso'), isEmpty);
+      },
+    );
   });
 
   group('LogicaRecompensas.progresso', () {
@@ -96,8 +142,10 @@ void main() {
     });
 
     test('link de exemplo não conta como site', () {
-      final oferta = Oferta.doParceiro(
-          {'name': 'Teste', 'url': 'https://parceiro.example.com'});
+      final oferta = Oferta.doParceiro({
+        'name': 'Teste',
+        'url': 'https://parceiro.example.com',
+      });
       expect(oferta.temSite, isFalse);
       expect(oferta.urlLogo, isNull);
     });

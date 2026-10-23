@@ -23,6 +23,7 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
   ResumoCoins? _resumo;
   ResumoConquistas? _conquistas;
   int? _quantidadeCupons;
+  Map<String, String> _cuponsDoMes = const {};
   bool _carregando = true;
   bool _falhou = false;
   bool _resgatando = false;
@@ -59,6 +60,7 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
       }
       if (resgates case ResgatesCarregados(:final itens)) {
         _quantidadeCupons = itens.length;
+        _cuponsDoMes = cuponsDoMes(itens);
       }
       switch (coins) {
         case CoinsCarregados(:final resumo):
@@ -90,7 +92,10 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
   Future<void> _abrirLoja(Oferta oferta) async {
     final abriu = await LogicaRecompensas.abrirLoja(oferta);
     if (!abriu && mounted) {
-      mostrarAvisoRecompensas(context, 'Não foi possível abrir ${oferta.loja}.');
+      mostrarAvisoRecompensas(
+        context,
+        'Não foi possível abrir ${oferta.loja}.',
+      );
     }
   }
 
@@ -111,6 +116,16 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
           codigoCupom == null
               ? 'Cupom da ${oferta.loja} resgatado!'
               : 'Cupom da ${oferta.loja} resgatado: $codigoCupom',
+          acao: SnackBarAction(
+            label: 'Ver cupom',
+            onPressed: () => _abrirCupons(codigoEmDestaque: codigoCupom),
+          ),
+        );
+        await _carregar();
+      case ResgateJaFeito(:final mensagem, :final codigoCupom):
+        mostrarAvisoRecompensas(
+          context,
+          mensagem,
           acao: SnackBarAction(
             label: 'Ver cupom',
             onPressed: () => _abrirCupons(codigoEmDestaque: codigoCupom),
@@ -194,7 +209,10 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
               aoAlterar: (texto) => setState(() => _busca = texto),
             ),
             const SizedBox(height: 24),
-            Text('Descontos em Parceiros', style: EstiloRecompensas.tituloSecao),
+            Text(
+              'Descontos em Parceiros',
+              style: EstiloRecompensas.tituloSecao,
+            ),
             const SizedBox(height: 12),
             if (ofertas.isEmpty)
               Padding(
@@ -212,8 +230,11 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
                 child: CartaoOferta(
                   oferta: oferta,
                   saldo: saldo,
+                  cupomDoMes: _cuponsDoMes[oferta.loja],
                   aoAbrir: () => _abrirLoja(oferta),
                   aoResgatar: () => _resgatar(oferta),
+                  aoVerCupom: () =>
+                      _abrirCupons(codigoEmDestaque: _cuponsDoMes[oferta.loja]),
                 ),
               ),
           ],

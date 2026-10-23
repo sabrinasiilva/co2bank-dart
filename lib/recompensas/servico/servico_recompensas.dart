@@ -125,6 +125,22 @@ class Resgate {
   }
 }
 
+/// Código do cupom de cada loja resgatada no mês atual. O backend aceita um
+/// resgate por loja a cada mês, contado em UTC como o saldo de CO₂Coins.
+Map<String, String> cuponsDoMes(List<Resgate> resgates, {DateTime? agora}) {
+  final hoje = (agora ?? DateTime.now()).toUtc();
+  final cupons = <String, String>{};
+  for (final resgate in resgates) {
+    final quando = resgate.resgatadoEm?.toUtc();
+    final codigo = resgate.codigoCupom;
+    if (quando == null || codigo == null) continue;
+    if (quando.year == hoje.year && quando.month == hoje.month) {
+      cupons.putIfAbsent(resgate.nomeParceiro, () => codigo);
+    }
+  }
+  return cupons;
+}
+
 sealed class ResultadoListaResgates {}
 
 class ResgatesCarregados extends ResultadoListaResgates {
@@ -167,6 +183,13 @@ class ResgateConcluido extends ResultadoResgate {
 class ResgateFalhou extends ResultadoResgate {
   final String mensagem;
   ResgateFalhou(this.mensagem);
+}
+
+/// A loja já foi resgatada neste mês (409); o backend devolve o cupom que já existe.
+class ResgateJaFeito extends ResultadoResgate {
+  final String mensagem;
+  final String? codigoCupom;
+  ResgateJaFeito(this.mensagem, {this.codigoCupom});
 }
 
 class ServicoRecompensas {
@@ -238,6 +261,12 @@ class ServicoRecompensas {
       if (resposta.sucesso) {
         return ResgateConcluido(
           resposta.corpo['tokens_remaining'] as int? ?? 0,
+          codigoCupom: resposta.corpo['coupon_code'] as String?,
+        );
+      }
+      if (resposta.codigoStatus == 409) {
+        return ResgateJaFeito(
+          resposta.erro ?? 'Você já resgatou o cupom desta loja este mês.',
           codigoCupom: resposta.corpo['coupon_code'] as String?,
         );
       }
