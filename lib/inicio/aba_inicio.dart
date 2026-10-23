@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../compartilhado/widgets/aviso_erro_carregamento.dart';
+import '../notificacoes/sino_notificacoes.dart';
 import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../transacoes/servico/servico_transacao.dart';
@@ -320,20 +321,26 @@ class _CartaoHero extends StatelessWidget {
                   ),
                 ],
               ),
-              Builder(
-                builder: (ctx) => GestureDetector(
-                  onTap: () => Scaffold.of(ctx).openDrawer(),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(25),
-                      shape: BoxShape.circle,
+              Row(
+                children: [
+                  const SinoNotificacoes(),
+                  const SizedBox(width: 10),
+                  Builder(
+                    builder: (ctx) => GestureDetector(
+                      onTap: () => Scaffold.of(ctx).openDrawer(),
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withAlpha(25),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.menu_rounded,
+                            size: 22, color: Colors.white),
+                      ),
                     ),
-                    child: const Icon(Icons.menu_rounded,
-                        size: 22, color: Colors.white),
                   ),
-                ),
+                ],
               ),
             ],
           ),

@@ -56,8 +56,10 @@ jobs:
           printf 'storeFile=co2bank.jks\nstorePassword=%s\nkeyAlias=co2bank\nkeyPassword=%s\n' \
             "$CHAVE_SENHA" "$CHAVE_SENHA" > android/key.properties
 
+      # O número da execução vira o build do APK: o app compara com o
+      # versao.json publicado e avisa quando há uma versão mais nova.
       - name: Compilar o APK (celulares atuais, arm64)
-        run: flutter build apk --release --target-platform android-arm64
+        run: flutter build apk --release --target-platform android-arm64 --build-number=${{ github.run_number }}
 
       - name: Compilar a versão web
         run: flutter build web --release --base-href /co2bank-dart/
@@ -67,6 +69,10 @@ jobs:
           cp build/app/outputs/flutter-apk/app-release.apk build/web/co2bank.apk
           touch build/web/.nojekyll
           ls -lh build/web/co2bank.apk
+          VERSAO=$(grep '^version:' pubspec.yaml | sed -E 's/version: *([^+]+).*/\1/')
+          printf '{"versao": "%s", "build": %s, "apk": "https://sabrinasiilva.github.io/co2bank-dart/co2bank.apk", "publicado_em": "%s"}\n' \
+            "$VERSAO" "${{ github.run_number }}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > build/web/versao.json
+          cat build/web/versao.json
 
       - name: Publicar na branch gh-pages
         uses: peaceiris/actions-gh-pages@v4

@@ -26,7 +26,7 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 
 ## Funcionalidades
 
-- **Cadastro e login** com verificação por selfie, login por biometria e recuperação de senha por e-mail
+- **Cadastro e login** com verificação por selfie e recuperação de senha por e-mail. O app lembra o e-mail e deixa entrar com a digital, o rosto ou o PIN do celular
 - **Open Finance:** conecta bancos e importa as compras do mês e dos últimos seis meses
 - **CO₂ por compra:** cada transação do extrato mostra a categoria e o CO₂ estimado, com tela de detalhes
 - **Lançar compra manualmente**, para quem quiser registrar algo que não veio do banco
@@ -36,6 +36,7 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 - **Gráfico de evolução mensal** e **card de impacto** com equivalências (árvores, quilômetros de carro) e as ODS 12, 13 e 17
 - **Shopping Verde:** CO₂ economizado vira CO2Coins, que podem ser trocadas por cupons de desconto em parceiros reais
 - **Conquistas e Meus cupons**, com o código de cada cupom para copiar
+- **Central de notificações** no sininho da tela inicial, com os alertas da IA, as conquistas, os cupons e o aviso de versão nova do app
 
 ## Instalar no celular
 
