@@ -8,6 +8,7 @@ import '../recompensas/servico/servico_recompensas.dart';
 import '../transacoes/servico/servico_transacao.dart';
 import 'cartao_impacto.dart';
 import 'grafico_evolucao_mensal.dart';
+import '../nucleo/tipografia.dart';
 
 class AbaCo2 extends StatefulWidget {
   const AbaCo2({super.key});
@@ -147,7 +148,7 @@ class _AbaCo2State extends State<AbaCo2> {
                     Text(
                       'Relatório de CO2',
                       style: GoogleFonts.outfit(
-                        fontSize: 24,
+                        fontSize: Tipografia.titulo,
                         fontWeight: FontWeight.bold,
                         color: CoresApp.textPrimary,
                       ),
@@ -207,7 +208,7 @@ class _AbaCo2State extends State<AbaCo2> {
                   child: Text(
                     'Por categoria',
                     style: GoogleFonts.outfit(
-                      fontSize: 16,
+                      fontSize: Tipografia.destaque,
                       fontWeight: FontWeight.w700,
                       color: CoresApp.textPrimary,
                     ),
@@ -268,7 +269,7 @@ class _SeletorMes extends StatelessWidget {
           Text(
             rotulo,
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               fontWeight: FontWeight.w600,
               color: CoresApp.textPrimary,
             ),
@@ -336,7 +337,7 @@ class _CartaoResumo extends StatelessWidget {
                   Text(
                     '${total.toStringAsFixed(1)} kg CO2',
                     style: GoogleFonts.outfit(
-                      fontSize: 28,
+                      fontSize: Tipografia.numero,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -344,7 +345,7 @@ class _CartaoResumo extends StatelessWidget {
                   Text(
                     'de ${limite.toStringAsFixed(0)} kg de limite',
                     style: GoogleFonts.outfit(
-                      fontSize: 13,
+                      fontSize: Tipografia.corpo,
                       color: Colors.white54,
                     ),
                   ),
@@ -362,7 +363,7 @@ class _CartaoResumo extends StatelessWidget {
                 child: Text(
                   rotuloStatus,
                   style: GoogleFonts.outfit(
-                    fontSize: 12,
+                    fontSize: Tipografia.legenda,
                     fontWeight: FontWeight.w600,
                     color: corStatus,
                   ),
@@ -392,7 +393,7 @@ class _CartaoResumo extends StatelessWidget {
                     Text(
                       'Limite ultrapassado!',
                       style: GoogleFonts.outfit(
-                        fontSize: 12,
+                        fontSize: Tipografia.legenda,
                         color: corStatus,
                         fontWeight: FontWeight.w700,
                       ),
@@ -404,7 +405,7 @@ class _CartaoResumo extends StatelessWidget {
               Text(
                 '${pct.toStringAsFixed(1)}% utilizado',
                 style: GoogleFonts.outfit(
-                  fontSize: 12,
+                  fontSize: Tipografia.legenda,
                   color: corStatus,
                   fontWeight: FontWeight.w600,
                 ),
@@ -463,7 +464,7 @@ class _FileiraCategorias extends StatelessWidget {
               Text(
                 categoria.categoria,
                 style: GoogleFonts.outfit(
-                  fontSize: 14,
+                  fontSize: Tipografia.corpo,
                   fontWeight: FontWeight.w600,
                   color: CoresApp.textPrimary,
                 ),
@@ -471,7 +472,7 @@ class _FileiraCategorias extends StatelessWidget {
               Text(
                 '${categoria.co2Kg.toStringAsFixed(1)} kg',
                 style: GoogleFonts.outfit(
-                  fontSize: 14,
+                  fontSize: Tipografia.corpo,
                   fontWeight: FontWeight.bold,
                   color: corBarra,
                 ),

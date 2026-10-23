@@ -5,6 +5,7 @@ import '../../../../nucleo/cores_app.dart';
 import '../../../../nucleo/formatadores_entrada.dart';
 import '../../../compartilhado/widgets/campo_autenticacao.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
+import '../../../nucleo/tipografia.dart';
 
 class Etapa1DadosPessoais extends StatelessWidget {
   final TextEditingController controladorNome;
@@ -77,13 +78,13 @@ class Etapa1DadosPessoais extends StatelessWidget {
       children: [
         Text('Dados pessoais',
             style: GoogleFonts.outfit(
-                fontSize: 22,
+                fontSize: Tipografia.tituloSecao,
                 fontWeight: FontWeight.bold,
                 color: CoresApp.textPrimary)),
         const SizedBox(height: 4),
         Text('Etapa 1 de 5',
             style: GoogleFonts.outfit(
-                fontSize: 13, color: CoresApp.textSecondary)),
+                fontSize: Tipografia.corpo, color: CoresApp.textSecondary)),
       ],
     );
   }
@@ -95,7 +96,7 @@ class Etapa1DadosPessoais extends StatelessWidget {
       children: [
         Text('Data de nascimento',
             style: GoogleFonts.outfit(
-                fontSize: 13,
+                fontSize: Tipografia.corpo,
                 fontWeight: FontWeight.w500,
                 color: CoresApp.textPrimary)),
         const SizedBox(height: 6),
@@ -138,7 +139,7 @@ class Etapa1DadosPessoais extends StatelessWidget {
                       ? 'DD/MM/AAAA'
                       : '${dataNascimento!.day.toString().padLeft(2, '0')}/${dataNascimento!.month.toString().padLeft(2, '0')}/${dataNascimento!.year}',
                   style: GoogleFonts.outfit(
-                    fontSize: 15,
+                    fontSize: Tipografia.destaque,
                     color: dataNascimento == null
                         ? (temErro
                             ? Colors.red
@@ -155,7 +156,7 @@ class Etapa1DadosPessoais extends StatelessWidget {
             padding: const EdgeInsets.only(top: 6, left: 4),
             child: Text(erros['birthDate']!,
                 style:
-                    GoogleFonts.outfit(fontSize: 12, color: Colors.red)),
+                    GoogleFonts.outfit(fontSize: Tipografia.legenda, color: Colors.red)),
           ),
       ],
     );

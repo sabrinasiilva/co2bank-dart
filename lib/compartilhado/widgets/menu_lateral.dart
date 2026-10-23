@@ -8,6 +8,7 @@ import '../../perfil/servico/servico_usuario.dart';
 import '../../autenticacao/telas/tela_login.dart';
 import '../../recompensas/tela_recompensas.dart';
 import '../../open_finance/tela_open_finance.dart';
+import '../../nucleo/tipografia.dart';
 
 class MenuLateral extends StatelessWidget {
   final int abaAtual;
@@ -169,7 +170,7 @@ class _CabecalhoDrawerState extends State<_CabecalhoDrawer> {
               child: Text(
                 inicial,
                 style: GoogleFonts.outfit(
-                  fontSize: 22,
+                  fontSize: Tipografia.tituloSecao,
                   fontWeight: FontWeight.bold,
                   color: CoresApp.primary,
                 ),
@@ -184,7 +185,7 @@ class _CabecalhoDrawerState extends State<_CabecalhoDrawer> {
                 Text(
                   nome.isEmpty ? 'Carregando...' : nome,
                   style: GoogleFonts.outfit(
-                    fontSize: 16,
+                    fontSize: Tipografia.destaque,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -195,7 +196,7 @@ class _CabecalhoDrawerState extends State<_CabecalhoDrawer> {
                   Text(
                     email,
                     style: GoogleFonts.outfit(
-                      fontSize: 12,
+                      fontSize: Tipografia.legenda,
                       color: Colors.white54,
                     ),
                     maxLines: 1,
@@ -246,7 +247,7 @@ class _ItemDrawer extends StatelessWidget {
         title: Text(
           rotulo,
           style: GoogleFonts.outfit(
-            fontSize: 14,
+            fontSize: Tipografia.corpo,
             fontWeight: ativo ? FontWeight.w700 : FontWeight.w500,
             color: cor,
           ),

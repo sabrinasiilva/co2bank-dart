@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cores_app.dart';
+import '../../nucleo/tipografia.dart';
 
 class BotaoPrimario extends StatelessWidget {
   final String rotulo;
@@ -44,7 +45,7 @@ class BotaoPrimario extends StatelessWidget {
             : Text(
                 rotulo,
                 style: GoogleFonts.outfit(
-                  fontSize: 16,
+                  fontSize: Tipografia.destaque,
                   fontWeight: FontWeight.w600,
                 ),
               ),

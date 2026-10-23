@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cores_app.dart';
 import '../bancos_open_finance.dart';
+import '../../nucleo/tipografia.dart';
 
 class SeloOpenFinance extends StatelessWidget {
   final String? idBanco;
@@ -29,7 +30,7 @@ class SeloOpenFinance extends StatelessWidget {
             Text(
               'via ${banco?.nome ?? 'Open Finance'}',
               style: GoogleFonts.outfit(
-                fontSize: 11,
+                fontSize: Tipografia.minimo,
                 fontWeight: FontWeight.w600,
                 color: cor,
               ),

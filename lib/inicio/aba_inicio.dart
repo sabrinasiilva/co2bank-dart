@@ -15,6 +15,7 @@ import '../transacoes/icone_categoria.dart';
 import '../transacoes/telas/tela_detalhe_transacao.dart';
 import '../perfil/servico/servico_usuario.dart';
 import 'estado_vazio_inicio.dart';
+import '../nucleo/tipografia.dart';
 
 class AbaInicio extends StatefulWidget {
   final VoidCallback? aoVerTransacoes;
@@ -184,7 +185,7 @@ class _AbaInicioState extends State<AbaInicio> {
                   child: Text(
                     'Últimas movimentações',
                     style: GoogleFonts.outfit(
-                      fontSize: 16,
+                      fontSize: Tipografia.destaque,
                       fontWeight: FontWeight.w700,
                       color: CoresApp.textPrimary,
                     ),
@@ -222,7 +223,7 @@ class _AbaInicioState extends State<AbaInicio> {
                           Text(
                             'Ver todas as movimentações',
                             style: GoogleFonts.outfit(
-                              fontSize: 14,
+                              fontSize: Tipografia.corpo,
                               fontWeight: FontWeight.w600,
                               color: CoresApp.primary,
                             ),
@@ -305,7 +306,7 @@ class _CartaoHero extends StatelessWidget {
                   Text(
                     nomeUsuario.isEmpty ? 'Olá' : 'Olá, $nomeUsuario',
                     style: GoogleFonts.outfit(
-                      fontSize: 22,
+                      fontSize: Tipografia.tituloSecao,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -313,7 +314,7 @@ class _CartaoHero extends StatelessWidget {
                   Text(
                     rotuloMes,
                     style: GoogleFonts.outfit(
-                      fontSize: 13,
+                      fontSize: Tipografia.corpo,
                       color: Colors.white54,
                     ),
                   ),
@@ -354,7 +355,7 @@ class _CartaoHero extends StatelessWidget {
                     Text(
                       '${percentualUsado.toStringAsFixed(1)}%',
                       style: GoogleFonts.outfit(
-                        fontSize: 32,
+                        fontSize: Tipografia.numeroGrande,
                         fontWeight: FontWeight.bold,
                         color: corArco,
                       ),
@@ -362,7 +363,7 @@ class _CartaoHero extends StatelessWidget {
                     Text(
                       'do limite',
                       style: GoogleFonts.outfit(
-                        fontSize: 12,
+                        fontSize: Tipografia.legenda,
                         color: Colors.white54,
                       ),
                     ),
@@ -375,7 +376,7 @@ class _CartaoHero extends StatelessWidget {
           Text(
             '${totalCo2.toStringAsFixed(1)} kg CO2 usados',
             style: GoogleFonts.outfit(
-              fontSize: 15,
+              fontSize: Tipografia.destaque,
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),
@@ -384,7 +385,7 @@ class _CartaoHero extends StatelessWidget {
           Text(
             'de ${limiteKg.toStringAsFixed(0)} kg de limite mensal',
             style: GoogleFonts.outfit(
-                fontSize: 12, color: Colors.white54),
+                fontSize: Tipografia.legenda, color: Colors.white54),
           ),
           if (percentualUsado > 100) ...[
             const SizedBox(height: 12),
@@ -406,7 +407,7 @@ class _CartaoHero extends StatelessWidget {
                   Text(
                     'Limite ultrapassado!',
                     style: GoogleFonts.outfit(
-                      fontSize: 12,
+                      fontSize: Tipografia.legenda,
                       fontWeight: FontWeight.w700,
                       color: CoresApp.accentWarm,
                     ),
@@ -551,7 +552,7 @@ class _CartaoStat extends StatelessWidget {
           Text(
             valor,
             style: GoogleFonts.outfit(
-              fontSize: 18,
+              fontSize: Tipografia.subtitulo,
               fontWeight: FontWeight.bold,
               color: CoresApp.textPrimary,
             ),
@@ -559,7 +560,7 @@ class _CartaoStat extends StatelessWidget {
           Text(
             rotulo,
             style: GoogleFonts.outfit(
-              fontSize: 12,
+              fontSize: Tipografia.legenda,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -582,7 +583,8 @@ class _ItemTransacao extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => TelaDetalheTransacao(transacao: transacao),
+          builder: (_) => TelaDetalheTransacao(
+              transacao: transacao, tagIcone: 'inicio-${transacao.id}'),
         ),
       ),
       child: Container(
@@ -601,17 +603,20 @@ class _ItemTransacao extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                color: CoresApp.background,
-                borderRadius: BorderRadius.circular(12),
+            Hero(
+              tag: 'inicio-${transacao.id}',
+              child: Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: CoresApp.background,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                    iconePorCategoria(transacao.rotuloCategoria),
+                    size: 20,
+                    color: CoresApp.gray),
               ),
-              child: Icon(
-                  iconePorCategoria(transacao.rotuloCategoria),
-                  size: 20,
-                  color: CoresApp.gray),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -623,7 +628,7 @@ class _ItemTransacao extends StatelessWidget {
                         ? transacao.rotuloCategoria
                         : transacao.nomeEstabelecimento,
                     style: GoogleFonts.outfit(
-                      fontSize: 14,
+                      fontSize: Tipografia.corpo,
                       fontWeight: FontWeight.w600,
                       color: CoresApp.textPrimary,
                     ),
@@ -633,7 +638,7 @@ class _ItemTransacao extends StatelessWidget {
                   Text(
                     transacao.rotuloCategoria,
                     style: GoogleFonts.outfit(
-                      fontSize: 12,
+                      fontSize: Tipografia.legenda,
                       color: CoresApp.textSecondary,
                     ),
                   ),
@@ -646,7 +651,7 @@ class _ItemTransacao extends StatelessWidget {
                 Text(
                   fmt.format(transacao.valor),
                   style: GoogleFonts.outfit(
-                    fontSize: 14,
+                    fontSize: Tipografia.corpo,
                     fontWeight: FontWeight.w700,
                     color: CoresApp.textPrimary,
                   ),
@@ -654,7 +659,7 @@ class _ItemTransacao extends StatelessWidget {
                 Text(
                   '${transacao.co2Kg.toStringAsFixed(1)} kg CO2',
                   style: GoogleFonts.outfit(
-                    fontSize: 11,
+                    fontSize: Tipografia.minimo,
                     color: CoresApp.gray,
                   ),
                 ),
@@ -695,7 +700,7 @@ class _BannerAlertaIA extends StatelessWidget {
                 Text(
                   'Alerta de CO2 da IA',
                   style: GoogleFonts.outfit(
-                    fontSize: 13,
+                    fontSize: Tipografia.corpo,
                     fontWeight: FontWeight.w700,
                     color: CoresApp.accentWarm,
                   ),
@@ -704,7 +709,7 @@ class _BannerAlertaIA extends StatelessWidget {
                 Text(
                   mensagem,
                   style: GoogleFonts.outfit(
-                    fontSize: 13,
+                    fontSize: Tipografia.corpo,
                     color: CoresApp.textPrimary,
                     height: 1.45,
                   ),

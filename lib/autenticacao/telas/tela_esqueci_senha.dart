@@ -5,6 +5,7 @@ import '../../nucleo/cores_app.dart';
 import '../servico/servico_autenticacao.dart';
 import '../../compartilhado/widgets/campo_autenticacao.dart';
 import '../../compartilhado/widgets/botao_primario.dart';
+import '../../nucleo/tipografia.dart';
 
 enum _Etapa { email, codigo, novaSenha }
 
@@ -178,7 +179,7 @@ class _TelaEsqueciSenhaState extends State<TelaEsqueciSenha> {
                 Text(
                   'Redefinir senha',
                   style: GoogleFonts.outfit(
-                    fontSize: 22,
+                    fontSize: Tipografia.tituloSecao,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -187,7 +188,7 @@ class _TelaEsqueciSenhaState extends State<TelaEsqueciSenha> {
                 Text(
                   'Verificação em 3 etapas',
                   style: GoogleFonts.outfit(
-                    fontSize: 13,
+                    fontSize: Tipografia.corpo,
                     color: Colors.white54,
                   ),
                 ),
@@ -314,14 +315,14 @@ class _EtapaEmail extends StatelessWidget {
         children: [
           Text('Informe seu e-mail',
               style: GoogleFonts.outfit(
-                  fontSize: 20,
+                  fontSize: Tipografia.tituloSecao,
                   fontWeight: FontWeight.bold,
                   color: CoresApp.textPrimary)),
           const SizedBox(height: 6),
           Text(
             'Enviaremos um código de verificação para o e-mail informado.',
             style: GoogleFonts.outfit(
-                fontSize: 13, color: CoresApp.textSecondary),
+                fontSize: Tipografia.corpo, color: CoresApp.textSecondary),
           ),
           const SizedBox(height: 28),
           CampoAutenticacao(
@@ -346,7 +347,7 @@ class _EtapaEmail extends StatelessWidget {
             child: Text(
               'Se esse e-mail estiver cadastrado, você receberá\num código em breve.',
               style: GoogleFonts.outfit(
-                  fontSize: 12, color: CoresApp.textSecondary),
+                  fontSize: Tipografia.legenda, color: CoresApp.textSecondary),
               textAlign: TextAlign.center,
             ),
           ),
@@ -377,14 +378,14 @@ class _EtapaCodigo extends StatelessWidget {
         children: [
           Text('Digite o código',
               style: GoogleFonts.outfit(
-                  fontSize: 20,
+                  fontSize: Tipografia.tituloSecao,
                   fontWeight: FontWeight.bold,
                   color: CoresApp.textPrimary)),
           const SizedBox(height: 6),
           Text(
             'Insira o código que você recebeu por e-mail.',
             style: GoogleFonts.outfit(
-                fontSize: 13, color: CoresApp.textSecondary),
+                fontSize: Tipografia.corpo, color: CoresApp.textSecondary),
           ),
           const SizedBox(height: 28),
           CampoAutenticacao(
@@ -439,13 +440,13 @@ class _EtapaNovaSenha extends StatelessWidget {
         children: [
           Text('Crie uma nova senha',
               style: GoogleFonts.outfit(
-                  fontSize: 20,
+                  fontSize: Tipografia.tituloSecao,
                   fontWeight: FontWeight.bold,
                   color: CoresApp.textPrimary)),
           const SizedBox(height: 6),
           Text('Escolha uma senha forte com pelo menos 8 caracteres.',
               style: GoogleFonts.outfit(
-                  fontSize: 13, color: CoresApp.textSecondary)),
+                  fontSize: Tipografia.corpo, color: CoresApp.textSecondary)),
           const SizedBox(height: 28),
           CampoAutenticacao(
             controlador: controladorSenha,
@@ -511,7 +512,7 @@ class _TextoErro extends StatelessWidget {
         const SizedBox(width: 6),
         Expanded(
           child: Text(mensagem,
-              style: GoogleFonts.outfit(fontSize: 13, color: Colors.red)),
+              style: GoogleFonts.outfit(fontSize: Tipografia.corpo, color: Colors.red)),
         ),
       ],
     );

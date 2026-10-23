@@ -8,6 +8,7 @@ import '../../transacoes/servico/servico_transacao.dart';
 import '../bancos_open_finance.dart';
 import '../servico/servico_open_finance.dart';
 import 'progresso_etapas.dart';
+import '../../nucleo/tipografia.dart';
 
 /// Sincroniza os bancos mostrando cada etapa e, no fim, as compras importadas.
 /// Devolve true se alguma compra nova entrou no extrato.
@@ -205,7 +206,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
                       ? 'Nenhuma compra nova. As $ignoradas encontradas já estavam no extrato.'
                       : 'Nenhuma compra nova desde a última sincronização.',
                   style: GoogleFonts.outfit(
-                    fontSize: 13,
+                    fontSize: Tipografia.corpo,
                     color: CoresApp.textSecondary,
                   ),
                 ),
@@ -228,7 +229,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
             children: [
               Text(
                 'CO2 das compras do Open Finance este mês',
-                style: GoogleFonts.outfit(fontSize: 12, color: Colors.white60),
+                style: GoogleFonts.outfit(fontSize: Tipografia.legenda, color: Colors.white60),
               ),
               const SizedBox(height: 4),
               TweenAnimationBuilder<double>(
@@ -238,7 +239,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
                 builder: (_, valor, _) => Text(
                   '${valor.toStringAsFixed(1)} kg',
                   style: GoogleFonts.outfit(
-                    fontSize: 28,
+                    fontSize: Tipografia.numero,
                     fontWeight: FontWeight.bold,
                     color: CoresApp.primary,
                   ),
@@ -247,7 +248,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
               Text(
                 '${recentes.length} ${recentes.length == 1 ? 'compra' : 'compras'}'
                 '${nomesBancos.isEmpty ? '' : ' de ${_juntarNomes(nomesBancos)}'}',
-                style: GoogleFonts.outfit(fontSize: 12, color: Colors.white60),
+                style: GoogleFonts.outfit(fontSize: Tipografia.legenda, color: Colors.white60),
               ),
             ],
           ),
@@ -256,7 +257,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
         Text(
           'Compras deste mês',
           style: GoogleFonts.outfit(
-            fontSize: 15,
+            fontSize: Tipografia.destaque,
             fontWeight: FontWeight.bold,
             color: CoresApp.textPrimary,
           ),
@@ -270,7 +271,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
             child: Text(
               'e mais ${recentes.length - 6} no extrato',
               style: GoogleFonts.outfit(
-                fontSize: 13,
+                fontSize: Tipografia.corpo,
                 color: CoresApp.textSecondary,
               ),
             ),
@@ -287,7 +288,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
           child: Text(
             'Fechar',
             style: GoogleFonts.outfit(
-              fontSize: 15,
+              fontSize: Tipografia.destaque,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -302,7 +303,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
       const SizedBox(height: 6),
       Text(
         mensagem,
-        style: GoogleFonts.outfit(fontSize: 14, color: CoresApp.textSecondary),
+        style: GoogleFonts.outfit(fontSize: Tipografia.corpo, color: CoresApp.textSecondary),
       ),
       const SizedBox(height: 24),
       BotaoPrimario(rotulo: 'Tentar de novo', aoTocar: _executar),
@@ -314,7 +315,7 @@ class _FolhaSincronizacaoState extends State<_FolhaSincronizacao> {
           child: Text(
             'Fechar',
             style: GoogleFonts.outfit(
-              fontSize: 15,
+              fontSize: Tipografia.destaque,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -340,7 +341,7 @@ class _Titulo extends StatelessWidget {
     return Text(
       texto,
       style: GoogleFonts.outfit(
-        fontSize: 22,
+        fontSize: Tipografia.tituloSecao,
         fontWeight: FontWeight.bold,
         color: CoresApp.textPrimary,
       ),
@@ -406,7 +407,7 @@ class _ItemImportado extends StatelessWidget {
                         ? transacao.rotuloCategoria
                         : transacao.nomeEstabelecimento,
                     style: GoogleFonts.outfit(
-                      fontSize: 14,
+                      fontSize: Tipografia.corpo,
                       fontWeight: FontWeight.w600,
                       color: CoresApp.textPrimary,
                     ),
@@ -418,7 +419,7 @@ class _ItemImportado extends StatelessWidget {
                         ? transacao.rotuloCategoria
                         : '${transacao.rotuloCategoria} · ${banco.nome}',
                     style: GoogleFonts.outfit(
-                      fontSize: 12,
+                      fontSize: Tipografia.legenda,
                       color: CoresApp.textSecondary,
                     ),
                   ),
@@ -431,7 +432,7 @@ class _ItemImportado extends StatelessWidget {
                 Text(
                   formatadorMoeda.format(transacao.valor),
                   style: GoogleFonts.outfit(
-                    fontSize: 13,
+                    fontSize: Tipografia.corpo,
                     fontWeight: FontWeight.w600,
                     color: CoresApp.textPrimary,
                   ),
@@ -447,7 +448,7 @@ class _ItemImportado extends StatelessWidget {
                     Text(
                       '${transacao.co2Kg.toStringAsFixed(1)} kg',
                       style: GoogleFonts.outfit(
-                        fontSize: 12,
+                        fontSize: Tipografia.legenda,
                         color: CoresApp.textSecondary,
                       ),
                     ),

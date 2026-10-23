@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cliente_api.dart';
 import '../../nucleo/cores_app.dart';
+import '../../nucleo/tipografia.dart';
 
 /// Aviso leve no topo da tela enquanto alguma chamada à API está demorando.
 /// Fica por cima do app inteiro (é usado no `builder` do MaterialApp), então
@@ -72,7 +73,7 @@ class _CartaoAviso extends StatelessWidget {
               child: Text(
                 'Conectando ao servidor… isso pode levar até um minuto na primeira vez',
                 style: GoogleFonts.outfit(
-                  fontSize: 13,
+                  fontSize: Tipografia.corpo,
                   color: CoresApp.textPrimary,
                   height: 1.35,
                 ),

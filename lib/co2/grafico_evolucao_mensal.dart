@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../nucleo/cores_app.dart';
 import '../transacoes/servico/servico_transacao.dart';
+import '../nucleo/tipografia.dart';
 
 const _nomesMeses = [
   '',
@@ -68,7 +69,7 @@ class CartaoEvolucaoMensal extends StatelessWidget {
           Text(
             'Evolução dos últimos 6 meses',
             style: GoogleFonts.outfit(
-              fontSize: 16,
+              fontSize: Tipografia.destaque,
               fontWeight: FontWeight.w700,
               color: CoresApp.textPrimary,
             ),
@@ -108,7 +109,7 @@ class CartaoEvolucaoMensal extends StatelessWidget {
             child: Text(
               'Não foi possível carregar o histórico agora',
               style: GoogleFonts.outfit(
-                fontSize: 13,
+                fontSize: Tipografia.corpo,
                 color: CoresApp.textSecondary,
               ),
             ),
@@ -300,7 +301,7 @@ class _Barra extends StatelessWidget {
               child: Text(
                 _nomesMeses[dados.mes],
                 style: GoogleFonts.outfit(
-                  fontSize: 12,
+                  fontSize: Tipografia.legenda,
                   fontWeight: selecionada ? FontWeight.w700 : FontWeight.w500,
                   color: selecionada
                       ? CoresApp.textPrimary
@@ -371,7 +372,7 @@ class _Etiqueta extends StatelessWidget {
       child: Text(
         texto,
         style: GoogleFonts.outfit(
-          fontSize: 11,
+          fontSize: Tipografia.minimo,
           fontWeight: FontWeight.w700,
           color: cor,
         ),
@@ -419,7 +420,7 @@ class _Legenda extends StatelessWidget {
         Text(
           texto,
           style: GoogleFonts.outfit(
-            fontSize: 12,
+            fontSize: Tipografia.legenda,
             color: CoresApp.textSecondary,
           ),
         ),
@@ -444,7 +445,7 @@ class _Legenda extends StatelessWidget {
               Text(
                 'Limite (${limite.toStringAsFixed(0)} kg)',
                 style: GoogleFonts.outfit(
-                  fontSize: 12,
+                  fontSize: Tipografia.legenda,
                   color: CoresApp.textSecondary,
                 ),
               ),
@@ -492,7 +493,7 @@ class _Comparacao extends StatelessWidget {
           child: Text(
             texto,
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               fontWeight: FontWeight.w600,
               color: caiu ? CoresApp.brandText : CoresApp.accentWarm,
             ),

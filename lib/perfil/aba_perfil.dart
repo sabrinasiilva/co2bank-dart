@@ -12,7 +12,10 @@ import '../nucleo/push_firebase.dart';
 import '../transacoes/servico/servico_transacao.dart';
 import 'sugestao_limite.dart';
 import 'tela_editar_perfil.dart';
+import '../autenticacao/servico/acesso_biometrico.dart';
+import '../autenticacao/servico/servico_autenticacao.dart';
 import '../autenticacao/telas/tela_login.dart';
+import '../nucleo/tipografia.dart';
 
 class AbaPerfil extends StatefulWidget {
   const AbaPerfil({super.key});
@@ -26,6 +29,9 @@ class _AbaPerfilState extends State<AbaPerfil> {
   SugestaoLimite? _sugestao;
   bool _notificacoesAtivas = false;
   bool _alterandoNotificacoes = false;
+  bool _biometriaDisponivel = false;
+  bool _biometriaAtiva = false;
+  bool _alterandoBiometria = false;
 
   @override
   void initState() {
@@ -33,6 +39,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
     _dados = _carregar();
     _carregarSugestao();
     _carregarNotificacoes();
+    _carregarBiometria();
     AvisoDadosAlterados.instancia.addListener(_carregarSugestao);
   }
 
@@ -78,6 +85,84 @@ class _AbaPerfilState extends State<AbaPerfil> {
         behavior: SnackBarBehavior.floating,
       ));
     }
+  }
+
+  Future<void> _carregarBiometria() async {
+    final disponivel = await AcessoBiometrico.disponivel();
+    final ativa = disponivel && await AcessoBiometrico.ativa();
+    if (!mounted) return;
+    setState(() {
+      _biometriaDisponivel = disponivel;
+      _biometriaAtiva = ativa;
+    });
+  }
+
+  /// Para ligar, confirma a senha (é ela que fica guardada no cofre do
+  /// celular) e depois a digital ou o rosto.
+  Future<void> _alternarBiometria(bool ligar, String email) async {
+    if (!ligar) {
+      await AcessoBiometrico.desativar();
+      if (mounted) setState(() => _biometriaAtiva = false);
+      return;
+    }
+    final senha = await _pedirSenha();
+    if (senha == null || !mounted) return;
+    setState(() => _alterandoBiometria = true);
+    final login = await ServicoAutenticacao().entrar(email: email, senha: senha);
+    var ativou = false;
+    if (login is LoginSucesso) {
+      ativou = await AcessoBiometrico.ativar(email: email, senha: senha);
+    }
+    if (!mounted) return;
+    setState(() {
+      _biometriaAtiva = ativou;
+      _alterandoBiometria = false;
+    });
+    if (!ativou) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          login is LoginErroCredenciais
+              ? 'Senha incorreta. Tente de novo.'
+              : 'Não foi possível ativar a biometria agora.',
+          style: GoogleFonts.outfit(),
+        ),
+        behavior: SnackBarBehavior.floating,
+      ));
+    }
+  }
+
+  Future<String?> _pedirSenha() {
+    final controlador = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (contexto) => AlertDialog(
+        title: Text(
+          'Confirme sua senha',
+          style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
+        ),
+        content: TextField(
+          controller: controlador,
+          obscureText: true,
+          autofocus: true,
+          style: GoogleFonts.outfit(),
+          decoration: const InputDecoration(hintText: 'Senha'),
+          onSubmitted: (valor) => Navigator.pop(contexto, valor),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(contexto),
+            child: Text('Cancelar',
+                style: GoogleFonts.outfit(color: CoresApp.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(contexto, controlador.text),
+            child: Text('Continuar',
+                style: GoogleFonts.outfit(
+                    color: CoresApp.dark, fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    ).whenComplete(controlador.dispose);
   }
 
   Future<void> _carregarSugestao() async {
@@ -132,7 +217,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
                   Text(
                     'Perfil',
                     style: GoogleFonts.outfit(
-                      fontSize: 24,
+                      fontSize: Tipografia.titulo,
                       fontWeight: FontWeight.bold,
                       color: CoresApp.textPrimary,
                     ),
@@ -186,7 +271,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
                           ? perfil!.nome[0].toUpperCase()
                           : '?',
                       style: GoogleFonts.outfit(
-                        fontSize: 28,
+                        fontSize: Tipografia.numero,
                         fontWeight: FontWeight.bold,
                         color: CoresApp.primary,
                       ),
@@ -200,7 +285,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
                   child: Text(
                     perfil.nome,
                     style: GoogleFonts.outfit(
-                      fontSize: 20,
+                      fontSize: Tipografia.tituloSecao,
                       fontWeight: FontWeight.bold,
                       color: CoresApp.textPrimary,
                     ),
@@ -210,7 +295,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
                   child: Text(
                     perfil.email,
                     style: GoogleFonts.outfit(
-                      fontSize: 14,
+                      fontSize: Tipografia.corpo,
                       color: CoresApp.textSecondary,
                     ),
                   ),
@@ -240,11 +325,25 @@ class _AbaPerfilState extends State<AbaPerfil> {
                 ),
               ],
               const SizedBox(height: 16),
-              _CartaoNotificacoes(
-                ativas: _notificacoesAtivas,
+              _CartaoOpcao(
+                icone: Icons.notifications_active_outlined,
+                titulo: 'Notificações de alerta',
+                descricao: 'Avisa no celular quando o limite do mês passar de 80%',
+                ativa: _notificacoesAtivas,
                 alterando: _alterandoNotificacoes,
                 aoAlternar: _alternarNotificacoes,
               ),
+              if (_biometriaDisponivel && perfil != null) ...[
+                const SizedBox(height: 12),
+                _CartaoOpcao(
+                  icone: Icons.fingerprint_rounded,
+                  titulo: 'Entrar com biometria',
+                  descricao: 'Use a digital, o rosto ou o PIN do celular para entrar',
+                  ativa: _biometriaAtiva,
+                  alterando: _alterandoBiometria,
+                  aoAlternar: (ligar) => _alternarBiometria(ligar, perfil.email),
+                ),
+              ],
               const SizedBox(height: 32),
               GestureDetector(
                 onTap: _sair,
@@ -263,7 +362,7 @@ class _AbaPerfilState extends State<AbaPerfil> {
                       Text(
                         'Sair da conta',
                         style: GoogleFonts.outfit(
-                          fontSize: 15,
+                          fontSize: Tipografia.destaque,
                           fontWeight: FontWeight.w600,
                           color: Colors.red,
                         ),
@@ -322,14 +421,14 @@ class _LinhaInfo extends StatelessWidget {
           Text(
             rotulo,
             style: GoogleFonts.outfit(
-              fontSize: 14,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
             ),
           ),
           Text(
             valor,
             style: GoogleFonts.outfit(
-              fontSize: 14,
+              fontSize: Tipografia.corpo,
               fontWeight: FontWeight.w600,
               color: CoresApp.textPrimary,
             ),
@@ -340,13 +439,20 @@ class _LinhaInfo extends StatelessWidget {
   }
 }
 
-class _CartaoNotificacoes extends StatelessWidget {
-  final bool ativas;
+/// Linha de opção do Perfil com um switch (notificações, biometria).
+class _CartaoOpcao extends StatelessWidget {
+  final IconData icone;
+  final String titulo;
+  final String descricao;
+  final bool ativa;
   final bool alterando;
   final ValueChanged<bool> aoAlternar;
 
-  const _CartaoNotificacoes({
-    required this.ativas,
+  const _CartaoOpcao({
+    required this.icone,
+    required this.titulo,
+    required this.descricao,
+    required this.ativa,
     required this.alterando,
     required this.aoAlternar,
   });
@@ -368,25 +474,24 @@ class _CartaoNotificacoes extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.notifications_active_outlined,
-              size: 22, color: CoresApp.textPrimary),
+          Icon(icone, size: 22, color: CoresApp.textPrimary),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Notificações de alerta',
+                  titulo,
                   style: GoogleFonts.outfit(
-                    fontSize: 15,
+                    fontSize: Tipografia.destaque,
                     fontWeight: FontWeight.w600,
                     color: CoresApp.textPrimary,
                   ),
                 ),
                 Text(
-                  'Avisa no celular quando o limite do mês passar de 80%',
+                  descricao,
                   style: GoogleFonts.outfit(
-                    fontSize: 12,
+                    fontSize: Tipografia.legenda,
                     color: CoresApp.textSecondary,
                   ),
                 ),
@@ -407,7 +512,7 @@ class _CartaoNotificacoes extends StatelessWidget {
             )
           else
             Switch(
-              value: ativas,
+              value: ativa,
               onChanged: aoAlternar,
               activeThumbColor: Colors.white,
               activeTrackColor: CoresApp.primary,

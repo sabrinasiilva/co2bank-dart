@@ -6,6 +6,7 @@ import '../nucleo/aviso_dados_alterados.dart';
 import '../nucleo/cores_app.dart';
 import '../open_finance/tela_open_finance.dart';
 import '../transacoes/telas/tela_nova_compra.dart';
+import '../nucleo/tipografia.dart';
 
 /// Mostrado na aba Início quando o mês ainda não tem nenhuma compra:
 /// convida a conectar o banco (ou lançar uma compra à mão).
@@ -58,7 +59,7 @@ class EstadoVazioInicio extends StatelessWidget {
             'Conecte seu banco para começar',
             textAlign: TextAlign.center,
             style: GoogleFonts.outfit(
-              fontSize: 16,
+              fontSize: Tipografia.destaque,
               fontWeight: FontWeight.w700,
               color: CoresApp.textPrimary,
             ),
@@ -68,7 +69,7 @@ class EstadoVazioInicio extends StatelessWidget {
             'Nenhuma compra este mês ainda. Pelo Open Finance elas chegam sozinhas, já com o CO2 calculado.',
             textAlign: TextAlign.center,
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
               height: 1.45,
             ),
@@ -85,7 +86,7 @@ class EstadoVazioInicio extends StatelessWidget {
             child: Text(
               'Lançar uma compra manualmente',
               style: GoogleFonts.outfit(
-                fontSize: 14,
+                fontSize: Tipografia.corpo,
                 fontWeight: FontWeight.w600,
               ),
             ),

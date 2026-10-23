@@ -7,11 +7,16 @@ import '../../open_finance/bancos_open_finance.dart';
 import '../../open_finance/widgets/selo_open_finance.dart';
 import '../icone_categoria.dart';
 import '../servico/servico_transacao.dart';
+import '../../nucleo/tipografia.dart';
 
 class TelaDetalheTransacao extends StatefulWidget {
   final ItemTransacao transacao;
 
-  const TelaDetalheTransacao({super.key, required this.transacao});
+  /// Identificador da animação do ícone vindo da lista (Início ou Extrato).
+  /// Cada lista usa o seu, porque a mesma compra pode aparecer nas duas.
+  final String? tagIcone;
+
+  const TelaDetalheTransacao({super.key, required this.transacao, this.tagIcone});
 
   @override
   State<TelaDetalheTransacao> createState() => _TelaDetalheTransacaoState();
@@ -66,7 +71,7 @@ class _TelaDetalheTransacaoState extends State<TelaDetalheTransacao> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
         children: [
-          _Cabecalho(transacao: _transacao),
+          _Cabecalho(transacao: _transacao, tagIcone: widget.tagIcone),
           const SizedBox(height: 16),
           _CartaoCo2(transacao: _transacao, limiteKg: _limiteKg),
           const SizedBox(height: 16),
@@ -76,7 +81,7 @@ class _TelaDetalheTransacaoState extends State<TelaDetalheTransacao> {
             'O CO2 é uma estimativa calculada a partir da categoria do '
             'estabelecimento (MCC) e do valor da compra.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.outfit(fontSize: 12, color: CoresApp.gray),
+            style: GoogleFonts.outfit(fontSize: Tipografia.legenda, color: CoresApp.gray),
           ),
         ],
       ),
@@ -94,8 +99,13 @@ String _dataPorExtenso(DateTime data) {
 
 class _Cabecalho extends StatelessWidget {
   final ItemTransacao transacao;
+  final String? tagIcone;
 
-  const _Cabecalho({required this.transacao});
+  const _Cabecalho({required this.transacao, this.tagIcone});
+
+  // O ícone "voa" da lista até aqui quando a tela abre.
+  Widget _comAnimacao(Widget icone) =>
+      tagIcone == null ? icone : Hero(tag: tagIcone!, child: icone);
 
   @override
   Widget build(BuildContext context) {
@@ -113,17 +123,19 @@ class _Cabecalho extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: CoresApp.background,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(
-              iconePorCategoria(transacao.rotuloCategoria),
-              size: 28,
-              color: CoresApp.gray,
+          _comAnimacao(
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: CoresApp.background,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                iconePorCategoria(transacao.rotuloCategoria),
+                size: 28,
+                color: CoresApp.gray,
+              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -131,7 +143,7 @@ class _Cabecalho extends StatelessWidget {
             nome,
             textAlign: TextAlign.center,
             style: GoogleFonts.outfit(
-              fontSize: 20,
+              fontSize: Tipografia.tituloSecao,
               fontWeight: FontWeight.bold,
               color: CoresApp.textPrimary,
             ),
@@ -139,7 +151,7 @@ class _Cabecalho extends StatelessWidget {
           Text(
             transacao.rotuloCategoria,
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -149,7 +161,7 @@ class _Cabecalho extends StatelessWidget {
           Text(
             moeda.format(transacao.valor),
             style: GoogleFonts.outfit(
-              fontSize: 30,
+              fontSize: Tipografia.numero,
               fontWeight: FontWeight.bold,
               color: CoresApp.textPrimary,
             ),
@@ -157,7 +169,7 @@ class _Cabecalho extends StatelessWidget {
           Text(
             _dataPorExtenso(transacao.ocorreuEm),
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -202,7 +214,7 @@ class _CartaoCo2 extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 'Pegada de carbono desta compra',
-                style: GoogleFonts.outfit(fontSize: 13, color: Colors.white70),
+                style: GoogleFonts.outfit(fontSize: Tipografia.corpo, color: Colors.white70),
               ),
             ],
           ),
@@ -210,7 +222,7 @@ class _CartaoCo2 extends StatelessWidget {
           Text(
             '${transacao.co2Kg.toStringAsFixed(2)} kg de CO2',
             style: GoogleFonts.outfit(
-              fontSize: 28,
+              fontSize: Tipografia.numero,
               fontWeight: FontWeight.bold,
               color: CoresApp.primary,
             ),
@@ -219,7 +231,7 @@ class _CartaoCo2 extends StatelessWidget {
           Text(
             'Cerca de ${kgPor100.toStringAsFixed(1)} kg a cada R\$ 100 gastos '
             'em ${transacao.rotuloCategoria}',
-            style: GoogleFonts.outfit(fontSize: 13, color: Colors.white60),
+            style: GoogleFonts.outfit(fontSize: Tipografia.corpo, color: Colors.white60),
           ),
           if (parcela != null) ...[
             const SizedBox(height: 18),
@@ -241,7 +253,7 @@ class _CartaoCo2 extends StatelessWidget {
             Text(
               'Representa ${(parcela * 100).toStringAsFixed(1)}% do seu limite '
               'de ${limite!.toStringAsFixed(0)} kg em $mes',
-              style: GoogleFonts.outfit(fontSize: 13, color: Colors.white70),
+              style: GoogleFonts.outfit(fontSize: Tipografia.corpo, color: Colors.white70),
             ),
           ],
         ],
@@ -298,7 +310,7 @@ class _CartaoInformacoes extends StatelessWidget {
                     child: Text(
                       linhas[i].$1,
                       style: GoogleFonts.outfit(
-                        fontSize: 13,
+                        fontSize: Tipografia.corpo,
                         color: CoresApp.textSecondary,
                       ),
                     ),
@@ -309,7 +321,7 @@ class _CartaoInformacoes extends StatelessWidget {
                       linhas[i].$2,
                       textAlign: TextAlign.right,
                       style: GoogleFonts.outfit(
-                        fontSize: 14,
+                        fontSize: Tipografia.corpo,
                         fontWeight: FontWeight.w600,
                         color: CoresApp.textPrimary,
                       ),

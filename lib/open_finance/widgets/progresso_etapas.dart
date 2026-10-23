@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cores_app.dart';
+import '../../nucleo/tipografia.dart';
 
 /// Lista vertical de etapas: as anteriores a [etapaAtual] aparecem concluídas,
 /// a atual com indicador de carregamento e as seguintes em cinza.
@@ -82,7 +83,7 @@ class _LinhaEtapa extends StatelessWidget {
               child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 250),
                 style: GoogleFonts.outfit(
-                  fontSize: 15,
+                  fontSize: Tipografia.destaque,
                   fontWeight: estado == _EstadoEtapa.atual
                       ? FontWeight.w600
                       : FontWeight.w500,

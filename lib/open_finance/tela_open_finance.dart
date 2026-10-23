@@ -10,6 +10,7 @@ import 'bancos_open_finance.dart';
 import 'servico/servico_open_finance.dart';
 import 'widgets/folha_consentimento.dart';
 import 'widgets/folha_sincronizacao.dart';
+import '../nucleo/tipografia.dart';
 
 class TelaOpenFinance extends StatefulWidget {
   final VoidCallback? aoVerExtrato;
@@ -253,7 +254,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
           Text(
             'Seus bancos',
             style: GoogleFonts.outfit(
-              fontSize: 16,
+              fontSize: Tipografia.destaque,
               fontWeight: FontWeight.bold,
               color: CoresApp.textPrimary,
             ),
@@ -262,7 +263,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
           Text(
             'Toque em um banco para conectar ou desconectar.',
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -281,7 +282,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
           Text(
             'O acesso é só leitura: o CO2Bank nunca movimenta seu dinheiro.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.outfit(fontSize: 12, color: CoresApp.gray),
+            style: GoogleFonts.outfit(fontSize: Tipografia.legenda, color: CoresApp.gray),
           ),
         ],
       ),
@@ -314,7 +315,7 @@ class _ComoFunciona extends StatelessWidget {
           Text(
             'Como funciona',
             style: GoogleFonts.outfit(
-              fontSize: 15,
+              fontSize: Tipografia.destaque,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
@@ -323,7 +324,7 @@ class _ComoFunciona extends StatelessWidget {
           Text(
             'Suas compras chegam sozinhas do banco e o CO2 de cada uma é calculado na hora.',
             style: GoogleFonts.outfit(
-              fontSize: 12,
+              fontSize: Tipografia.legenda,
               color: Colors.white60,
               height: 1.4,
             ),
@@ -409,14 +410,14 @@ class _Passo extends StatelessWidget {
         Text(
           titulo,
           style: GoogleFonts.outfit(
-            fontSize: 13,
+            fontSize: Tipografia.corpo,
             fontWeight: FontWeight.w600,
             color: destaque ? Colors.white : Colors.white54,
           ),
         ),
         Text(
           subtitulo,
-          style: GoogleFonts.outfit(fontSize: 11, color: Colors.white54),
+          style: GoogleFonts.outfit(fontSize: Tipografia.minimo, color: Colors.white54),
         ),
       ],
     );
@@ -469,7 +470,7 @@ class _CartaoSincronizacao extends StatelessWidget {
               Text(
                 'Sincronização',
                 style: GoogleFonts.outfit(
-                  fontSize: 16,
+                  fontSize: Tipografia.destaque,
                   fontWeight: FontWeight.bold,
                   color: CoresApp.textPrimary,
                 ),
@@ -480,7 +481,7 @@ class _CartaoSincronizacao extends StatelessWidget {
           Text(
             _descricao,
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -534,7 +535,7 @@ class _Numero extends StatelessWidget {
             Text(
               valor,
               style: GoogleFonts.outfit(
-                fontSize: 18,
+                fontSize: Tipografia.subtitulo,
                 fontWeight: FontWeight.bold,
                 color: CoresApp.textPrimary,
               ),
@@ -542,7 +543,7 @@ class _Numero extends StatelessWidget {
             Text(
               rotulo,
               style: GoogleFonts.outfit(
-                fontSize: 12,
+                fontSize: Tipografia.legenda,
                 color: CoresApp.textSecondary,
               ),
             ),
@@ -620,7 +621,7 @@ class _CartaoBanco extends StatelessWidget {
                   Text(
                     banco.nome,
                     style: GoogleFonts.outfit(
-                      fontSize: 15,
+                      fontSize: Tipografia.destaque,
                       fontWeight: FontWeight.w600,
                       color: CoresApp.textPrimary,
                     ),
@@ -628,7 +629,7 @@ class _CartaoBanco extends StatelessWidget {
                   Text(
                     _subtitulo(conexao),
                     style: GoogleFonts.outfit(
-                      fontSize: 12,
+                      fontSize: Tipografia.legenda,
                       color: CoresApp.textSecondary,
                     ),
                   ),
@@ -657,7 +658,7 @@ class _CartaoBanco extends StatelessWidget {
                 child: Text(
                   'Conectado',
                   style: GoogleFonts.outfit(
-                    fontSize: 12,
+                    fontSize: Tipografia.legenda,
                     fontWeight: FontWeight.w600,
                     color: CoresApp.dark,
                   ),
@@ -698,7 +699,7 @@ class _EstadoIndisponivel extends StatelessWidget {
               'Não foi possível carregar seus bancos',
               textAlign: TextAlign.center,
               style: GoogleFonts.outfit(
-                fontSize: 16,
+                fontSize: Tipografia.destaque,
                 fontWeight: FontWeight.w600,
                 color: CoresApp.textPrimary,
               ),

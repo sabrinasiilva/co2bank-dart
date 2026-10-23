@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../nucleo/cores_app.dart';
 import '../../../../nucleo/registro_erros.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
+import '../../../nucleo/tipografia.dart';
 
 class Etapa3VerificacaoFacial extends StatefulWidget {
   final String? fotoCapturadaBase64;
@@ -73,7 +74,7 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
           Text(
             'Verificação facial',
             style: GoogleFonts.outfit(
-              fontSize: 22,
+              fontSize: Tipografia.tituloSecao,
               fontWeight: FontWeight.bold,
               color: CoresApp.textPrimary,
             ),
@@ -82,7 +83,7 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
           Text(
             'Etapa 3 de 5',
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -90,7 +91,7 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
           Text(
             'Sua selfie é usada para reforçar a segurança da sua conta.',
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
               height: 1.5,
             ),
@@ -110,7 +111,7 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
                 const SizedBox(width: 6),
                 Text(_erro!,
                     style: GoogleFonts.outfit(
-                        fontSize: 13, color: Colors.red)),
+                        fontSize: Tipografia.corpo, color: Colors.red)),
               ],
             ),
             const SizedBox(height: 16),
@@ -129,7 +130,7 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
                 label: Text(
                   'Tirar novamente',
                   style: GoogleFonts.outfit(
-                      fontSize: 15, fontWeight: FontWeight.w600),
+                      fontSize: Tipografia.destaque, fontWeight: FontWeight.w600),
                 ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: CoresApp.textPrimary,
@@ -156,7 +157,7 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
                 child: Text(
                   'Pular por agora',
                   style: GoogleFonts.outfit(
-                    fontSize: 14,
+                    fontSize: Tipografia.corpo,
                     color: CoresApp.textSecondary,
                     decoration: TextDecoration.underline,
                   ),
@@ -201,7 +202,7 @@ class _GuiaFacial extends StatelessWidget {
               Text(
                 'Posicione seu rosto\naqui',
                 style: GoogleFonts.outfit(
-                  fontSize: 13,
+                  fontSize: Tipografia.corpo,
                   color: CoresApp.textSecondary,
                   height: 1.4,
                 ),

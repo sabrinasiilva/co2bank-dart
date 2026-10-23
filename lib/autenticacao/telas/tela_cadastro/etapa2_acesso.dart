@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../nucleo/cores_app.dart';
 import '../../../compartilhado/widgets/campo_autenticacao.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
+import '../../../nucleo/tipografia.dart';
 
 class Etapa2Acesso extends StatelessWidget {
   final TextEditingController controladorEmail;
@@ -85,7 +86,7 @@ class Etapa2Acesso extends StatelessWidget {
                 const SizedBox(width: 10),
                 Text(rotuloForca,
                     style: GoogleFonts.outfit(
-                        fontSize: 12,
+                        fontSize: Tipografia.legenda,
                         color: corForca,
                         fontWeight: FontWeight.w500)),
               ],
@@ -115,13 +116,13 @@ class Etapa2Acesso extends StatelessWidget {
       children: [
         Text('Criar acesso',
             style: GoogleFonts.outfit(
-                fontSize: 22,
+                fontSize: Tipografia.tituloSecao,
                 fontWeight: FontWeight.bold,
                 color: CoresApp.textPrimary)),
         const SizedBox(height: 4),
         Text('Etapa 2 de 5',
             style: GoogleFonts.outfit(
-                fontSize: 13, color: CoresApp.textSecondary)),
+                fontSize: Tipografia.corpo, color: CoresApp.textSecondary)),
       ],
     );
   }

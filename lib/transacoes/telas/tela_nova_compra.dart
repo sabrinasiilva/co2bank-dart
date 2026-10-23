@@ -8,6 +8,7 @@ import '../../nucleo/cores_app.dart';
 import '../../nucleo/formatadores_entrada.dart';
 import '../icone_categoria.dart';
 import '../servico/servico_transacao.dart';
+import '../../nucleo/tipografia.dart';
 
 /// Simula o impacto de uma compra no limite antes de fazer e, se a pessoa
 /// quiser, registra a compra. Devolve true quando uma compra foi registrada.
@@ -185,7 +186,7 @@ class _TelaNovaCompraState extends State<TelaNovaCompra> {
             Text(
               'Simule o impacto antes de comprar ou registre uma compra que você já fez.',
               style: GoogleFonts.outfit(
-                fontSize: 14,
+                fontSize: Tipografia.corpo,
                 color: CoresApp.textSecondary,
                 height: 1.4,
               ),
@@ -269,7 +270,7 @@ class _TelaNovaCompraState extends State<TelaNovaCompra> {
                     : Text(
                         'Registrar compra',
                         style: GoogleFonts.outfit(
-                          fontSize: 16,
+                          fontSize: Tipografia.destaque,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -304,7 +305,7 @@ class _SeletorCategoria extends StatelessWidget {
         Text(
           'Categoria',
           style: GoogleFonts.outfit(
-            fontSize: 13,
+            fontSize: Tipografia.corpo,
             fontWeight: FontWeight.w500,
             color: CoresApp.textPrimary,
           ),
@@ -340,7 +341,7 @@ class _SeletorCategoria extends StatelessWidget {
             padding: const EdgeInsets.only(top: 6),
             child: Text(
               erro!,
-              style: GoogleFonts.outfit(fontSize: 12, color: Colors.red),
+              style: GoogleFonts.outfit(fontSize: Tipografia.legenda, color: Colors.red),
             ),
           ),
       ],
@@ -388,7 +389,7 @@ class _ChipCategoria extends StatelessWidget {
             Text(
               categoria.rotulo,
               style: GoogleFonts.outfit(
-                fontSize: 13,
+                fontSize: Tipografia.corpo,
                 fontWeight: selecionada ? FontWeight.w700 : FontWeight.w500,
                 color: selecionada ? CoresApp.brandText : CoresApp.textPrimary,
               ),
@@ -423,7 +424,7 @@ class _CampoData extends StatelessWidget {
         Text(
           'Data da compra (para registrar)',
           style: GoogleFonts.outfit(
-            fontSize: 13,
+            fontSize: Tipografia.corpo,
             fontWeight: FontWeight.w500,
             color: CoresApp.textPrimary,
           ),
@@ -451,7 +452,7 @@ class _CampoData extends StatelessWidget {
                   child: Text(
                     texto,
                     style: GoogleFonts.outfit(
-                      fontSize: 15,
+                      fontSize: Tipografia.destaque,
                       color: CoresApp.textPrimary,
                     ),
                   ),
@@ -531,7 +532,7 @@ class _ResultadoSimulacao extends StatelessWidget {
                 child: Text(
                   titulo,
                   style: GoogleFonts.outfit(
-                    fontSize: 16,
+                    fontSize: Tipografia.destaque,
                     fontWeight: FontWeight.w700,
                     color: cor,
                   ),
@@ -543,7 +544,7 @@ class _ResultadoSimulacao extends StatelessWidget {
           Text(
             texto,
             style: GoogleFonts.outfit(
-              fontSize: 14,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textPrimary,
               height: 1.4,
             ),
@@ -552,7 +553,7 @@ class _ResultadoSimulacao extends StatelessWidget {
           Text(
             '${estimativa.co2Kg.toStringAsFixed(1)} kg de CO2 estimados',
             style: GoogleFonts.outfit(
-              fontSize: 22,
+              fontSize: Tipografia.tituloSecao,
               fontWeight: FontWeight.bold,
               color: CoresApp.textPrimary,
             ),
@@ -560,7 +561,7 @@ class _ResultadoSimulacao extends StatelessWidget {
           Text(
             'em ${estimativa.rotuloCategoria}',
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -638,7 +639,7 @@ class _ResultadoSimulacao extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             'É só uma simulação: nada foi salvo no seu extrato.',
-            style: GoogleFonts.outfit(fontSize: 12, color: CoresApp.gray),
+            style: GoogleFonts.outfit(fontSize: Tipografia.legenda, color: CoresApp.gray),
           ),
         ],
       ),
@@ -669,7 +670,7 @@ class _ItemLegenda extends StatelessWidget {
         Text(
           texto,
           style: GoogleFonts.outfit(
-            fontSize: 12,
+            fontSize: Tipografia.legenda,
             color: CoresApp.textSecondary,
           ),
         ),
@@ -703,7 +704,7 @@ class _AvisoErro extends StatelessWidget {
             child: Text(
               '$mensagem Você ainda pode registrar a compra.',
               style: GoogleFonts.outfit(
-                fontSize: 13,
+                fontSize: Tipografia.corpo,
                 color: CoresApp.textPrimary,
               ),
             ),

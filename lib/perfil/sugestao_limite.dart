@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../nucleo/cores_app.dart';
 import '../transacoes/servico/servico_transacao.dart';
+import '../nucleo/tipografia.dart';
 
 // Mesma faixa do controle deslizante do limite no cadastro.
 const limiteMinimoKg = 50.0;
@@ -119,7 +120,7 @@ class CartaoSugestaoLimite extends StatelessWidget {
                       ? 'Seu limite já é um bom desafio'
                       : 'Sugestão: $sugerido kg/mês',
                   style: GoogleFonts.outfit(
-                    fontSize: 15,
+                    fontSize: Tipografia.destaque,
                     fontWeight: FontWeight.w700,
                     color: CoresApp.brandText,
                   ),
@@ -128,7 +129,7 @@ class CartaoSugestaoLimite extends StatelessWidget {
                 Text(
                   explicacao,
                   style: GoogleFonts.outfit(
-                    fontSize: 13,
+                    fontSize: Tipografia.corpo,
                     color: CoresApp.brandText,
                     height: 1.35,
                   ),

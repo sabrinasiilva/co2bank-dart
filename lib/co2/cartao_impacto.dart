@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../nucleo/cores_app.dart';
 import '../transacoes/servico/servico_transacao.dart';
+import '../nucleo/tipografia.dart';
 
 // Estimativas comuns em materiais de divulgação sobre carbono, usadas só para
 // deixar o número mais concreto. Na tela aparecem sempre como "cerca de".
@@ -59,7 +60,7 @@ class CartaoImpacto extends StatelessWidget {
               Text(
                 'Seu impacto em $mes',
                 style: GoogleFonts.outfit(
-                  fontSize: 14,
+                  fontSize: Tipografia.corpo,
                   fontWeight: FontWeight.w600,
                   color: CoresApp.brandText,
                 ),
@@ -72,7 +73,7 @@ class CartaoImpacto extends StatelessWidget {
                 ? 'Você emitiu ${diferenca.toStringAsFixed(1).replaceAll('.', ',')} kg a menos que o seu limite'
                 : 'Você passou ${(-diferenca).toStringAsFixed(1).replaceAll('.', ',')} kg do seu limite',
             style: GoogleFonts.outfit(
-              fontSize: 20,
+              fontSize: Tipografia.tituloSecao,
               fontWeight: FontWeight.bold,
               color: CoresApp.brandText,
               height: 1.25,
@@ -93,7 +94,7 @@ class CartaoImpacto extends StatelessWidget {
                 Text(
                   'Objetivos de Desenvolvimento Sustentável',
                   style: GoogleFonts.outfit(
-                    fontSize: 13,
+                    fontSize: Tipografia.corpo,
                     fontWeight: FontWeight.w700,
                     color: CoresApp.textPrimary,
                   ),
@@ -186,7 +187,7 @@ class _Equivalencia extends StatelessWidget {
             child: Text(
               texto,
               style: GoogleFonts.outfit(
-                fontSize: 13,
+                fontSize: Tipografia.corpo,
                 color: CoresApp.brandText,
               ),
             ),
@@ -226,7 +227,7 @@ class _LinhaOds extends StatelessWidget {
           child: Text(
             '$numero',
             style: GoogleFonts.outfit(
-              fontSize: 16,
+              fontSize: Tipografia.destaque,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
@@ -240,7 +241,7 @@ class _LinhaOds extends StatelessWidget {
               Text(
                 'ODS $numero · $titulo',
                 style: GoogleFonts.outfit(
-                  fontSize: 12,
+                  fontSize: Tipografia.legenda,
                   fontWeight: FontWeight.w700,
                   color: CoresApp.textPrimary,
                 ),
@@ -249,7 +250,7 @@ class _LinhaOds extends StatelessWidget {
               Text(
                 texto,
                 style: GoogleFonts.outfit(
-                  fontSize: 12,
+                  fontSize: Tipografia.legenda,
                   color: CoresApp.textSecondary,
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../nucleo/cores_app.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
+import '../../../nucleo/tipografia.dart';
 
 class Etapa6Concluido extends StatelessWidget {
   final VoidCallback aoIniciar;
@@ -28,7 +29,7 @@ class Etapa6Concluido extends StatelessWidget {
             const SizedBox(height: 28),
             Text('Tudo pronto!',
                 style: GoogleFonts.outfit(
-                    fontSize: 26,
+                    fontSize: Tipografia.titulo,
                     fontWeight: FontWeight.bold,
                     color: CoresApp.textPrimary)),
             const SizedBox(height: 8),
@@ -36,7 +37,7 @@ class Etapa6Concluido extends StatelessWidget {
               'Sua conta está criada. Vamos começar a cuidar do seu bolso e do planeta.',
               textAlign: TextAlign.center,
               style: GoogleFonts.outfit(
-                  fontSize: 15,
+                  fontSize: Tipografia.destaque,
                   color: CoresApp.textSecondary,
                   height: 1.5),
             ),

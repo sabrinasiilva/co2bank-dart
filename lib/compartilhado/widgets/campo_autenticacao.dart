@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cores_app.dart';
+import '../../nucleo/tipografia.dart';
 
 class CampoAutenticacao extends StatelessWidget {
   final TextEditingController controlador;
@@ -39,7 +40,7 @@ class CampoAutenticacao extends StatelessWidget {
         Text(
           rotulo,
           style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               fontWeight: FontWeight.w500,
               color: CoresApp.textPrimary),
         ),
@@ -51,7 +52,7 @@ class CampoAutenticacao extends StatelessWidget {
           keyboardType: tipoTeclado,
           inputFormatters: formatadores,
           style:
-              GoogleFonts.outfit(fontSize: 15, color: CoresApp.textPrimary),
+              GoogleFonts.outfit(fontSize: Tipografia.destaque, color: CoresApp.textPrimary),
           decoration: InputDecoration(
             hintText: dica,
             hintStyle: GoogleFonts.outfit(color: CoresApp.textSecondary),
@@ -81,7 +82,7 @@ class CampoAutenticacao extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 6, left: 4),
             child: Text(erro!,
-                style: GoogleFonts.outfit(fontSize: 12, color: Colors.red)),
+                style: GoogleFonts.outfit(fontSize: Tipografia.legenda, color: Colors.red)),
           ),
       ],
     );

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../nucleo/cores_app.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
 import '../../../open_finance/bancos_open_finance.dart';
+import '../../../nucleo/tipografia.dart';
 
 class Etapa4OpenFinance extends StatelessWidget {
   final Set<String> bancosConectados;
@@ -30,7 +31,7 @@ class Etapa4OpenFinance extends StatelessWidget {
           const SizedBox(height: 20),
           Text('Selecione seus bancos',
               style: GoogleFonts.outfit(
-                  fontSize: 14,
+                  fontSize: Tipografia.corpo,
                   fontWeight: FontWeight.w500,
                   color: CoresApp.textPrimary)),
           const SizedBox(height: 12),
@@ -52,13 +53,13 @@ class Etapa4OpenFinance extends StatelessWidget {
       children: [
         Text('Open Finance',
             style: GoogleFonts.outfit(
-                fontSize: 22,
+                fontSize: Tipografia.tituloSecao,
                 fontWeight: FontWeight.bold,
                 color: CoresApp.textPrimary)),
         const SizedBox(height: 4),
         Text('Etapa 4 de 5',
             style: GoogleFonts.outfit(
-                fontSize: 13, color: CoresApp.textSecondary)),
+                fontSize: Tipografia.corpo, color: CoresApp.textSecondary)),
       ],
     );
   }
@@ -75,7 +76,7 @@ class Etapa4OpenFinance extends StatelessWidget {
       child: Text(
         'O Open Finance permite que o CO2Bank leia seus dados de compras diretamente do seu banco, sem precisar digitar nada. O acesso é só de leitura: nunca movemos o seu dinheiro.',
         style: GoogleFonts.outfit(
-            fontSize: 13, color: CoresApp.dark, height: 1.5),
+            fontSize: Tipografia.corpo, color: CoresApp.dark, height: 1.5),
       ),
     );
   }
@@ -109,7 +110,7 @@ class Etapa4OpenFinance extends StatelessWidget {
             const SizedBox(width: 12),
             Text(banco.nome,
                 style: GoogleFonts.outfit(
-                    fontSize: 15,
+                    fontSize: Tipografia.destaque,
                     fontWeight: FontWeight.w500,
                     color: CoresApp.textPrimary)),
             const Spacer(),

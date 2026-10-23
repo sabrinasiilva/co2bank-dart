@@ -3,6 +3,7 @@ import '../compartilhado/widgets/botao_primario.dart';
 import '../compartilhado/widgets/campo_autenticacao.dart';
 import '../nucleo/formatadores_entrada.dart';
 import 'servico/servico_usuario.dart';
+import '../nucleo/tipografia.dart';
 
 class TelaEditarPerfil extends StatefulWidget {
   final PerfilUsuario perfilInicial;
@@ -126,7 +127,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
             const SizedBox(height: 24),
             Text(
               'Limite mensal de CO2: ${_limiteCo2.toInt()} kg/mês',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: Tipografia.destaque),
             ),
             Slider(
               value: _limiteCo2,

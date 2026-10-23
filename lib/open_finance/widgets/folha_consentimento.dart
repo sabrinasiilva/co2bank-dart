@@ -7,6 +7,7 @@ import '../../compartilhado/widgets/logo_co2bank.dart';
 import '../bancos_open_finance.dart';
 import '../servico/servico_open_finance.dart';
 import 'progresso_etapas.dart';
+import '../../nucleo/tipografia.dart';
 
 /// Abre a jornada de consentimento do Open Finance para [banco].
 /// Devolve true se o banco foi conectado.
@@ -117,7 +118,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       Text(
         'Conectar $nome',
         style: GoogleFonts.outfit(
-          fontSize: 22,
+          fontSize: Tipografia.tituloSecao,
           fontWeight: FontWeight.bold,
           color: CoresApp.textPrimary,
         ),
@@ -126,7 +127,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       Text(
         'O CO2Bank vai pedir ao $nome permissão para ler suas compras e calcular o CO2 de cada uma.',
         style: GoogleFonts.outfit(
-          fontSize: 14,
+          fontSize: Tipografia.corpo,
           color: CoresApp.textSecondary,
           height: 1.4,
         ),
@@ -171,7 +172,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
               child: Text(
                 'Válido por 12 meses. Você pode desconectar quando quiser.',
                 style: GoogleFonts.outfit(
-                  fontSize: 13,
+                  fontSize: Tipografia.corpo,
                   color: CoresApp.textSecondary,
                 ),
               ),
@@ -189,7 +190,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
           child: Text(
             'Agora não',
             style: GoogleFonts.outfit(
-              fontSize: 15,
+              fontSize: Tipografia.destaque,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -198,7 +199,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       Center(
         child: Text(
           'Protótipo: o consentimento é simulado.',
-          style: GoogleFonts.outfit(fontSize: 11, color: CoresApp.gray),
+          style: GoogleFonts.outfit(fontSize: Tipografia.minimo, color: CoresApp.gray),
         ),
       ),
     ];
@@ -209,7 +210,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       Text(
         'Conectando...',
         style: GoogleFonts.outfit(
-          fontSize: 22,
+          fontSize: Tipografia.tituloSecao,
           fontWeight: FontWeight.bold,
           color: CoresApp.textPrimary,
         ),
@@ -225,7 +226,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       Text(
         '${widget.banco.nome} conectado',
         style: GoogleFonts.outfit(
-          fontSize: 22,
+          fontSize: Tipografia.tituloSecao,
           fontWeight: FontWeight.bold,
           color: CoresApp.textPrimary,
         ),
@@ -233,7 +234,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       const SizedBox(height: 6),
       Text(
         'Agora é só sincronizar para trazer o histórico de compras.',
-        style: GoogleFonts.outfit(fontSize: 14, color: CoresApp.textSecondary),
+        style: GoogleFonts.outfit(fontSize: Tipografia.corpo, color: CoresApp.textSecondary),
       ),
       const SizedBox(height: 20),
       ProgressoEtapas(
@@ -254,7 +255,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       Text(
         'Não deu para conectar',
         style: GoogleFonts.outfit(
-          fontSize: 22,
+          fontSize: Tipografia.tituloSecao,
           fontWeight: FontWeight.bold,
           color: CoresApp.textPrimary,
         ),
@@ -262,7 +263,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
       const SizedBox(height: 6),
       Text(
         _mensagemErro,
-        style: GoogleFonts.outfit(fontSize: 14, color: CoresApp.textSecondary),
+        style: GoogleFonts.outfit(fontSize: Tipografia.corpo, color: CoresApp.textSecondary),
       ),
       const SizedBox(height: 24),
       BotaoPrimario(
@@ -280,7 +281,7 @@ class _FolhaConsentimentoState extends State<_FolhaConsentimento> {
           child: Text(
             'Fechar',
             style: GoogleFonts.outfit(
-              fontSize: 15,
+              fontSize: Tipografia.destaque,
               color: CoresApp.textSecondary,
             ),
           ),
@@ -353,7 +354,7 @@ class _TituloSecao extends StatelessWidget {
       child: Text(
         texto,
         style: GoogleFonts.outfit(
-          fontSize: 13,
+          fontSize: Tipografia.corpo,
           fontWeight: FontWeight.w600,
           color: CoresApp.textPrimary,
         ),
@@ -384,7 +385,7 @@ class _ItemPermissao extends StatelessWidget {
             child: Text(
               texto,
               style: GoogleFonts.outfit(
-                fontSize: 14,
+                fontSize: Tipografia.corpo,
                 color: CoresApp.textPrimary,
               ),
             ),

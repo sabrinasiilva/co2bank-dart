@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../nucleo/cores_app.dart';
+import '../../nucleo/tipografia.dart';
 
 /// Estado de erro das telas que carregam dados da API: explica o que houve e
 /// oferece tentar de novo, em vez de mostrar a tela vazia como se não houvesse
@@ -29,7 +30,7 @@ class AvisoErroCarregamento extends StatelessWidget {
             titulo,
             textAlign: TextAlign.center,
             style: GoogleFonts.outfit(
-              fontSize: 16,
+              fontSize: Tipografia.destaque,
               fontWeight: FontWeight.w600,
               color: CoresApp.textPrimary,
             ),
@@ -39,7 +40,7 @@ class AvisoErroCarregamento extends StatelessWidget {
             'Confira sua conexão com a internet e tente de novo.',
             textAlign: TextAlign.center,
             style: GoogleFonts.outfit(
-              fontSize: 13,
+              fontSize: Tipografia.corpo,
               color: CoresApp.textSecondary,
             ),
           ),

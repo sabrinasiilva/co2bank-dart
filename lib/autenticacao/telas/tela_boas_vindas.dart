@@ -6,6 +6,7 @@ import '../../compartilhado/widgets/logo_co2bank.dart';
 import '../../navegacao.dart';
 import '../../nucleo/cores_app.dart';
 import '../../open_finance/tela_open_finance.dart';
+import '../../nucleo/tipografia.dart';
 
 /// Primeira tela depois do cadastro: explica em poucos passos como o app
 /// funciona e já oferece conectar o banco, para a Home não abrir vazia.
@@ -78,7 +79,7 @@ class TelaBoasVindas extends StatelessWidget {
                 Text(
                   'CO2Bank',
                   style: GoogleFonts.outfit(
-                      fontSize: 22,
+                      fontSize: Tipografia.tituloSecao,
                       fontWeight: FontWeight.bold,
                       color: CoresApp.brandText),
                 ),
@@ -103,13 +104,13 @@ class TelaBoasVindas extends StatelessWidget {
                   children: [
                     Text(saudacao,
                         style: GoogleFonts.outfit(
-                            fontSize: 24,
+                            fontSize: Tipografia.titulo,
                             fontWeight: FontWeight.bold,
                             color: CoresApp.textPrimary)),
                     const SizedBox(height: 4),
                     Text('O CO2Bank funciona assim:',
                         style: GoogleFonts.outfit(
-                            fontSize: 14, color: CoresApp.textSecondary)),
+                            fontSize: Tipografia.corpo, color: CoresApp.textSecondary)),
                     const SizedBox(height: 24),
                     for (var i = 0; i < _passos.length; i++)
                       _Passo(
@@ -199,13 +200,13 @@ class _Passo extends StatelessWidget {
               children: [
                 Text('$numero. $titulo',
                     style: GoogleFonts.outfit(
-                        fontSize: 15,
+                        fontSize: Tipografia.destaque,
                         fontWeight: FontWeight.w600,
                         color: CoresApp.textPrimary)),
                 const SizedBox(height: 2),
                 Text(descricao,
                     style: GoogleFonts.outfit(
-                        fontSize: 13,
+                        fontSize: Tipografia.corpo,
                         color: CoresApp.textSecondary,
                         height: 1.4)),
               ],
@@ -233,7 +234,7 @@ class _BotaoSecundario extends StatelessWidget {
         style: TextButton.styleFrom(foregroundColor: CoresApp.textPrimary),
         child: Text(rotulo,
             style: GoogleFonts.outfit(
-                fontSize: 15, fontWeight: FontWeight.w600)),
+                fontSize: Tipografia.destaque, fontWeight: FontWeight.w600)),
       ),
     );
   }

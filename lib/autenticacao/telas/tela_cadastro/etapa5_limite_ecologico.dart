@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../nucleo/cores_app.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
+import '../../../nucleo/tipografia.dart';
 
 class Etapa5LimiteEcologico extends StatelessWidget {
   final double limiteCo2;
@@ -44,7 +45,7 @@ class Etapa5LimiteEcologico extends StatelessWidget {
           Text(
             'Defina quanto CO2 você quer emitir por mês com suas compras. O app vai te avisar quando estiver chegando no limite.',
             style: GoogleFonts.outfit(
-                fontSize: 14,
+                fontSize: Tipografia.corpo,
                 color: CoresApp.textSecondary,
                 height: 1.5),
           ),
@@ -54,12 +55,12 @@ class Etapa5LimiteEcologico extends StatelessWidget {
               children: [
                 Text('${limiteCo2.toInt()} kg',
                     style: GoogleFonts.outfit(
-                        fontSize: 52,
+                        fontSize: Tipografia.numeroGigante,
                         fontWeight: FontWeight.bold,
                         color: CoresApp.dark)),
                 Text('CO2 por mês',
                     style: GoogleFonts.outfit(
-                        fontSize: 14,
+                        fontSize: Tipografia.corpo,
                         color: CoresApp.textSecondary)),
                 const SizedBox(height: 8),
                 Container(
@@ -70,7 +71,7 @@ class Etapa5LimiteEcologico extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(_rotulo,
                       style: GoogleFonts.outfit(
-                          fontSize: 12,
+                          fontSize: Tipografia.legenda,
                           fontWeight: FontWeight.w600,
                           color: _corRotulo)),
                 ),
@@ -98,10 +99,10 @@ class Etapa5LimiteEcologico extends StatelessWidget {
             children: [
               Text('50 kg',
                   style: GoogleFonts.outfit(
-                      fontSize: 12, color: CoresApp.textSecondary)),
+                      fontSize: Tipografia.legenda, color: CoresApp.textSecondary)),
               Text('500 kg',
                   style: GoogleFonts.outfit(
-                      fontSize: 12, color: CoresApp.textSecondary)),
+                      fontSize: Tipografia.legenda, color: CoresApp.textSecondary)),
             ],
           ),
           const SizedBox(height: 16),
@@ -113,7 +114,7 @@ class Etapa5LimiteEcologico extends StatelessWidget {
             child: Text(
               'A média brasileira de emissão por consumo é de aproximadamente 200 kg CO2 por mês.',
               style: GoogleFonts.outfit(
-                  fontSize: 13,
+                  fontSize: Tipografia.corpo,
                   color: CoresApp.textSecondary,
                   height: 1.5),
             ),
@@ -124,7 +125,7 @@ class Etapa5LimiteEcologico extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 12),
               child: Text(erro!,
                   style:
-                      GoogleFonts.outfit(fontSize: 13, color: Colors.red),
+                      GoogleFonts.outfit(fontSize: Tipografia.corpo, color: Colors.red),
                   textAlign: TextAlign.center),
             ),
           carregando
@@ -144,13 +145,13 @@ class Etapa5LimiteEcologico extends StatelessWidget {
       children: [
         Text('Limite ecológico',
             style: GoogleFonts.outfit(
-                fontSize: 22,
+                fontSize: Tipografia.tituloSecao,
                 fontWeight: FontWeight.bold,
                 color: CoresApp.textPrimary)),
         const SizedBox(height: 4),
         Text('Etapa 5 de 5',
             style: GoogleFonts.outfit(
-                fontSize: 13, color: CoresApp.textSecondary)),
+                fontSize: Tipografia.corpo, color: CoresApp.textSecondary)),
       ],
     );
   }

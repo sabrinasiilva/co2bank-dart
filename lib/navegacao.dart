@@ -9,6 +9,7 @@ import 'transacoes/telas/tela_nova_compra.dart';
 import 'co2/aba_co2.dart';
 import 'perfil/aba_perfil.dart';
 import 'compartilhado/widgets/menu_lateral.dart';
+import 'nucleo/tipografia.dart';
 
 class Navegacao extends StatefulWidget {
   const Navegacao({super.key});
@@ -83,10 +84,10 @@ class _NavegacaoState extends State<Navegacao> {
         selectedItemColor: CoresApp.dark,
         unselectedItemColor: CoresApp.gray,
         selectedLabelStyle: GoogleFonts.outfit(
-          fontSize: 11,
+          fontSize: Tipografia.minimo,
           fontWeight: FontWeight.w600,
         ),
-        unselectedLabelStyle: GoogleFonts.outfit(fontSize: 11),
+        unselectedLabelStyle: GoogleFonts.outfit(fontSize: Tipografia.minimo),
         elevation: 0,
         items: _itensNavegacao,
       ),

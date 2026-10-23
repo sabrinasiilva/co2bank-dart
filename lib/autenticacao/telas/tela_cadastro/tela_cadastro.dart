@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../../../nucleo/cores_app.dart';
 import '../../../nucleo/validadores.dart';
+import '../../servico/acesso_biometrico.dart';
 import '../../servico/servico_autenticacao.dart';
+import '../../widgets/oferta_biometria.dart';
 import '../tela_boas_vindas.dart';
 import '../../../open_finance/servico/servico_open_finance.dart';
 import '../../../compartilhado/widgets/indicador_etapa.dart';
@@ -168,6 +170,13 @@ class _TelaCadastroState extends State<TelaCadastro> {
     switch (resultado) {
       case CadastroSucesso():
         unawaited(_conectarBancosEscolhidos());
+        // Na próxima vez o login já abre com este e-mail (e com a biometria, se ela quiser).
+        final email = _controladorEmail.text.trim();
+        await AcessoBiometrico.salvarEmail(email);
+        if (!mounted) return;
+        await oferecerBiometria(context,
+            email: email, senha: _controladorSenha.text);
+        if (!mounted) return;
         _controladorPagina.nextPage(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut);
