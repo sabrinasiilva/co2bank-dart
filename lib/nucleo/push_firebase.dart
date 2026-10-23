@@ -145,8 +145,13 @@ class PushFirebase {
     }
   }
 
-  /// Desliga o push neste aparelho: tira o cadastro do backend e apaga o token.
+  /// Desliga o push neste aparelho: tira o cadastro do backend.
   /// Chamar também ao sair da conta, antes de apagar o token de login.
+  ///
+  /// O token do FCM não é apagado de propósito. Fora do backend, o aparelho
+  /// já não recebe nada; e apagar o token logo antes de a pessoa religar a
+  /// opção fazia o app cadastrar de novo um token que o FCM invalidava
+  /// segundos depois, e o push nunca chegava.
   static Future<void> desativar() async {
     try {
       // Usa o token guardado: pedir um novo aqui abriria o pedido de permissão
@@ -156,19 +161,10 @@ class PushFirebase {
       if (token == null) return;
       await _removerDoBackend(token);
       await prefs.remove(_chaveToken);
-      // Apagar o token no FCM não precisa do login: não segura a saída.
-      unawaited(_apagarTokenFcm());
-    } catch (_) {
+    } catch (e, pilha) {
       // Sem rede: o backend descarta o token quando o FCM disser que expirou.
+      registrarErro(e, pilha, contexto: 'PushFirebase.desativar');
     }
-  }
-
-  static Future<void> _apagarTokenFcm() async {
-    try {
-      if (!await iniciar()) return;
-      // ignore: deprecated_member_use
-      await FirebaseMessaging.instance.deleteToken().timeout(_tempoLimite);
-    } catch (_) {}
   }
 
   /// Cadastra de novo o token atual (o POST é idempotente), sem pedir permissão.
