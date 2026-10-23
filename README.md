@@ -54,7 +54,9 @@ O backend fica no plano gratuito do Render, que "dorme" quando passa um tempo se
 | Back-end | Python com Flask, API REST em camadas, JWT e Pydantic ([repositório](https://github.com/sabrinasiilva/co2bank-flask)) |
 | Banco de dados | PostgreSQL em produção e SQLite nos testes, com SQLAlchemy |
 | Inteligência Artificial | Google Gemini, que escreve a mensagem do alerta preventivo |
+| Notificações | Firebase Cloud Messaging (push com o app fechado) e notificações locais |
 | Hospedagem | Render (API) e GitHub Pages (site e download do app) |
+| Publicação | GitHub Actions: a cada push na main, roda os testes e publica o site e o APK |
 | Organização | Jira (Scrum com Kanban), GitHub e Canva (identidade visual) |
 
 ## Equipe
@@ -84,6 +86,7 @@ lib/
 ├── co2/                   # aba Limite Ecológico, gráfico mensal e card de impacto
 ├── perfil/                # aba Perfil e sugestão de limite
 ├── open_finance/          # conexão com bancos e sincronização de compras
+├── notificacoes/          # central do sininho e aviso de versão nova do app
 └── recompensas/           # Shopping Verde, conquistas e cupons
 ```
 
@@ -154,4 +157,4 @@ flutter build web --release --base-href /co2bank-dart/        # build/web, publi
 
 O `--target-platform android-arm64` gera o APK só para o processador dos celulares atuais. Sem ele, o APK leva também as versões para celulares antigos de 32 bits e para emuladores de PC, e fica com uns 55 MB em vez de uns 20 MB, além de demorar mais para compilar. Para testar no emulador, use `flutter run`, que já compila para o processador certo.
 
-O site e o APK ficam na branch `gh-pages`: o conteúdo de `build/web` vai na raiz, e o APK vai junto como `co2bank.apk`.
+Não é preciso fazer isso à mão para publicar: a cada push na `main`, o GitHub Actions ([publicar.yml](.github/workflows/publicar.yml)) roda os testes, compila o APK e a versão web e atualiza a branch `gh-pages`. O conteúdo de `build/web` vai na raiz, o APK vai junto como `co2bank.apk`, e o `versao.json` informa o número da versão, que o app usa para avisar quando há uma mais nova.
