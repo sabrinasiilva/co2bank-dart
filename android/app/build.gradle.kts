@@ -71,7 +71,22 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
+    }
+}
+
+// O APK publicado é só para arm64 (celulares atuais). Sem isso o ML Kit
+// inclui também as bibliotecas nativas de x86 e de 32 bits, uns 34 MB a mais.
+// O debug continua com todas, para rodar no emulador.
+androidComponents {
+    onVariants(selector().withBuildType("release")) { variante ->
+        variante.packaging.jniLibs.excludes.addAll(
+            listOf("lib/x86/**", "lib/x86_64/**", "lib/armeabi-v7a/**"),
+        )
     }
 }
 
@@ -81,4 +96,11 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+}
+
+// O rotulador de imagens do ML Kit traz o firebase-iid (só usado para baixar
+// modelos da nuvem, que o app não usa), que repete uma classe do
+// firebase-messaging das notificações.
+configurations.all {
+    exclude(group = "com.google.firebase", module = "firebase-iid")
 }

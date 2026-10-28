@@ -26,7 +26,7 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 
 ## Funcionalidades
 
-- **Cadastro e login** com verificação por selfie e recuperação de senha por e-mail. O app lembra o e-mail e deixa entrar com a digital, o rosto ou o PIN do celular
+- **Cadastro e login** com verificação facial ao vivo e recuperação de senha por e-mail. O app lembra o e-mail e deixa entrar com a digital, o rosto ou o PIN do celular
 - **Open Finance:** conecta bancos e importa as compras do mês e dos últimos seis meses
 - **CO₂ por compra:** cada transação do extrato mostra a categoria e o CO₂ estimado, com tela de detalhes
 - **Lançar compra manualmente**, para quem quiser registrar algo que não veio do banco
@@ -37,6 +37,22 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 - **Shopping Verde:** CO₂ economizado vira CO2Coins, que podem ser trocadas por cupons de desconto em parceiros reais
 - **Conquistas e Meus cupons**, com o código de cada cupom para copiar
 - **Central de notificações** no sininho da tela inicial, com os alertas da IA, as conquistas, os cupons e o aviso de versão nova do app
+
+## Verificação facial
+
+Na etapa 3 do cadastro, o app abre a câmera da frente e confere o rosto ao vivo, no próprio celular e sem internet, com o Google ML Kit. Não tem botão de tirar foto: a verificação aprova sozinha quando:
+
+- aparece um rosto só, inteiro e no centro da moldura
+- o rosto ocupa pelo menos 40% da largura da imagem
+- a cabeça está de frente (virada ou inclinada até 20°)
+- a pessoa está sem óculos de grau, escuros ou de proteção
+- a pessoa pisca: olhos abertos, fechados e abertos de novo. Uma foto impressa ou mostrada em outra tela não pisca
+
+Enquanto isso, a tela orienta a pessoa ("Aproxime o rosto", "Tire os óculos", "Agora pisque os olhos"). Se o rosto sai da posição no meio, a piscada recomeça. Ao aprovar, o app reduz a foto para 400 px de largura e envia junto com o cadastro, e apaga a original do celular.
+
+A selfie serve só para a verificação: ela não aparece no app nem vira foto de perfil. A verificação confirma que há uma pessoa real na frente da câmera, mas não compara o rosto com um documento. A etapa pode ser pulada, e na versão web ela pede para usar o celular.
+
+O código fica em [tela_verificacao_facial.dart](lib/autenticacao/telas/tela_cadastro/tela_verificacao_facial.dart) (câmera e tela) e [selfie.dart](lib/nucleo/selfie.dart) (as regras, testadas em [selfie_test.dart](test/selfie_test.dart)).
 
 ## Instalar no celular
 
@@ -54,6 +70,7 @@ O backend fica no plano gratuito do Render, que "dorme" quando passa um tempo se
 | Back-end | Python com Flask, API REST em camadas, JWT e Pydantic ([repositório](https://github.com/sabrinasiilva/co2bank-flask)) |
 | Banco de dados | PostgreSQL em produção e SQLite nos testes, com SQLAlchemy |
 | Inteligência Artificial | Google Gemini, que escreve a mensagem do alerta preventivo |
+| Verificação facial | Google ML Kit no celular (detecção de rosto e rotulagem de imagem para os óculos) com o pacote `camera` |
 | Notificações | Firebase Cloud Messaging (push com o app fechado) e notificações locais |
 | Hospedagem | Render (API) e GitHub Pages (site e download do app) |
 | Publicação | GitHub Actions: a cada push na main, roda os testes e publica o site e o APK |

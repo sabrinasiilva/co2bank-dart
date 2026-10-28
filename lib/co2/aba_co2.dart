@@ -145,15 +145,23 @@ class _AbaCo2State extends State<AbaCo2> {
               sliver: SliverToBoxAdapter(
                 child: Row(
                   children: [
-                    Text(
-                      'Relatório de CO2',
-                      style: GoogleFonts.outfit(
-                        fontSize: Tipografia.titulo,
-                        fontWeight: FontWeight.bold,
-                        color: CoresApp.textPrimary,
+                    // Em telas estreitas o título diminui para caber ao lado
+                    // do seletor de mês.
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Relatório de CO2',
+                          style: GoogleFonts.outfit(
+                            fontSize: Tipografia.titulo,
+                            fontWeight: FontWeight.bold,
+                            color: CoresApp.textPrimary,
+                          ),
+                        ),
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 12),
                     _SeletorMes(
                       rotulo: '${meses[_mes]} $_ano',
                       aoAnterior: () => _alterarMes(-1),

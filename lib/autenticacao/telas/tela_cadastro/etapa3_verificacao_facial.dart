@@ -3,12 +3,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../nucleo/cores_app.dart';
-import '../../../../nucleo/registro_erros.dart';
 import '../../../compartilhado/widgets/botao_primario.dart';
 import '../../../nucleo/tipografia.dart';
+import 'tela_verificacao_facial.dart';
 
 class Etapa3VerificacaoFacial extends StatefulWidget {
   final String? fotoCapturadaBase64;
@@ -28,36 +27,11 @@ class Etapa3VerificacaoFacial extends StatefulWidget {
 }
 
 class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
-  bool _capturando = false;
-  String? _erro;
-
-  Future<void> _tirarSelfie() async {
-    setState(() {
-      _capturando = true;
-      _erro = null;
-    });
-    try {
-      final picker = ImagePicker();
-      final foto = await picker.pickImage(
-        source: ImageSource.camera,
-        preferredCameraDevice: CameraDevice.front,
-        imageQuality: 40,
-        maxWidth: 400,
-        maxHeight: 400,
-      );
-
-      if (foto != null) {
-        final bytes = await foto.readAsBytes();
-        final base64 = base64Encode(bytes);
-        widget.aoCapturarFoto(base64);
-      }
-    } catch (e, pilha) {
-      registrarErro(e, pilha,
-          contexto: 'Etapa3VerificacaoFacial._tirarSelfie');
-      setState(() => _erro = 'Não foi possível acessar a câmera.');
-    } finally {
-      setState(() => _capturando = false);
-    }
+  Future<void> _verificarRosto() async {
+    final base64 = await Navigator.of(context).push<String>(
+      MaterialPageRoute(builder: (_) => const TelaVerificacaoFacial()),
+    );
+    if (base64 != null) widget.aoCapturarFoto(base64);
   }
 
   void _retirar() => widget.aoCapturarFoto(null);
@@ -103,19 +77,6 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
                 : const _GuiaFacial(),
           ),
           const SizedBox(height: 28),
-          if (_erro != null) ...[
-            Row(
-              children: [
-                const Icon(Icons.error_outline_rounded,
-                    size: 14, color: Colors.red),
-                const SizedBox(width: 6),
-                Text(_erro!,
-                    style: GoogleFonts.outfit(
-                        fontSize: Tipografia.corpo, color: Colors.red)),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
           if (temFoto) ...[
             BotaoPrimario(
               rotulo: 'Continuar',
@@ -128,7 +89,7 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
                 onPressed: _retirar,
                 icon: const Icon(Icons.refresh_rounded, size: 18),
                 label: Text(
-                  'Tirar novamente',
+                  'Verificar novamente',
                   style: GoogleFonts.outfit(
                       fontSize: Tipografia.destaque, fontWeight: FontWeight.w600),
                 ),
@@ -142,14 +103,10 @@ class _Etapa3VerificacaoFacialState extends State<Etapa3VerificacaoFacial> {
               ),
             ),
           ] else ...[
-            _capturando
-                ? const Center(
-                    child: CircularProgressIndicator(
-                        color: CoresApp.primary))
-                : BotaoPrimario(
-                    rotulo: 'Tirar selfie',
-                    aoTocar: _tirarSelfie,
-                  ),
+            BotaoPrimario(
+              rotulo: 'Verificar rosto',
+              aoTocar: _verificarRosto,
+            ),
             const SizedBox(height: 16),
             Center(
               child: TextButton(
