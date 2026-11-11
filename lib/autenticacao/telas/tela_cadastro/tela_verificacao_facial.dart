@@ -12,6 +12,7 @@ import '../../../nucleo/cores_app.dart';
 import '../../../nucleo/registro_erros.dart';
 import '../../../nucleo/selfie.dart';
 import '../../../nucleo/tipografia.dart';
+import '../../../compartilhado/widgets/aviso_rapido.dart';
 
 /// Abre a câmera da frente e aprova sozinha quando vê o rosto, de frente,
 /// piscar. Devolve a selfie em base64, ou null se a pessoa voltar.
@@ -215,8 +216,8 @@ class _TelaVerificacaoFacialState extends State<TelaVerificacaoFacial>
       _verificacao = VerificacaoRosto();
       _ultimaConferenciaOculos = null;
       _etapa = EtapaVerificacao.semRosto;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Não foi possível salvar a selfie. Tente de novo.')));
+      mostrarAviso(context, 'Não foi possível salvar a selfie. Tente de novo.',
+          tipo: TipoAviso.erro);
       if (!camera.value.isStreamingImages) {
         await camera.startImageStream(_analisarQuadro);
       }

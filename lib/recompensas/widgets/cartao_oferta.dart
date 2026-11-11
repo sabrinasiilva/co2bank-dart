@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../nucleo/cores_app.dart';
 import '../estilo_recompensas.dart';
 import '../oferta.dart';
+import '../../compartilhado/widgets/aviso_rapido.dart';
 
 /// Card de uma oferta. Tocar no card abre o site da loja (quando ela tem
 /// site) e o botão resgata o desconto. Se a loja já foi resgatada no mês,
@@ -180,18 +181,8 @@ Future<bool> confirmarResgate(BuildContext context, Oferta oferta) async {
 void mostrarAvisoRecompensas(
   BuildContext context,
   String mensagem, {
+  TipoAviso tipo = TipoAviso.info,
   SnackBarAction? acao,
 }) {
-  ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(
-      SnackBar(
-        content: Text(
-          mensagem,
-          style: EstiloRecompensas.fonte(cor: Colors.white),
-        ),
-        action: acao,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+  mostrarAviso(context, mensagem, tipo: tipo, acao: acao);
 }

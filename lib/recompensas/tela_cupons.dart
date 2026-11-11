@@ -7,6 +7,7 @@ import '../nucleo/registro_erros.dart';
 import 'estilo_recompensas.dart';
 import 'servico/servico_recompensas.dart';
 import 'widgets/cartao_oferta.dart';
+import '../compartilhado/widgets/aviso_rapido.dart';
 
 /// Cupons já resgatados (GET /rewards/redemptions), com o código para usar
 /// na loja. [codigoEmDestaque] marca o cupom que acabou de ser resgatado.
@@ -108,7 +109,10 @@ class CartaoCupom extends StatelessWidget {
 
   Future<void> _copiar(BuildContext context, String codigo) async {
     await Clipboard.setData(ClipboardData(text: codigo));
-    if (context.mounted) mostrarAvisoRecompensas(context, 'Código copiado');
+    if (context.mounted) {
+      mostrarAvisoRecompensas(context, 'Código copiado',
+          tipo: TipoAviso.sucesso);
+    }
   }
 
   Future<void> _abrirLoja(BuildContext context) async {
@@ -122,6 +126,7 @@ class CartaoCupom extends StatelessWidget {
       mostrarAvisoRecompensas(
         context,
         'Não foi possível abrir ${resgate.nomeParceiro}.',
+        tipo: TipoAviso.erro,
       );
     }
   }

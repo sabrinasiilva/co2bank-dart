@@ -11,6 +11,7 @@ import 'servico/servico_open_finance.dart';
 import 'widgets/folha_consentimento.dart';
 import 'widgets/folha_sincronizacao.dart';
 import '../nucleo/tipografia.dart';
+import '../compartilhado/widgets/aviso_rapido.dart';
 
 class TelaOpenFinance extends StatefulWidget {
   final VoidCallback? aoVerExtrato;
@@ -129,7 +130,7 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
         if (!mounted) return;
         _avisar('${banco.nome} desconectado. As compras dele saíram do extrato.');
       case OperacaoErro(:final mensagem):
-        _avisar(mensagem);
+        _avisar(mensagem, tipo: TipoAviso.erro);
     }
   }
 
@@ -193,16 +194,12 @@ class _TelaOpenFinanceState extends State<TelaOpenFinance> {
     if (mounted) await _carregar();
   }
 
-  void _avisar(String mensagem, {SnackBarAction? acao}) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(mensagem, style: GoogleFonts.outfit()),
-          behavior: SnackBarBehavior.floating,
-          action: acao,
-        ),
-      );
+  void _avisar(
+    String mensagem, {
+    TipoAviso tipo = TipoAviso.sucesso,
+    SnackBarAction? acao,
+  }) {
+    mostrarAviso(context, mensagem, tipo: tipo, acao: acao);
   }
 
   @override

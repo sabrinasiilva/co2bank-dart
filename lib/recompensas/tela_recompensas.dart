@@ -7,6 +7,7 @@ import 'tela_conquistas.dart';
 import 'tela_cupons.dart';
 import 'widgets/cabecalho_recompensas.dart';
 import 'widgets/cartao_oferta.dart';
+import '../compartilhado/widgets/aviso_rapido.dart';
 
 /// Shopping Verde: saldo de CO₂Coins, atalhos para conquistas e cupons e a
 /// lista de parceiros com busca e resgate.
@@ -95,6 +96,7 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
       mostrarAvisoRecompensas(
         context,
         'Não foi possível abrir ${oferta.loja}.',
+        tipo: TipoAviso.erro,
       );
     }
   }
@@ -116,6 +118,7 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
           codigoCupom == null
               ? 'Cupom da ${oferta.loja} resgatado!'
               : 'Cupom da ${oferta.loja} resgatado: $codigoCupom',
+          tipo: TipoAviso.sucesso,
           acao: SnackBarAction(
             label: 'Ver cupom',
             onPressed: () => _abrirCupons(codigoEmDestaque: codigoCupom),
@@ -133,7 +136,7 @@ class _TelaRecompensasState extends State<TelaRecompensas> {
         );
         await _carregar();
       case ResgateFalhou(:final mensagem):
-        mostrarAvisoRecompensas(context, mensagem);
+        mostrarAvisoRecompensas(context, mensagem, tipo: TipoAviso.erro);
         await _carregar();
     }
   }

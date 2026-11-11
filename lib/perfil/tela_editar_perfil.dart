@@ -76,12 +76,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
 
     switch (resultado) {
       case PerfilAtualizado():
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Perfil atualizado', style: TextStyle(color: Colors.black)),
-            backgroundColor: Color(0xFFE0E0E0),
-          ),
-        );
+        // O aviso de sucesso aparece na aba Perfil, ao voltar (só uma vez).
         Navigator.pop(context, true);
         break;
       case ErroMensagemPerfil(mensagem: final msg):
@@ -150,7 +145,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
             SliderTheme(
               data: SliderThemeData(
                 activeTrackColor: Colors.black,
-                inactiveTrackColor: Colors.black,
+                inactiveTrackColor: const Color(0xFFE0E0E0),
                 thumbColor: Colors.black,
                 overlayColor:Colors.black.withValues(alpha: 0.2),
                 valueIndicatorColor: const Color(0xFFE0E0E0),

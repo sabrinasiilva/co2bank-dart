@@ -6,6 +6,7 @@ import '../servico/servico_autenticacao.dart';
 import '../../compartilhado/widgets/campo_autenticacao.dart';
 import '../../compartilhado/widgets/botao_primario.dart';
 import '../../nucleo/tipografia.dart';
+import '../../compartilhado/widgets/aviso_rapido.dart';
 
 enum _Etapa { email, codigo, novaSenha }
 
@@ -111,12 +112,8 @@ class _TelaEsqueciSenhaState extends State<TelaEsqueciSenha> {
       case SenhaRedefinida():
         if (mounted) {
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Senha redefinida com sucesso!'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+          mostrarAviso(context, 'Senha redefinida com sucesso!',
+              tipo: TipoAviso.sucesso);
         }
       case CodigoInvalidoOuExpirado():
         setState(

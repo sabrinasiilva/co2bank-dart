@@ -16,6 +16,7 @@ import '../autenticacao/servico/acesso_biometrico.dart';
 import '../autenticacao/servico/servico_autenticacao.dart';
 import '../autenticacao/telas/tela_login.dart';
 import '../nucleo/tipografia.dart';
+import '../compartilhado/widgets/aviso_rapido.dart';
 
 class AbaPerfil extends StatefulWidget {
   const AbaPerfil({super.key});
@@ -75,15 +76,13 @@ class _AbaPerfilState extends State<AbaPerfil> {
     });
     if (ligar && !ativas) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          Notificacoes.suportado
-              ? 'Permissão negada. Libere as notificações do CO2Bank nas configurações.'
-              : 'Notificações não estão disponíveis neste dispositivo.',
-          style: GoogleFonts.outfit(),
-        ),
-        behavior: SnackBarBehavior.floating,
-      ));
+      mostrarAviso(
+        context,
+        Notificacoes.suportado
+            ? 'Permissão negada. Libere as notificações do CO2Bank nas configurações.'
+            : 'Notificações não estão disponíveis neste dispositivo.',
+        tipo: TipoAviso.erro,
+      );
     }
   }
 
@@ -119,15 +118,13 @@ class _AbaPerfilState extends State<AbaPerfil> {
       _alterandoBiometria = false;
     });
     if (!ativou) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          login is LoginErroCredenciais
-              ? 'Senha incorreta. Tente de novo.'
-              : 'Não foi possível ativar a biometria agora.',
-          style: GoogleFonts.outfit(),
-        ),
-        behavior: SnackBarBehavior.floating,
-      ));
+      mostrarAviso(
+        context,
+        login is LoginErroCredenciais
+            ? 'Senha incorreta. Tente de novo.'
+            : 'Não foi possível ativar a biometria agora.',
+        tipo: TipoAviso.erro,
+      );
     }
   }
 
@@ -234,15 +231,8 @@ class _AbaPerfilState extends State<AbaPerfil> {
                         if (alterado == true) {
                           _recarregarPerfil();
                           if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Perfil atualizado',
-                                style: GoogleFonts.outfit(),
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
+                          mostrarAviso(context, 'Perfil atualizado',
+                              tipo: TipoAviso.sucesso);
                         }
                       },
                       style: TextButton.styleFrom(

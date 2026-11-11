@@ -9,6 +9,7 @@ import '../../nucleo/formatadores_entrada.dart';
 import '../icone_categoria.dart';
 import '../servico/servico_transacao.dart';
 import '../../nucleo/tipografia.dart';
+import '../../compartilhado/widgets/aviso_rapido.dart';
 
 /// Simula o impacto de uma compra no limite antes de fazer e, se a pessoa
 /// quiser, registra a compra. Devolve true quando uma compra foi registrada.
@@ -129,23 +130,14 @@ class _TelaNovaCompraState extends State<TelaNovaCompra> {
 
     switch (resultado) {
       case TransacaoRegistrada(:final transacao):
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Compra registrada: ${transacao.co2Kg.toStringAsFixed(1)} kg de CO2',
-              style: GoogleFonts.outfit(),
-            ),
-            behavior: SnackBarBehavior.floating,
-          ),
+        mostrarAviso(
+          context,
+          'Compra registrada: ${transacao.co2Kg.toStringAsFixed(1)} kg de CO2',
+          tipo: TipoAviso.sucesso,
         );
         Navigator.pop(context, true);
       case RegistroErro(:final mensagem):
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(mensagem, style: GoogleFonts.outfit()),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        mostrarAviso(context, mensagem, tipo: TipoAviso.erro);
     }
   }
 
