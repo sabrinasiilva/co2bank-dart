@@ -152,7 +152,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                 activeTrackColor: Colors.black,
                 inactiveTrackColor: Colors.black,
                 thumbColor: Colors.black,
-                overlayColor: Colors.black.withOpacity(0.2),
+                overlayColor:Colors.black.withValues(alpha: 0.2),
                 valueIndicatorColor: const Color(0xFFE0E0E0),
                 valueIndicatorTextStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
