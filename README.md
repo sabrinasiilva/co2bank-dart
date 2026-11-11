@@ -22,7 +22,7 @@
 
 Os aplicativos de pegada de carbono que existem hoje dependem de digitação manual e só mostram o impacto depois que a compra já aconteceu. O CO2Bank faz isso sozinho: conecta no banco pelo Open Finance, calcula o CO₂ de cada compra pela categoria do estabelecimento e acompanha um limite ecológico mensal definido pelo usuário. Quando o mês passa de 80% do limite, uma Inteligência Artificial escreve um alerta personalizado. E o CO₂ que a pessoa deixa de emitir vira desconto em lojas parceiras.
 
-Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi das Cruzes (2026).
+Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi das Cruzes (2026), entregue na disciplina de Desenvolvimento de Aplicativos em Flutter.
 
 ## Funcionalidades
 
@@ -54,6 +54,10 @@ A selfie serve só para a verificação: ela não aparece no app nem vira foto d
 
 O código fica em [tela_verificacao_facial.dart](lib/autenticacao/telas/tela_cadastro/tela_verificacao_facial.dart) (câmera e tela) e [selfie.dart](lib/nucleo/selfie.dart) (as regras, testadas em [selfie_test.dart](test/selfie_test.dart)).
 
+## Usar no computador
+
+Abra o link [Abrir no navegador](https://sabrinasiilva.github.io/co2bank-dart/) e crie uma conta. No computador o app aparece numa coluna com a largura de um celular, no meio da tela. A verificação facial e a entrada com a digital só funcionam no celular; no navegador a etapa da selfie pode ser pulada.
+
 ## Instalar no celular
 
 1. No celular Android, abra o link [Baixar o app (.apk)](https://sabrinasiilva.github.io/co2bank-dart/co2bank.apk).
@@ -84,7 +88,7 @@ O backend fica no plano gratuito do Render, que "dorme" quando passa um tempo se
 | Emily Cristina da Silva Lima | Scrum Master |
 | Júlia de Aquino Souza | Scrum Master |
 | Gustavo Gonzaga dos Santos | Desenvolvimento |
-| Maitê Gonçalves | Programador |
+| Maitê Gonçalves | Desenvolvimento |
 
 ## Estrutura do código
 
@@ -172,6 +176,6 @@ flutter build apk --release --target-platform android-arm64   # build/app/output
 flutter build web --release --base-href /co2bank-dart/        # build/web, publicado no GitHub Pages
 ```
 
-O `--target-platform android-arm64` gera o APK só para o processador dos celulares atuais. Sem ele, o APK leva também as versões para celulares antigos de 32 bits e para emuladores de PC, e fica com uns 55 MB em vez de uns 20 MB, além de demorar mais para compilar. Para testar no emulador, use `flutter run`, que já compila para o processador certo.
+O `--target-platform android-arm64` gera o APK só para os celulares atuais, com uns 20 MB em vez de 55 MB. Para testar no emulador, use `flutter run`.
 
 Não é preciso fazer isso à mão para publicar: a cada push na `main`, o GitHub Actions ([publicar.yml](.github/workflows/publicar.yml)) roda os testes, compila o APK e a versão web e atualiza a branch `gh-pages`. O conteúdo de `build/web` vai na raiz, o APK vai junto como `co2bank.apk`, e o `versao.json` informa o número da versão, que o app usa para avisar quando há uma mais nova.
