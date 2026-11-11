@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'compartilhado/widgets/aviso_servidor_lento.dart';
+import 'compartilhado/widgets/moldura_tela_larga.dart';
 import 'nucleo/cores_app.dart';
 import 'nucleo/notificacoes.dart';
 import 'nucleo/push_firebase.dart';
@@ -41,7 +42,8 @@ class AplicativoCo2Bank extends StatelessWidget {
         scaffoldBackgroundColor: CoresApp.background,
         fontFamily: 'Outfit',
       ),
-      builder: (_, filho) => AvisoServidorLento(child: filho!),
+      builder: (_, filho) =>
+          MolduraTelaLarga(child: AvisoServidorLento(child: filho!)),
       home: const TelaAbertura(),
     );
   }
