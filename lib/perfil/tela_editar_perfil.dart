@@ -76,6 +76,12 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
 
     switch (resultado) {
       case PerfilAtualizado():
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Perfil atualizado', style: TextStyle(color: Colors.black)),
+            backgroundColor: Color(0xFFE0E0E0),
+          ),
+        );
         Navigator.pop(context, true);
         break;
       case ErroMensagemPerfil(mensagem: final msg):
@@ -102,7 +108,15 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Perfil'),
+        title: const Text(
+          'Editar Perfil',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -127,19 +141,33 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
             const SizedBox(height: 24),
             Text(
               'Limite mensal de CO2: ${_limiteCo2.toInt()} kg/mês',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: Tipografia.destaque),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: Tipografia.destaque,
+                color: Colors.black,
+              ),
             ),
-            Slider(
-              value: _limiteCo2,
-              min: 50,
-              max: 500,
-              divisions: 45,
-              label: '${_limiteCo2.toInt()} kg',
-              onChanged: (novoValor) {
-                setState(() {
-                  _limiteCo2 = novoValor;
-                });
-              },
+            SliderTheme(
+              data: SliderThemeData(
+                activeTrackColor: Colors.black,
+                inactiveTrackColor: Colors.black,
+                thumbColor: Colors.black,
+                overlayColor:Colors.black.withValues(alpha: 0.2),
+                valueIndicatorColor: const Color(0xFFE0E0E0),
+                valueIndicatorTextStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+              child: Slider(
+                value: _limiteCo2,
+                min: 50,
+                max: 500,
+                divisions: 45,
+                label: '${_limiteCo2.toInt()} kg',
+                onChanged: (novoValor) {
+                  setState(() {
+                    _limiteCo2 = novoValor;
+                  });
+                },
+              ),
             ),
             if (_mensagemErro != null) ...[
               const SizedBox(height: 16),
