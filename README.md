@@ -179,3 +179,15 @@ flutter build web --release --base-href /co2bank-dart/        # build/web, publi
 O `--target-platform android-arm64` gera o APK só para os celulares atuais, com uns 20 MB em vez de 55 MB. Para testar no emulador, use `flutter run`.
 
 Não é preciso fazer isso à mão para publicar: a cada push na `main`, o GitHub Actions ([publicar.yml](.github/workflows/publicar.yml)) roda os testes, compila o APK e a versão web e atualiza a branch `gh-pages`. O conteúdo de `build/web` vai na raiz, o APK vai junto como `co2bank.apk`, e o `versao.json` informa o número da versão, que o app usa para avisar quando há uma mais nova.
+
+---
+
+## Validação com usuários
+
+Em novembro de 2026, o CO2Bank foi avaliado por 23 participantes por meio de uma pesquisa no Google Forms.
+
+- **91%** demonstraram interesse em utilizar o aplicativo.
+- **100%** consideraram a proposta útil.
+- **78%** afirmaram que repensariam suas compras ao receber alertas de impacto ambiental.
+
+Entre as sugestões recebidas estão doações para o plantio de árvores, novas utilidades para os CO₂Coins e recomendações de compras sustentáveis com IA.
