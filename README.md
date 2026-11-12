@@ -84,11 +84,11 @@ O backend fica no plano gratuito do Render, que "dorme" quando passa um tempo se
 
 | Nome | Função |
 |---|---|
-| Sabrina da Conceição | Product Owner, Analista de Sistemas e Programadora |
+| Sabrina da Conceição Silva | Product Owner, Analista de Sistemas e Programadora |
 | Emily Cristina da Silva Lima | Scrum Master |
 | Júlia de Aquino Souza | Scrum Master |
 | Gustavo Gonzaga dos Santos | Desenvolvimento |
-| Maitê Gonçalves | Desenvolvimento |
+| Maitê Gonçalves Bernades | Desenvolvimento |
 
 ## Estrutura do código
 
