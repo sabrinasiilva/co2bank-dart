@@ -80,7 +80,13 @@ class ClienteApi {
     });
     try {
       final resposta = await requisicao().timeout(tempoLimite);
-      return RespostaApi(resposta.statusCode, _decodificar(resposta.body));
+      // O backend responde 204 sem corpo ao remover aparelhos e bancos.
+      return RespostaApi(
+        resposta.statusCode,
+        resposta.statusCode == 204
+            ? <String, dynamic>{}
+            : _decodificar(resposta.body),
+      );
     } finally {
       cronometro.cancel();
       if (ficouLenta) {

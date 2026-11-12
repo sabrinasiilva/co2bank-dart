@@ -57,13 +57,15 @@ void main() {
     });
 
     test('DELETE usa o método certo', () async {
-      final api = cliente((_) => http.Response('{}', 204));
+      final api = cliente((_) => http.Response('', 204));
 
       final resposta = await api.delete('/open-finance/connections/itau');
 
       expect(requisicoes.single.method, 'DELETE');
       expect(requisicoes.single.url.path, '/open-finance/connections/itau');
       expect(resposta.sucesso, isTrue);
+      expect(resposta.corpo, isEmpty);
+      expect(resposta.erro, isNull);
     });
 
     test('corpo que não é JSON vira erro "Resposta inválida do servidor"',
@@ -77,10 +79,10 @@ void main() {
       expect(resposta.erro, 'Resposta inválida do servidor');
     });
 
-    test('corpo vazio também vira erro, mesmo com status de sucesso', () async {
-      final api = cliente((_) => http.Response('', 204));
+    test('corpo vazio em 200 continua sendo erro de JSON', () async {
+      final api = cliente((_) => http.Response('', 200));
 
-      final resposta = await api.delete('/x');
+      final resposta = await api.get('/auth/me');
 
       expect(resposta.sucesso, isTrue);
       expect(resposta.erro, 'Resposta inválida do servidor');
