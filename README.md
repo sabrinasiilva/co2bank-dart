@@ -73,7 +73,7 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
     <td align="center"><img src="docs/prints/06-detalhe-transacao.png" width="220"></td>
   </tr>
   <tr>
-    <td align="center">Tela principal do CO2Bank</td>
+    <td align="center">Tela de acompanhamento do impacto ambiental</td>
     <td align="center">Histórico de compras</td>
     <td align="center">Informações da compra</td>
   </tr>
