@@ -44,9 +44,9 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 
 <table>
   <tr>
-    <th>Login</th>
-    <th>Cadastro</th>
-    <th>Boas-vindas</th>
+    <th>LOGIN</th>
+    <th>CADASTRO</th>
+    <th>BOAS-VINDAS</th>
   </tr>
   <tr>
     <td align="center"><img src="docs/prints/01-login.png" width="220"></td>
@@ -59,9 +59,9 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
     <td align="center">Apresentação inicial</td>
   </tr>
   <tr>
-    <th>Início</th>
-    <th>Extrato</th>
-    <th>Detalhe da transação</th>
+    <th>INÍCIO</th>
+    <th>EXTRATO</th>
+    <th>DETALHE DA TRANSAÇÃO</th>
   </tr>
   <tr>
     <td align="center"><img src="docs/prints/04-inicio.png" width="220"></td>
@@ -74,7 +74,7 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
     <td align="center">Informações da compra</td>
   </tr>
   <tr>
-    <th colspan="3">Nova compra</th>
+    <th colspan="3">NOVA COMPRA</th>
   </tr>
   <tr>
     <td colspan="3" align="center"><img src="docs/prints/07-nova-compra.png" width="220"></td>
