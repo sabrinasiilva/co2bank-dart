@@ -38,6 +38,27 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 - **Conquistas e Meus cupons**, com o código de cada cupom para copiar
 - **Central de notificações** no sininho da tela inicial, com os alertas da IA, as conquistas, os cupons e o aviso de versão nova do app
 
+---
+
+
+## Telas
+
+| Login | Cadastro | Boas-vindas |
+|:---:|:---:|:---:|
+| <img src="docs/prints/01-login.png" width="220"> | <img src="docs/prints/02-cadastro.png" width="220"> | <img src="docs/prints/03-boas-vindas.png" width="220"> |
+| Tela de acesso ao aplicativo | Cadastro de novos usuários | Apresentação inicial |
+
+| Início | Extrato | Detalhe da transação |
+|:---:|:---:|:---:|
+| <img src="docs/prints/04-inicio.png" width="220"> | <img src="docs/prints/05-extrato.png" width="220"> | <img src="docs/prints/06-detalhe-transacao.png" width="220"> |
+| Tela principal do CO2Bank | Histórico de compras | Detalhes de uma compra |
+
+| Nova compra | | |
+|:---:|:---:|:---:|
+| <img src="docs/prints/07-nova-compra.png" width="220"> | | |
+| Simulador Antes de comprar | | |
+
+
 ## Verificação facial
 
 Na etapa 3 do cadastro, o app abre a câmera da frente e confere o rosto ao vivo, no próprio celular e sem internet, com o Google ML Kit. Não tem botão de tirar foto: a verificação aprova sozinha quando:
