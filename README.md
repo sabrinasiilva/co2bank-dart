@@ -39,7 +39,6 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 - **Central de notificações** no sininho da tela inicial, com os alertas da IA, as conquistas, os cupons e o aviso de versão nova do app
 
 ---
-
 ## Telas
 
 <table>
@@ -81,6 +80,45 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
   </tr>
   <tr>
     <td colspan="3" align="center">Simulador Antes de comprar</td>
+  </tr>
+  <tr>
+    <th>LIMITE DE CO₂</th>
+    <th>SEU IMPACTO (ODS)</th>
+    <th>OPEN FINANCE</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/prints/08-limite-de-CO2.png" width="220"></td>
+    <td align="center"><img src="docs/prints/09-seu-impacto(ods).png" width="220"></td>
+    <td align="center"><img src="docs/prints/10-openfinance.png" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center">Resumo mensal e evolução do limite de CO₂</td>
+    <td align="center">Impacto ambiental e Objetivos de Desenvolvimento Sustentável</td>
+    <td align="center">Conexão e gerenciamento de contas bancárias</td>
+  </tr>
+  <tr>
+    <th>SHOPPING VERDE</th>
+    <th>CONQUISTAS</th>
+    <th>MEUS CUPONS</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/prints/11-shopping-verde.png" width="220"></td>
+    <td align="center"><img src="docs/prints/12-conquistas.png" width="220"></td>
+    <td align="center"><img src="docs/prints/13-cupons.png" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center">Parceiros e recompensas sustentáveis</td>
+    <td align="center">Conquistas e progresso do usuário</td>
+    <td align="center">Cupons disponíveis para utilização</td>
+  </tr>
+  <tr>
+    <th colspan="3">PERFIL</th>
+  </tr>
+  <tr>
+    <td colspan="3" align="center"><img src="docs/prints/14-perfil.png" width="220"></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center">Informações e configurações da conta</td>
   </tr>
 </table>
 
