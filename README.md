@@ -40,10 +40,6 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 
 ---
 
-
-## Telas
-
-
 ## Telas
 
 <table>
@@ -73,7 +69,7 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
     <td align="center"><img src="docs/prints/06-detalhe-transacao.png" width="220"></td>
   </tr>
   <tr>
-    <td align="center">Tela de acompanhamento do impacto ambiental</td>
+    <td align="center">Visão geral do impacto ambiental</td>
     <td align="center">Histórico de compras</td>
     <td align="center">Informações da compra</td>
   </tr>
@@ -87,7 +83,6 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
     <td colspan="3" align="center">Simulador Antes de comprar</td>
   </tr>
 </table>
-
 
 
 ## Verificação facial
