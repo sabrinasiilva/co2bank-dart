@@ -43,20 +43,51 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
 
 ## Telas
 
-| Login | Cadastro | Boas-vindas |
-|:---:|:---:|:---:|
-| <img src="docs/prints/01-login.png" width="220"> | <img src="docs/prints/02-cadastro.png" width="220"> | <img src="docs/prints/03-boas-vindas.png" width="220"> |
-| Tela de acesso ao aplicativo | Cadastro de novos usuários | Apresentação inicial |
 
-| Início | Extrato | Detalhe da transação |
-|:---:|:---:|:---:|
-| <img src="docs/prints/04-inicio.png" width="220"> | <img src="docs/prints/05-extrato.png" width="220"> | <img src="docs/prints/06-detalhe-transacao.png" width="220"> |
-| Tela principal do CO2Bank | Histórico de compras | Detalhes de uma compra |
+## Telas
 
-| Nova compra | | |
-|:---:|:---:|:---:|
-| <img src="docs/prints/07-nova-compra.png" width="220"> | | |
-| Simulador Antes de comprar | | |
+<table>
+  <tr>
+    <th>Login</th>
+    <th>Cadastro</th>
+    <th>Boas-vindas</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/prints/01-login.png" width="220"></td>
+    <td align="center"><img src="docs/prints/02-cadastro.png" width="220"></td>
+    <td align="center"><img src="docs/prints/03-boas-vindas.png" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center">Tela de acesso</td>
+    <td align="center">Cadastro de usuários</td>
+    <td align="center">Apresentação inicial</td>
+  </tr>
+  <tr>
+    <th>Início</th>
+    <th>Extrato</th>
+    <th>Detalhe da transação</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/prints/04-inicio.png" width="220"></td>
+    <td align="center"><img src="docs/prints/05-extrato.png" width="220"></td>
+    <td align="center"><img src="docs/prints/06-detalhe-transacao.png" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center">Tela principal do CO2Bank</td>
+    <td align="center">Histórico de compras</td>
+    <td align="center">Informações da compra</td>
+  </tr>
+  <tr>
+    <th colspan="3">Nova compra</th>
+  </tr>
+  <tr>
+    <td colspan="3" align="center"><img src="docs/prints/07-nova-compra.png" width="220"></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center">Simulador Antes de comprar</td>
+  </tr>
+</table>
+
 
 
 ## Verificação facial
