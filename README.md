@@ -59,7 +59,7 @@ Projeto acadêmico do curso de Engenharia de Software da Universidade de Mogi da
     <td align="center">Apresentação inicial</td>
   </tr>
   <tr>
-    <th>INÍCIO TESTE</th>
+    <th>Início</th>
     <th>Extrato</th>
     <th>Detalhe da transação</th>
   </tr>
