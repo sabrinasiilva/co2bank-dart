@@ -14,6 +14,8 @@
   <a href="https://sabrinasiilva.github.io/co2bank-dart/co2bank.apk"><b>Baixar o app para Android (.apk)</b></a>
   &nbsp;·&nbsp;
   <a href="https://co2bank-flask.onrender.com/docs"><b>Documentação da API</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://drive.google.com/file/d/1IzNqTActtXeXCrlOLww5UnfDMfaRFG3w/view?usp=sharing"><b>Vídeo de apresentação</b></a>
 </p>
 
 ---
